@@ -26,7 +26,9 @@ const AuthShell: React.FC<AuthShellProps> = ({ title, subtitle, backHref = '/log
           <aside className="auth__aside">
             <div className="auth__aside-glow" aria-hidden="true" />
             <div className="auth__aside-inner">
-              <BrandMark size="lg" />
+              <p className="auth__aside-title">
+                Buy. Sell. <span>Ride.</span>
+              </p>
               <p className="auth__aside-copy">
                 Buy and sell second-hand motorcycles directly — with an admin middleman available
                 whenever a deal needs one.
@@ -40,7 +42,7 @@ const AuthShell: React.FC<AuthShellProps> = ({ title, subtitle, backHref = '/log
               Back
             </button>
 
-            <div className="auth__brand-mobile">
+            <div className="auth__brand">
               <BrandMark size="md" />
             </div>
 

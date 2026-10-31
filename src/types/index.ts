@@ -60,7 +60,24 @@ export interface User {
       can't sign in and the database rejects anything it tries to post. */
   isDisabled: boolean;
   disabledReason: string;
+  /** Separate name parts from sign-up; `name` is their composed form. Empty
+      for accounts created before they existed. */
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  sex: Sex | '';
+  /** YYYY-MM-DD. */
+  birthdate: string;
+  /** Picked address parts; `location` is their composed form. */
+  region: string;
+  province: string;
+  city: string;
+  barangay: string;
+  /** Zone / purok / street / house no. */
+  street: string;
 }
+
+export type Sex = 'male' | 'female';
 
 export type ListingStatus = 'active' | 'pending' | 'sold' | 'draft';
 

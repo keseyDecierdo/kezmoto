@@ -38,6 +38,8 @@ export type DbListingAppealStatus = 'pending' | 'approved' | 'denied';
 
 export type DbIdType = 'national_id' | 'drivers_license';
 
+export type DbSex = 'male' | 'female';
+
 export type ProfileRow = {
   profile_id: string;
   role: DbRole;
@@ -59,6 +61,16 @@ export type ProfileRow = {
   is_disabled: boolean | null;
   disabled_at: string | null;
   disabled_reason: string | null;
+  first_name: string | null;
+  middle_name: string | null;
+  last_name: string | null;
+  sex: DbSex | null;
+  birthdate: string | null;
+  region: string | null;
+  province: string | null;
+  city: string | null;
+  barangay: string | null;
+  street: string | null;
   created_at: string;
 }
 

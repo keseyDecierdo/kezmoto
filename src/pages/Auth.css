@@ -8,19 +8,22 @@
   min-height: 100%;
 }
 
-/* Brand panel is desktop-only; mobile gets the compact wordmark instead. */
+/* Brand panel is desktop-only. */
 .auth__aside {
   display: none;
 }
 
+/* Log in and Create account share this exact panel: same width, same
+   order (Back, logo, heading, form, switch link). Vertical gaps follow the
+   screen height so the longer register form still fits without scrolling. */
 .auth__panel {
   display: flex;
   flex-direction: column;
-  gap: var(--kez-space-4);
+  gap: clamp(8px, 1.8vh, 16px);
   width: 100%;
-  max-width: 480px;
+  max-width: 520px;
   margin: 0 auto;
-  padding: var(--kez-space-5) var(--kez-space-4) var(--kez-space-7);
+  padding: clamp(12px, 3vh, 32px) var(--kez-space-4) clamp(12px, 3vh, 40px);
 }
 
 .auth__back {
@@ -37,14 +40,31 @@
   cursor: pointer;
 }
 
-/* Phones: the logo sits centred above the heading. */
-.auth__brand-mobile {
+/* Logo, centred above every auth form on every screen size. */
+.auth__brand {
   display: flex;
   justify-content: center;
-  margin-bottom: var(--kez-space-2);
 }
 
-.auth__brand-mobile .brandmark__logo { width: 96px; }
+.auth__brand .brandmark__logo { width: clamp(64px, 12vh, 96px); }
+
+/* The part that changes between Log in, Create account and the code step.
+   Keyed in React, so each switch replays this short fade-and-rise. */
+.auth__swap {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+  animation: kez-auth-swap var(--kez-dur-enter) var(--kez-ease-fluid) both;
+}
+
+@keyframes kez-auth-swap {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth__swap { animation: none; }
+}
 
 /* Sits inside the password field's wrapper, right-aligned under it. */
 .auth__forgot {
@@ -65,90 +85,213 @@
 .auth__head {
   display: flex;
   flex-direction: column;
-  gap: var(--kez-space-2);
+  gap: 4px;
+  text-align: center;
 }
 
 .auth__head h1 {
   font-size: var(--kez-text-2xl);
 }
 
+.auth__head p { margin: 0; }
+
+.auth__email { color: var(--kez-text); word-break: break-all; }
+
+/* Both forms use the same two-column grid; Log in simply has only
+   full-width rows. Register pairs phone | city and password | confirm. */
 .auth__form {
-  display: flex;
-  flex-direction: column;
-  margin-top: var(--kez-space-2);
-}
-
-.auth__field { min-width: 0; }
-
-.auth__submit {
-  margin-top: var(--kez-space-3);
-  min-height: var(--kez-tap);
-}
-
-/* ---------------- Register: fits one screen ----------------
-   Six fields on a phone would normally scroll. Pairs share a row
-   (phone | city, password | confirm, and name | email once there is
-   room), and every vertical gap is tied to the viewport height so short
-   screens tighten up instead of scrolling. */
-.auth__form--register {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   column-gap: var(--kez-space-3);
-  margin-top: 0;
 }
 
-.auth__form--register .auth__field--pair,
-.auth__form--register .auth__strength,
-.auth__form--register .auth__submit {
+.auth__form > *,
+.auth__field--full,
+.auth__strength,
+.auth__submit {
   grid-column: 1 / -1;
 }
 
-.auth--register .auth__panel {
-  gap: clamp(8px, 1.8vh, 16px);
-  padding-block: clamp(12px, 3vh, 32px) clamp(12px, 3vh, 40px);
-}
+.auth__form > .auth__field:not(.auth__field--full) { grid-column: auto; }
 
-.auth--register .auth__head { gap: 4px; }
-.auth--register .auth__head h1 { font-size: var(--kez-text-xl); }
+.auth__field { min-width: 0; }
 
-.auth--register .kez-field {
+.auth .kez-field {
   --padding-top: 2px;
   --padding-bottom: 2px;
-  min-height: clamp(50px, 7vh, 58px);
+  min-height: clamp(48px, 7vh, 58px);
   margin-bottom: clamp(6px, 1.3vh, 12px);
 }
 
-.auth--register .kez-form-error {
+.auth .kez-form-error {
   margin-top: calc(-1 * clamp(2px, 0.8vh, 8px));
   margin-bottom: clamp(4px, 1vh, 8px);
   font-size: var(--kez-text-xs);
 }
 
-.auth--register .auth__submit { margin-top: clamp(2px, 0.8vh, 8px); }
+.auth__submit {
+  margin-top: clamp(2px, 0.8vh, 8px);
+  min-height: var(--kez-tap);
+}
 
-/* Narrow phones: the eye button would truncate "Confirm password", so the
-   two password fields get a full row each. */
+/* Fixed "+63 9" in front of the mobile number. */
+.auth__prefix {
+  margin-right: 6px;
+  padding-right: 8px;
+  border-right: 1px solid var(--kez-border);
+  color: var(--kez-text);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* The emailed code: big, spaced digits. */
+.auth__code {
+  --placeholder-opacity: 0.35;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+}
+
+/* Create account: the three steps share the form grid. Hidden steps stay
+   mounted; un-hiding one replays the fade-in. */
+.auth__step:not([hidden]) {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--kez-space-3);
+  animation: kez-auth-swap var(--kez-dur-enter) var(--kez-ease-fluid) both;
+}
+
+.auth__step > * { grid-column: 1 / -1; }
+.auth__step > .auth__field:not(.auth__field--full) { grid-column: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .auth__step:not([hidden]) { animation: none; }
+}
+
+/* Step 1 of 3 progress. */
+.auth__progress {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  width: min(220px, 60%);
+  margin: 6px auto 0;
+}
+
+.auth__progress span {
+  height: 4px;
+  border-radius: var(--kez-radius-pill);
+  background: var(--kez-surface-3);
+  transition: background var(--kez-dur-enter) var(--kez-ease-fluid);
+}
+
+.auth__progress span.is-done { background: var(--kez-accent); }
+
+.auth__hint {
+  margin: calc(-1 * clamp(2px, 0.8vh, 8px)) 0 clamp(6px, 1.3vh, 12px);
+  color: var(--kez-text-muted);
+  font-size: var(--kez-text-xs);
+}
+
+.auth__summary { margin-top: 0; text-align: center; }
+.auth__summary strong { color: var(--kez-text); }
+
+/* Male / Female: two big toggles, same height as a field. */
+.auth__sex {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  min-height: clamp(48px, 7vh, 58px);
+  margin-bottom: clamp(6px, 1.3vh, 12px);
+}
+
+.auth__sex-option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid var(--kez-border);
+  border-radius: var(--kez-radius-sm);
+  background: var(--kez-surface);
+  color: var(--kez-text-soft);
+  font-family: var(--kez-font-body);
+  font-size: var(--kez-text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 160ms, background 160ms, color 160ms;
+}
+
+.auth__sex-option ion-icon { font-size: 16px; }
+
+.auth__sex-option.is-selected {
+  border-color: var(--kez-accent);
+  background: var(--kez-accent-soft);
+  color: var(--kez-accent);
+}
+
+/* Native date input dressed as .kez-field (like the address dropdowns). */
+.auth__native {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding: 6px var(--kez-space-4) 4px;
+}
+
+.auth__native span {
+  font-size: var(--kez-text-xs);
+  color: var(--kez-text-muted);
+}
+
+.auth__native input {
+  width: 100%;
+  min-width: 0;
+  padding: 4px 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--kez-text);
+  color-scheme: dark;
+  font-family: var(--kez-font-body);
+  font-size: var(--kez-text-base);
+}
+
+.auth__native:focus-within { border-color: var(--kez-accent); }
+
+/* Address dropdowns: always 2 × 2, sized like the other fields. */
+.auth__location .loc-picker__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.auth__location .loc-picker__current { display: none; }
+
+/* Back | Continue / Create account. */
+.auth__actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: var(--kez-space-3);
+  align-items: stretch;
+}
+
+.auth__actions .auth__submit { flex: 1 1 auto; margin-top: clamp(2px, 0.8vh, 8px); }
+
+.auth__prev {
+  flex: 0 0 auto;
+  margin: clamp(2px, 0.8vh, 8px) 0 0;
+  min-height: var(--kez-tap);
+  --border-color: var(--kez-border);
+  --color: var(--kez-text);
+  --border-width: 1px;
+}
+
+/* Narrow phones: the "+63 9" prefix and the eye buttons would cut off the
+   number and the labels, so every field gets a full row. */
 @media (max-width: 419.98px) {
-  .auth__form--register .auth__field:has(.auth__eye) { grid-column: 1 / -1; }
-}
-
-/* Short screens drop the duplicate wordmark; the back link stays. */
-@media (max-height: 760px) {
-  .auth--register .auth__brand-mobile { display: none; }
-}
-
-@media (min-width: 600px) {
-  .auth--register .auth__panel { max-width: 620px; }
-
-  .auth__form--register .auth__field--pair { grid-column: auto; }
-
-  .auth--register .auth__head h1 { font-size: var(--kez-text-2xl); }
+  .auth__form > .auth__field:not(.auth__field--full) { grid-column: 1 / -1; }
 }
 
 .auth__switch {
   margin: 0;
   color: var(--kez-text-muted);
   font-size: var(--kez-text-sm);
+  text-align: center;
 }
 
 .auth__switch button {
@@ -161,10 +304,15 @@
   cursor: pointer;
 }
 
-.auth__fineprint {
-  margin: 0;
+.auth__switch button:disabled {
   color: var(--kez-text-muted);
-  font-size: var(--kez-text-xs);
+  cursor: default;
+}
+
+.auth__switch--split {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--kez-space-3);
 }
 
 @media (min-width: 1024px) {
@@ -182,13 +330,8 @@
     display: flex;
     align-items: flex-start;
     overflow: hidden;
-    /* Photo as the base layer; a top-weighted scrim above it keeps the logo
-       (now anchored to the top via align-items: flex-start, so it reads
-       clearly instead of competing with the busiest, brightest part of the
-       photo lower down) legible against a full-color image the way the old
-       translucent bike SVG never needed help with. Fades to var(--kez-bg)
-       at the very edge, same "blend into the panel divider" idea as the
-       ::after fade below. */
+    /* Photo as the base layer; a top-weighted scrim keeps the logo legible.
+       Fades to var(--kez-bg) at the edge, like the ::after fade below. */
     background:
       linear-gradient(180deg, var(--kez-bg) 0%, rgba(10, 10, 10, 0.82) 22%, rgba(10, 10, 10, 0.35) 65%, rgba(10, 10, 10, 0.15) 100%),
       radial-gradient(120% 90% at 30% 20%, rgba(255, 106, 0, 0.12) 0%, transparent 60%),
@@ -219,11 +362,22 @@
   .auth__aside-inner {
     position: relative;
     padding: var(--kez-space-8);
-    padding-bottom: var(--kez-space-8);
     display: flex;
     flex-direction: column;
     gap: var(--kez-space-4);
   }
+
+  .auth__aside-title {
+    margin: 0;
+    color: #fff;
+    font-family: var(--kez-font-display);
+    font-size: clamp(36px, 3.6vw, 56px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+
+  .auth__aside-title span { color: var(--kez-accent); }
 
   .auth__aside-copy {
     max-width: 34ch;
@@ -233,26 +387,10 @@
     margin: 0;
   }
 
-  .auth__brand-mobile { display: none; }
-
   .auth__panel {
     justify-content: center;
-    padding: var(--kez-space-8) var(--kez-space-7);
-    max-width: 520px;
+    padding-inline: clamp(24px, 3vw, 48px);
   }
-
-  .auth__head h1 { font-size: var(--kez-text-3xl); }
-
-  /* Register: the form panel gets more of the split so name | email can
-     share a row, and keeps the height-tied padding from above. */
-  .auth--register .auth__layout { grid-template-columns: 1fr 1fr; }
-
-  .auth--register .auth__panel {
-    max-width: 620px;
-    padding-inline: clamp(24px, 4vw, 56px);
-  }
-
-  .auth--register .auth__head h1 { font-size: var(--kez-text-2xl); }
 }
 
 /* Show / hide password eye inside the field. */
@@ -268,7 +406,7 @@
 
 .auth__eye:hover { --color: var(--kez-accent); }
 
-/* Info line on the Forgot / Reset password screens. */
+/* Info line on the Forgot / Reset password screens and the code step. */
 .auth__notice {
   display: flex;
   align-items: flex-start;

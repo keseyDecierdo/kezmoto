@@ -98,6 +98,16 @@ export const mapProfile = (row: ProfileRow, email = ''): User => ({
   faceCaptureUrl: row.face_capture_url ?? '',
   isDisabled: Boolean(row.is_disabled),
   disabledReason: row.disabled_reason ?? '',
+  firstName: row.first_name ?? '',
+  middleName: row.middle_name ?? '',
+  lastName: row.last_name ?? '',
+  sex: row.sex ?? '',
+  birthdate: row.birthdate ?? '',
+  region: row.region ?? '',
+  province: row.province ?? '',
+  city: row.city ?? '',
+  barangay: row.barangay ?? '',
+  street: row.street ?? '',
 });
 
 /* ------------------------------------------------------------ listings */

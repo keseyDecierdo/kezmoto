@@ -46,6 +46,7 @@ SQL Editor → New query → paste each file, in order, and run:
 | `migrations/0026_user_reports_schema.sql` | `profiles.is_disabled` / `disabled_at` / `disabled_reason`; `user_reports` table; `is_admin()` and `is_disabled_user()` helpers |
 | `migrations/0027_user_reports_rls.sql` | RLS for `user_reports`; admins can update any profile; trigger locking `role` / disabled columns for non-admins; restrictive policies so disabled accounts can't post. **Apply 0026 and 0027 (SQL Editor) before using Report user / Manage Users.** |
 | `migrations/0028_require_verified_to_post.sql` | `is_verified_or_admin()` helper + restrictive insert policy on `listings`: only ID-and-face-verified customers (or admins) can post a unit |
+| `migrations/0035_profile_personal_details.sql` | Separate `first_name` / `middle_name` / `last_name`, `sex`, `birthdate` and address parts (`region` → `barangay`, `street`) on `profiles`; `handle_new_user()` fills them from Create account. **Apply before testing sign-up.** Safe to re-run. |
 
 If `0004` errors on the `storage.objects` policies (some projects lock that
 table down), create the two buckets by hand in Storage — `listing-photos`
@@ -63,10 +64,9 @@ exist.
 
 ## 4. Authentication settings
 
-Authentication → Providers → Email is on by default. While testing, turn
-**Confirm email** off (Authentication → Sign In / Providers): with it on, a
-signup returns no session and the app tells the user to go and confirm before
-logging in. Turn it back on before real users arrive.
+Authentication → Providers → Email is on by default. Keep **Confirm email**
+on: Create account then asks for the emailed code (see "Sign-up verification
+code" below). With it off, sign-up skips the code step.
 
 ### Password reset email via Brevo
 
@@ -96,6 +96,17 @@ emails an hour (and only to team members), so route it through Brevo:
 
 The SMTP key lives only in the Supabase dashboard; never put it in `.env` or
 the app.
+
+### Sign-up verification code
+
+Create account asks for a code from the inbox before the account works.
+
+1. Authentication → Sign In / Providers → Email: turn **Confirm email** ON.
+2. Authentication → Emails → Templates → **Confirm signup**: subject
+   `Your KEZMOTO verification code`, body = the whole of
+   `supabase/templates/confirm-signup.html`. It shows `{{ .Token }}` (the
+   code), which the app checks with `verifyOtp`.
+3. Leave Email OTP length at 6 (the app accepts 6–8 digits).
 
 ## 5. Accounts and demo data
 

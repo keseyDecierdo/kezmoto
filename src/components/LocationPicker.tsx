@@ -10,6 +10,16 @@ interface LocationPickerProps {
   onChange: (location: string) => void;
   /** Label for the empty barangay option, e.g. "Any barangay" on Wanted posts. */
   barangayPlaceholder?: string;
+  /** Each picked level by name (empty while not picked), for callers that
+      store them separately, e.g. Create account. */
+  onPartsChange?: (parts: LocationParts) => void;
+}
+
+export interface LocationParts {
+  region: string;
+  province: string;
+  city: string;
+  barangay: string;
 }
 
 /**
@@ -21,6 +31,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
   value,
   onChange,
   barangayPlaceholder = 'Select barangay (optional)…',
+  onPartsChange,
 }) => {
   const [provinces, setProvinces] = useState<PhProvince[]>([]);
   const [cities, setCities] = useState<PhCity[]>([]);
@@ -68,9 +79,16 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
     [cities, provinceCode]
   );
 
-  const compose = (pCode: string, cCode: string, bCode: string) => {
+  const compose = (pCode: string, cCode: string, bCode: string, rCode = regionCode) => {
     const province = provinces.find((p) => p.code === pCode);
     const city = cities.find((c) => c.code === cCode);
+    onPartsChange?.({
+      region: REGIONS.find((r) => r.code === rCode)?.name ?? '',
+      province: province?.name ?? '',
+      // The list marks provincial capitals ("… City (Capital)"); not part of the name.
+      city: city?.name.replace(/\s*\(capital\)$/i, '') ?? '',
+      barangay: barangays.find((b) => b.code === bCode)?.name ?? '',
+    });
     if (!province || !city) {
       onChange('');
       return;
@@ -84,14 +102,14 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
     setProvinceCode('');
     setCityCode('');
     setBarangayCode('');
-    onChange('');
+    compose('', '', '', code);
   };
 
   const pickProvince = (code: string) => {
     setProvinceCode(code);
     setCityCode('');
     setBarangayCode('');
-    onChange('');
+    compose(code, '', '');
   };
 
   const pickCity = (code: string) => {

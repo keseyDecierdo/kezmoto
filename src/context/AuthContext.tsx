@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { Session } from '@supabase/supabase-js';
 import { authApi } from '../services/api';
+import type { RegisterInput, RegisterResult } from '../services/authService';
 import type { IdType, User } from '../types';
 
 interface AuthContextValue {
@@ -10,13 +11,9 @@ interface AuthContextValue {
   isAuthenticated: boolean;
   isAdmin: boolean;
   login: (email: string, password: string) => Promise<User>;
-  register: (input: {
-    name: string;
-    email: string;
-    phone: string;
-    location: string;
-    password: string;
-  }) => Promise<User>;
+  register: (input: RegisterInput) => Promise<RegisterResult>;
+  /** Finishes sign-up with the code from the verification email. */
+  verifySignup: (email: string, code: string) => Promise<User>;
   logout: () => void;
   updateProfile: (patch: Partial<User>) => Promise<User>;
   submitIdVerification: (file: File, idType: IdType) => Promise<{ matched: boolean; extractedName: string }>;
@@ -70,19 +67,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const register = useCallback(
-    async (input: {
-      name: string;
-      email: string;
-      phone: string;
-      location: string;
-      password: string;
-    }) => {
-      const next = await authApi.register(input);
-      setUser(next);
-      return next;
+    async (input: RegisterInput) => {
+      const result = await authApi.register(input);
+      if (result.status === 'done') setUser(result.user);
+      return result;
     },
     []
   );
+
+  const verifySignup = useCallback(async (email: string, code: string) => {
+    const next = await authApi.verifySignupCode(email, code);
+    setUser(next);
+    return next;
+  }, []);
 
   const logout = useCallback(() => {
     setUser(null);
@@ -144,6 +141,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       isAdmin: user?.role === 'admin',
       login,
       register,
+      verifySignup,
       logout,
       updateProfile,
       submitIdVerification,
@@ -156,6 +154,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       initializing,
       login,
       register,
+      verifySignup,
       logout,
       updateProfile,
       submitIdVerification,

@@ -8,18 +8,41 @@
 import type { Session } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabaseClient';
 import type { ProfileRow } from '../lib/database.types';
-import type { IdType, User } from '../types';
+import type { IdType, Sex, User } from '../types';
 import { mapProfile } from './mappers';
 import { aiApi } from './aiService';
 import { uploadFaceCapture, uploadIdDocument } from './storageService';
 
 export interface RegisterInput {
-  name: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  sex: Sex;
+  /** YYYY-MM-DD. */
+  birthdate: string;
   email: string;
+  /** +639XXXXXXXXX */
   phone: string;
-  location: string;
+  region: string;
+  province: string;
+  city: string;
+  barangay: string;
+  /** Zone / purok / street / house no. */
+  street: string;
   password: string;
 }
+
+/** "Juan Santos Dela Cruz": the form the ID name check compares against. */
+export const composeFullName = (first: string, middle: string, last: string): string =>
+  [first, middle, last].map((part) => part.trim()).filter(Boolean).join(' ');
+
+/** "Zone 4, Tablon, Cagayan de Oro City, Misamis Oriental". */
+export const composeAddress = (parts: Pick<RegisterInput, 'street' | 'barangay' | 'city' | 'province'>): string =>
+  [parts.street, parts.barangay, parts.city, parts.province].map((part) => part.trim()).filter(Boolean).join(', ');
+
+export type RegisterResult =
+  | { status: 'done'; user: User }
+  | { status: 'verify'; email: string };
 
 const loadProfile = async (userId: string, email: string): Promise<User> => {
   const { data, error } = await supabase
@@ -63,17 +86,31 @@ export const authApi = {
     return loadProfile(data.user.id, data.user.email ?? email);
   },
 
-  /** Every self-service signup is a Customer; Admins are promoted manually. */
-  async register(input: RegisterInput): Promise<User> {
+  /**
+   * Every self-service signup is a Customer; Admins are promoted manually.
+   * With "Confirm email" on, Supabase emails a code and returns no session:
+   * the caller asks for that code (verifySignupCode) before the account works.
+   */
+  async register(input: RegisterInput): Promise<RegisterResult> {
     const { data, error } = await supabase.auth.signUp({
       email: input.email.trim(),
       password: input.password,
       options: {
         // Read by the handle_new_user() trigger to fill the profile row.
         data: {
-          full_name: input.name.trim(),
+          full_name: composeFullName(input.firstName, input.middleName, input.lastName),
           phone: input.phone.trim(),
-          address: input.location.trim(),
+          address: composeAddress(input),
+          first_name: input.firstName.trim(),
+          middle_name: input.middleName.trim(),
+          last_name: input.lastName.trim(),
+          sex: input.sex,
+          birthdate: input.birthdate,
+          region: input.region,
+          province: input.province,
+          city: input.city,
+          barangay: input.barangay,
+          street: input.street.trim(),
         },
       },
     });
@@ -86,15 +123,38 @@ export const authApi = {
       );
     }
     if (!data.user) throw new Error('Sign up did not return an account.');
-
-    // Email confirmation is on: there is no session to continue with yet.
-    if (!data.session) {
-      throw new Error(
-        'Account created. Check your inbox to confirm the email address, then log in.'
-      );
+    // Supabase hides "already registered" behind a user with no identities.
+    if (data.user.identities && data.user.identities.length === 0) {
+      throw new Error('An account already uses that email address.');
     }
 
-    return loadProfile(data.user.id, data.user.email ?? input.email);
+    // Email confirmation is on: the code in the inbox opens the session.
+    if (!data.session) return { status: 'verify', email: input.email.trim() };
+
+    return { status: 'done', user: await loadProfile(data.user.id, data.user.email ?? input.email) };
+  },
+
+  /** Step 2 of sign-up: the code from the verification email. */
+  async verifySignupCode(email: string, code: string): Promise<User> {
+    const { data, error } = await supabase.auth.verifyOtp({
+      email: email.trim(),
+      token: code.trim(),
+      type: 'signup',
+    });
+    if (error) {
+      throw new Error(
+        /expired|invalid/i.test(error.message)
+          ? 'That code is incorrect or has expired. Check the latest email or send a new code.'
+          : error.message
+      );
+    }
+    if (!data.user) throw new Error('Verification did not return an account.');
+    return loadProfile(data.user.id, data.user.email ?? email);
+  },
+
+  async resendSignupCode(email: string): Promise<void> {
+    const { error } = await supabase.auth.resend({ type: 'signup', email: email.trim() });
+    if (error) throw new Error(error.message);
   },
 
   async logout(): Promise<void> {
