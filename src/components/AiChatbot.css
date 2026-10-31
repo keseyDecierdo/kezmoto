@@ -1,0 +1,200 @@
+/* Same "icon in a soft-accent surface" language as .kez-state__icon and
+   .landing__trust-icon elsewhere, not a glowing gradient orb — the generic
+   solid-gradient-circle-with-a-glow is the default "AI chat widget" look,
+   and this ties it back to KEZMOTO's own vocabulary instead. */
+.ai-chatbot__fab {
+  position: fixed;
+  right: var(--kez-space-4);
+  /* Clears .kez-tabbar (AppTabBar), the fixed mobile bottom nav — below
+     1024px both are on-screen at once and the tab bar isn't otherwise
+     accounted for here. Desktop's own override below still just uses
+     --kez-space-6, since the tab bar is display:none there. */
+  bottom: calc(var(--kez-tabbar-height) + var(--kez-space-4) + env(safe-area-inset-bottom, 0px));
+  z-index: 40;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--kez-radius-md);
+  border: 1px solid var(--kez-accent-line);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--kez-surface);
+  color: var(--kez-accent);
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: var(--kez-shadow-2);
+  transition: background 140ms ease, transform 140ms ease;
+}
+
+.ai-chatbot__fab:hover {
+  background: var(--kez-accent-soft);
+}
+
+.ai-chatbot__fab:active {
+  transform: scale(0.94);
+}
+
+/* Messages/chat screens: the conversation composer's own Send button sits
+   in this exact corner too — see Shell's chatComposerVisible in App.tsx.
+   Unlike the tab-bar clearance above, this overlap happens at every width
+   (confirmed live at 1536px, not just mobile), so both the base rule here
+   and the 1024px override below need the extra clearance. */
+.ai-chatbot__fab--raised {
+  bottom: calc(var(--kez-tabbar-height) + var(--kez-space-4) + env(safe-area-inset-bottom, 0px) + var(--kez-chat-composer-clearance));
+}
+
+@media (min-width: 1024px) {
+  .ai-chatbot__fab { right: var(--kez-space-6); bottom: var(--kez-space-6); }
+  .ai-chatbot__fab--raised { bottom: calc(var(--kez-space-6) + var(--kez-chat-composer-clearance)); }
+}
+
+/* Pinned back to the original dark-theme values, regardless of whatever
+   theme the page underneath is using. This is a floating utility overlay
+   (chrome, not page content), so it shouldn't visually flip along with the
+   body — that's exactly what broke it: CSS custom properties inherit
+   through the DOM tree regardless of position:fixed, so this panel picked
+   up the light body's dark text tokens while its own background stayed
+   pinned to --kez-bg-alt (dark) — dark text on a dark backdrop showing
+   through the translucent user-bubble tint, unreadable. */
+.ai-chatbot__panel {
+  --kez-surface: #1a1a1a;
+  --kez-surface-2: #232323;
+  --kez-text: #ffffff;
+  --kez-text-soft: #ededed;
+  --kez-text-muted: #999999;
+  --kez-border: rgba(255, 255, 255, 0.08);
+
+  position: fixed;
+  right: var(--kez-space-4);
+  /* Same tab-bar clearance as .ai-chatbot__fab above, plus the existing
+     64px gap that keeps the panel sitting above the FAB itself. */
+  bottom: calc(var(--kez-tabbar-height) + var(--kez-space-4) + 64px);
+  left: var(--kez-space-4);
+  z-index: 40;
+  max-height: min(70vh, 560px);
+  display: flex;
+  flex-direction: column;
+  background: var(--kez-bg-alt);
+  border: 1px solid var(--kez-border-strong);
+  border-radius: var(--kez-radius-lg);
+  box-shadow: var(--kez-shadow-3);
+  overflow: hidden;
+}
+
+.ai-chatbot__panel--raised {
+  bottom: calc(var(--kez-tabbar-height) + var(--kez-space-4) + 64px + var(--kez-chat-composer-clearance));
+}
+
+@media (min-width: 600px) {
+  .ai-chatbot__panel { left: auto; width: 380px; }
+}
+
+@media (min-width: 1024px) {
+  .ai-chatbot__panel { right: var(--kez-space-6); bottom: calc(var(--kez-space-6) + 64px); }
+  .ai-chatbot__panel--raised { bottom: calc(var(--kez-space-6) + 64px + var(--kez-chat-composer-clearance)); }
+}
+
+.ai-chatbot__head {
+  display: flex;
+  align-items: center;
+  gap: var(--kez-space-2);
+  padding: var(--kez-space-3) var(--kez-space-4);
+  background: var(--kez-surface);
+  border-bottom: 1px solid var(--kez-border);
+  font-family: var(--kez-font-display);
+  font-weight: 700;
+  letter-spacing: var(--kez-tracking-wide);
+  color: var(--kez-accent);
+}
+
+.ai-chatbot__scroller {
+  flex: 1 1 auto;
+  min-height: 160px;
+  overflow-y: auto;
+  padding: var(--kez-space-3) var(--kez-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--kez-space-2);
+}
+
+.ai-chatbot__intro {
+  font-size: var(--kez-text-sm);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.ai-chatbot__bubble {
+  max-width: 88%;
+  padding: 10px var(--kez-space-3);
+  border-radius: var(--kez-radius-md);
+  background: var(--kez-surface);
+  border: 1px solid var(--kez-border);
+}
+
+.ai-chatbot__bubble p {
+  margin: 0;
+  font-size: var(--kez-text-sm);
+  line-height: 1.55;
+  color: var(--kez-text-soft);
+  white-space: pre-wrap;
+}
+
+.ai-chatbot__bubble--user {
+  align-self: flex-end;
+  background: linear-gradient(135deg, rgba(255, 106, 0, 0.18), rgba(255, 106, 0, 0.08));
+  border-color: var(--kez-accent-line);
+  border-bottom-right-radius: 4px;
+}
+
+.ai-chatbot__bubble--assistant { border-bottom-left-radius: 4px; }
+.ai-chatbot__bubble--loading { padding: 10px var(--kez-space-3); }
+
+.ai-chatbot__quick-replies {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 var(--kez-space-4) var(--kez-space-3);
+}
+
+.ai-chatbot__quick-replies button {
+  text-align: left;
+  padding: 8px var(--kez-space-3);
+  background: var(--kez-surface-2);
+  border: 1px solid var(--kez-border);
+  border-radius: var(--kez-radius-sm);
+  color: var(--kez-text-soft);
+  font-family: var(--kez-font-body);
+  font-size: var(--kez-text-xs);
+  cursor: pointer;
+}
+
+.ai-chatbot__composer {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--kez-space-2);
+  padding: var(--kez-space-3) var(--kez-space-4);
+  border-top: 1px solid var(--kez-border);
+  background: var(--kez-bg-alt);
+}
+
+.ai-chatbot__input {
+  --background: var(--kez-surface-2);
+  --color: var(--kez-text);
+  --placeholder-color: var(--kez-text-muted);
+  --padding-start: var(--kez-space-3);
+  --padding-end: var(--kez-space-3);
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  flex: 1;
+  border: 1px solid var(--kez-border);
+  border-radius: var(--kez-radius-md);
+  max-height: 120px;
+}
+
+.ai-chatbot__send {
+  margin: 0;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  height: 42px;
+  flex: 0 0 auto;
+}

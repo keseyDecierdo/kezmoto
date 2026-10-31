@@ -1,0 +1,72 @@
+.kez-tabbar {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  align-items: stretch;
+  background: var(--kez-bg-alt);
+  border-top: 1px solid var(--kez-border);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  flex: 0 0 auto;
+  z-index: 5;
+}
+
+.kez-tabbar__btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 7px 4px 6px;
+  min-height: 52px;
+  border: 0;
+  background: transparent;
+  color: var(--kez-text-muted);
+  font-family: var(--kez-font-display);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  position: relative;
+  transition: color 140ms ease;
+}
+
+.kez-tabbar__btn ion-icon {
+  font-size: 20px;
+}
+
+.kez-tabbar__btn.is-active {
+  color: var(--kez-accent);
+}
+
+.kez-tabbar__btn.is-active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 22%;
+  right: 22%;
+  height: 2px;
+  border-radius: 0 0 2px 2px;
+  background: var(--kez-accent);
+  box-shadow: var(--kez-glow);
+}
+
+/* The Sell action reads as the primary create affordance. */
+.kez-tabbar__btn--accent ion-icon {
+  color: var(--kez-accent);
+  font-size: 24px;
+}
+
+@media (min-width: 600px) {
+  :root { --kez-tabbar-height: 54px; }
+  .kez-tabbar__btn { font-size: 11px; min-height: 54px; }
+  .kez-tabbar__btn ion-icon { font-size: 21px; }
+}
+
+/* IonMenuToggle wraps the Menu tab; make it behave like the other cells. */
+.kez-tabbar__menu-toggle {
+  display: flex;
+}
+
+.kez-tabbar__menu-toggle .kez-tabbar__btn {
+  flex: 1;
+}

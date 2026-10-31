@@ -1,0 +1,162 @@
+.messages__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kez-space-2);
+}
+
+.messages__row {
+  display: flex;
+  align-items: center;
+  gap: var(--kez-space-3);
+  width: 100%;
+  padding: var(--kez-space-3);
+  border: 1px solid var(--kez-border);
+  border-radius: var(--kez-radius-md);
+  background: var(--kez-surface);
+  color: var(--kez-text);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+
+.messages__row:hover {
+  border-color: var(--kez-accent-line);
+}
+
+.messages__row.is-selected {
+  border-color: var(--kez-accent);
+  background: var(--kez-accent-soft);
+}
+
+.messages__row-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.messages__row-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--kez-space-2);
+}
+
+.messages__row-name {
+  display: flex;
+  align-items: center;
+  gap: var(--kez-space-2);
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.messages__row-top strong {
+  font-size: var(--kez-text-base);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.messages__middleman-chip {
+  padding: 2px 8px;
+  font-size: 10px;
+  flex: 0 0 auto;
+}
+
+.messages__row-top time {
+  font-size: var(--kez-text-xs);
+  color: var(--kez-text-muted);
+  flex: 0 0 auto;
+}
+
+.messages__row-body em {
+  font-style: normal;
+  font-size: var(--kez-text-xs);
+  color: var(--kez-accent);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.messages__preview {
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.messages__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: var(--kez-radius-pill);
+  background: var(--kez-accent);
+  color: #0a0a0a;
+  font-size: var(--kez-text-xs);
+  font-weight: 700;
+  flex: 0 0 auto;
+}
+
+.messages__chevron {
+  color: var(--kez-text-muted);
+  font-size: 18px;
+  flex: 0 0 auto;
+}
+
+/* ---------------- Split layout (tablet + desktop) ---------------- */
+@media (min-width: 600px) {
+  .messages-page ion-content {
+    --overflow: hidden;
+  }
+
+  .messages-page .app-page__body {
+    height: 100%;
+    padding: 0;
+  }
+
+  .messages__split {
+    display: grid;
+    grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+    gap: var(--kez-gap);
+    height: 100%;
+    min-height: 0;
+    padding: var(--kez-gap);
+  }
+
+  .messages__pane {
+    display: block;
+    overflow-y: auto;
+    padding: var(--kez-space-3);
+  }
+
+  .messages__pane .messages__row {
+    border-radius: var(--kez-radius-sm);
+  }
+
+  .messages__thread {
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 1024px) {
+  .messages__split {
+    grid-template-columns: 360px minmax(0, 1fr);
+  }
+}
+
+/* Desktop: keep the thread's Send button clear of the AI assistant
+   button in the bottom-right corner (it is not lifted on desktop). */
+@media (min-width: 1024px) {
+  .messages__split {
+    padding-right: calc(var(--kez-gap) + 72px);
+  }
+}

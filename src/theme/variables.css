@@ -1,0 +1,197 @@
+/* =========================================================================
+   KEZMOTO — Design tokens
+   Single source of truth for color, spacing and typography.
+   Never restyle these values per screen; consume the variables instead.
+   ========================================================================= */
+
+:root {
+  /* ---------- Brand palette — orange / black / white ---------- */
+  --kez-bg: #0a0a0a;
+  --kez-bg-alt: #0a0a0a;
+  --kez-surface: #1a1a1a;
+  --kez-surface-2: #232323;
+  --kez-surface-3: #2e2e2e;
+
+  --kez-accent: #ff6a00;
+  --kez-accent-bright: #ff8c3d;
+  --kez-accent-soft: rgba(255, 106, 0, 0.14);
+  --kez-accent-line: rgba(255, 106, 0, 0.35);
+
+  --kez-text: #ffffff;
+  --kez-text-soft: #ededed;
+  --kez-text-muted: #999999;
+
+  /* Strict black / orange / white palette: "positive" is the brand orange,
+     "neutral emphasis" is plain white on dark (black on the light canvas,
+     see global.css). Red is reserved for real errors and destructive
+     actions only. */
+  --kez-success: #ff6a00;
+  --kez-warning: #ffffff;
+  --kez-danger: #ff4757;
+  --kez-ink: #0a0a0a;
+  --kez-shimmer: rgba(255, 255, 255, 0.06);
+
+  /* ---------- Motion (mirrored in src/lib/motion.ts) ---------- */
+  --kez-ease-fluid: cubic-bezier(0.22, 1.2, 0.36, 1);
+  --kez-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --kez-dur-enter: 380ms;
+  --kez-dur-exit: 200ms;
+  --kez-scrim: rgba(4, 4, 4, 0.5);
+  --kez-scrim-blur: 8px;
+  --kez-muted-fill: #e9e9e9;
+
+  --kez-border: rgba(255, 255, 255, 0.08);
+  --kez-border-strong: rgba(255, 255, 255, 0.16);
+  --kez-overlay: rgba(4, 4, 4, 0.72);
+
+  /* ---------- Elevation ---------- */
+  --kez-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --kez-shadow-2: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --kez-shadow-3: 0 18px 48px rgba(0, 0, 0, 0.55);
+  --kez-glow: 0 0 24px rgba(255, 106, 0, 0.28);
+  --kez-glow-strong: 0 0 48px rgba(255, 106, 0, 0.45);
+
+  /* ---------- Spacing scale (4px base) ---------- */
+  --kez-space-1: 4px;
+  --kez-space-2: 8px;
+  --kez-space-3: 12px;
+  --kez-space-4: 16px;
+  --kez-space-5: 20px;
+  --kez-space-6: 28px;
+  --kez-space-7: 40px;
+  --kez-space-8: 56px;
+
+  /* ---------- Radius ---------- */
+  --kez-radius-sm: 8px;
+  --kez-radius-md: 14px;
+  --kez-radius-lg: 20px;
+  --kez-radius-pill: 999px;
+
+  /* ---------- Typography ---------- */
+  --kez-font-display: 'Rajdhani', 'Bahnschrift', 'Segoe UI Variable Display',
+    'Eurostile', 'Segoe UI', system-ui, sans-serif;
+  --kez-font-body: 'Inter', 'Segoe UI Variable Text', 'Segoe UI', system-ui,
+    -apple-system, 'Helvetica Neue', Arial, sans-serif;
+
+  /* Compact scale: fluid from a 360px phone up to a ~1280px desktop,
+     sized so 100% browser zoom already looks "zoomed out" and dense. */
+  --kez-text-xs: 11px;
+  --kez-text-sm: clamp(12.5px, 0.12vw + 12px, 13px);
+  --kez-text-base: 14px;
+  --kez-text-lg: clamp(15px, 0.15vw + 14.4px, 16px);
+  --kez-text-xl: clamp(17px, 0.2vw + 16.3px, 19px);
+  --kez-text-2xl: clamp(21px, 0.35vw + 19.7px, 24px);
+  --kez-text-3xl: clamp(25px, 0.55vw + 23px, 30px);
+  --kez-text-4xl: clamp(31px, 1vw + 27.4px, 40px);
+
+  --kez-tracking-wide: 0.04em;
+  --kez-tracking-brand: 0.14em;
+
+  /* ---------- Layout ---------- */
+  /* Wide enough for a 5-column unit grid on large desktops. */
+  --kez-content-max: 1680px;
+  --kez-sidebar-width: 240px;
+  --kez-header-height: 50px;
+  --kez-tabbar-height: 52px;
+  /* Clears the chat composer's Send button when the AI assistant bubble is
+     raised on Messages/chat screens — measured live: the composer renders
+     ~98.4px tall (12px padding + a 73.6px IonTextarea + 12px padding + a
+     hairline border), rounded up to 100px, plus a --kez-space-3 (12px)
+     breathing gap above it. */
+  --kez-chat-composer-clearance: 112px;
+
+  /* ---------- Bento ---------- */
+  --kez-gap: clamp(10px, 0.7vw + 6px, 16px);
+  --kez-tile-pad: clamp(12px, 0.7vw + 8px, 18px);
+  --kez-tile-radius: var(--kez-radius-lg);
+  --kez-tile-shadow: 0 1px 2px rgba(10, 10, 10, 0.04), 0 6px 18px rgba(10, 10, 10, 0.05);
+  --kez-tile-shadow-hover: 0 2px 4px rgba(10, 10, 10, 0.06), 0 14px 32px rgba(10, 10, 10, 0.09);
+  /* Minimum button height: comfortable on a mouse, thumb-sized on touch. */
+  --kez-tap: 36px;
+  /* Gutter kept around every modal / dialog. */
+  --kez-modal-gutter: clamp(12px, 3vw, 32px);
+
+  /* =====================================================================
+     Ionic variable mapping — the app is dark-only by design.
+     ===================================================================== */
+  --ion-font-family: var(--kez-font-body);
+
+  --ion-background-color: var(--kez-bg);
+  --ion-background-color-rgb: 10, 10, 10;
+  --ion-text-color: var(--kez-text-soft);
+  --ion-text-color-rgb: 237, 237, 237;
+
+  --ion-border-color: var(--kez-border);
+  --ion-item-background: transparent;
+  --ion-card-background: var(--kez-surface);
+  --ion-toolbar-background: var(--kez-bg-alt);
+  --ion-toolbar-color: var(--kez-text);
+  --ion-tab-bar-background: var(--kez-bg-alt);
+  --ion-tab-bar-color: var(--kez-text-muted);
+  --ion-tab-bar-color-selected: var(--kez-accent);
+  --ion-backdrop-color: #0a0a0a;
+  --ion-backdrop-opacity: 0.72;
+
+  --ion-color-primary: #ff6a00;
+  --ion-color-primary-rgb: 255, 106, 0;
+  --ion-color-primary-contrast: #0a0a0a;
+  --ion-color-primary-contrast-rgb: 10, 10, 10;
+  --ion-color-primary-shade: #e05e00;
+  --ion-color-primary-tint: #ff8c3d;
+
+  --ion-color-secondary: #232323;
+  --ion-color-secondary-rgb: 35, 35, 35;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #1e1e1e;
+  --ion-color-secondary-tint: #383838;
+
+  --ion-color-tertiary: #ff8c3d;
+  --ion-color-tertiary-rgb: 255, 140, 61;
+  --ion-color-tertiary-contrast: #0a0a0a;
+  --ion-color-tertiary-contrast-rgb: 10, 10, 10;
+  --ion-color-tertiary-shade: #e07b36;
+  --ion-color-tertiary-tint: #ff9950;
+
+  --ion-color-success: #ff6a00;
+  --ion-color-success-rgb: 255, 106, 0;
+  --ion-color-success-contrast: #0a0a0a;
+  --ion-color-success-contrast-rgb: 10, 10, 10;
+  --ion-color-success-shade: #e05e00;
+  --ion-color-success-tint: #ff8c3d;
+
+  --ion-color-warning: #0a0a0a;
+  --ion-color-warning-rgb: 10, 10, 10;
+  --ion-color-warning-contrast: #ffffff;
+  --ion-color-warning-contrast-rgb: 255, 255, 255;
+  --ion-color-warning-shade: #000000;
+  --ion-color-warning-tint: #2a2a2a;
+
+  --ion-color-danger: #ff4757;
+  --ion-color-danger-rgb: 255, 71, 87;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #e03e4d;
+  --ion-color-danger-tint: #ff5a68;
+
+  --ion-color-medium: #999999;
+  --ion-color-medium-rgb: 153, 153, 153;
+  --ion-color-medium-contrast: #0a0a0a;
+  --ion-color-medium-contrast-rgb: 10, 10, 10;
+  --ion-color-medium-shade: #868686;
+  --ion-color-medium-tint: #a3a3a3;
+
+  --ion-color-light: #232323;
+  --ion-color-light-rgb: 35, 35, 35;
+  --ion-color-light-contrast: #ffffff;
+  --ion-color-light-contrast-rgb: 255, 255, 255;
+  --ion-color-light-shade: #1e1e1e;
+  --ion-color-light-tint: #383838;
+
+  --ion-color-dark: #ffffff;
+  --ion-color-dark-rgb: 255, 255, 255;
+  --ion-color-dark-contrast: #0a0a0a;
+  --ion-color-dark-contrast-rgb: 10, 10, 10;
+  --ion-color-dark-shade: #e0e0e0;
+  --ion-color-dark-tint: #ffffff;
+}

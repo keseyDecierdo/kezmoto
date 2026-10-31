@@ -1,0 +1,104 @@
+.reports__summary {
+  margin-bottom: var(--kez-space-2);
+}
+
+.reports__stat {
+  gap: 4px;
+}
+
+.reports__stat small {
+  font-size: var(--kez-text-xs);
+  color: var(--kez-text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--kez-tracking-wide);
+}
+
+.reports__stat strong {
+  font-family: var(--kez-font-display);
+  font-size: var(--kez-text-2xl);
+  color: var(--kez-text);
+}
+
+.reports__summary-note {
+  font-size: var(--kez-text-xs);
+  margin: 0 0 var(--kez-space-4);
+}
+
+.reports__filters {
+  gap: var(--kez-space-3);
+  margin-bottom: var(--kez-gap);
+}
+
+.reports__chiprow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kez-space-2);
+}
+
+.reports__daterow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kez-space-4);
+}
+
+.reports__daterow label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: var(--kez-text-xs);
+  color: var(--kez-text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--kez-tracking-wide);
+}
+
+.reports__daterow input {
+  font-family: var(--kez-font-body);
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text);
+  background: var(--kez-surface-2);
+  border: 1px solid var(--kez-border);
+  border-radius: var(--kez-radius-sm);
+  padding: 8px 10px;
+  color-scheme: light;
+  min-height: var(--kez-tap);
+}
+
+.reports__table-wrap {
+  overflow-x: auto;
+}
+
+.reports__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--kez-text-sm);
+  min-width: 640px;
+}
+
+.reports__table th {
+  text-align: left;
+  padding: var(--kez-space-3);
+  background: var(--kez-surface-2);
+  color: var(--kez-text-muted);
+  font-size: var(--kez-text-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--kez-tracking-wide);
+  border-bottom: 1px solid var(--kez-border);
+}
+
+.reports__table td {
+  padding: var(--kez-space-3);
+  border-bottom: 1px solid var(--kez-border);
+  color: var(--kez-text-soft);
+}
+
+.reports__table tbody tr {
+  cursor: pointer;
+}
+
+.reports__table tbody tr:hover td {
+  background: var(--kez-surface);
+}
+
+.reports__table tbody tr:last-child td {
+  border-bottom: 0;
+}

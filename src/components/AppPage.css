@@ -1,0 +1,42 @@
+.app-page__header ion-toolbar {
+  --border-width: 0 0 1px 0;
+  --border-color: var(--kez-border);
+  --padding-start: var(--kez-space-2);
+  --padding-end: var(--kez-space-2);
+}
+
+.app-page__header ion-title {
+  font-size: 16px;
+  padding-inline: var(--kez-space-2);
+}
+
+/* Pure white canvas; tiles carry a hairline border + soft shadow so they
+   still read as cards. */
+.app-page__content {
+  --background: #ffffff;
+  --padding-bottom: var(--kez-space-6);
+}
+
+.app-page__content--flush {
+  --padding-top: 0;
+  --padding-bottom: 0;
+}
+
+.app-page__body {
+  padding-top: var(--kez-gap);
+  padding-bottom: calc(var(--kez-space-6) + env(safe-area-inset-bottom, 0px));
+}
+
+.app-page__eyebrow {
+  margin-bottom: var(--kez-space-2);
+}
+
+@media (min-width: 1024px) {
+  .app-page__header ion-title {
+    font-size: 17px;
+  }
+
+  .app-page__body {
+    padding-top: var(--kez-space-4);
+  }
+}

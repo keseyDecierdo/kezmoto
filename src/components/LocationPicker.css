@@ -1,0 +1,66 @@
+.loc-picker {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.loc-picker__current {
+  margin: 0 0 var(--kez-space-2);
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text-soft);
+}
+
+.loc-picker__current strong { color: var(--kez-text); }
+
+.loc-picker__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: var(--kez-space-3);
+}
+
+@media (min-width: 340px) {
+  .loc-picker__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Native selects dressed as .kez-field: label on top, value below. */
+.loc-picker__field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: 8px var(--kez-space-4) 4px;
+}
+
+.loc-picker__field span {
+  font-size: var(--kez-text-xs);
+  color: var(--kez-text-muted);
+}
+
+.loc-picker__field select {
+  width: 100%;
+  min-width: 0;
+  padding: 6px 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--kez-text);
+  font-family: var(--kez-font-body);
+  font-size: var(--kez-text-base);
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+/* Option lists are drawn by the OS; keep them readable on both themes. */
+.loc-picker__field select option {
+  background: var(--kez-surface);
+  color: var(--kez-text);
+}
+
+.loc-picker__field select:disabled {
+  color: var(--kez-text-muted);
+  cursor: default;
+}
+
+.loc-picker__field:focus-within {
+  border-color: var(--kez-accent);
+}

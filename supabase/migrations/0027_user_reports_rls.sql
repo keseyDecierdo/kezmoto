@@ -1,0 +1,104 @@
+-- =========================================================================
+-- KEZMOTO — User reports + account disabling (RLS and guards)
+-- =========================================================================
+
+alter table user_reports enable row level security;
+
+-- Reporters file reports only from a chat they are actually part of.
+drop policy if exists "reporters can file reports" on user_reports;
+create policy "reporters can file reports" on user_reports
+  for insert with check (
+    auth.uid() = reporter_id
+    and (
+      chat_id is null
+      or exists (
+        select 1 from chats
+        where chats.chat_id = user_reports.chat_id
+          and auth.uid() in (chats.buyer_id, chats.seller_id, chats.admin_id)
+      )
+    )
+  );
+
+-- A reporter can see their own reports; admins see everything.
+drop policy if exists "reporters and admins can view reports" on user_reports;
+create policy "reporters and admins can view reports" on user_reports
+  for select using (auth.uid() = reporter_id or is_admin());
+
+drop policy if exists "admins can review reports" on user_reports;
+create policy "admins can review reports" on user_reports
+  for update using (is_admin()) with check (is_admin());
+
+-- PROFILES: admins may update any profile (to disable/enable accounts) ------
+drop policy if exists "admins can update any profile" on profiles;
+create policy "admins can update any profile" on profiles
+  for update using (is_admin()) with check (is_admin());
+
+-- "users can update own profile" has no column restriction, so without this a
+-- user could PATCH their own role or re-enable their own disabled account.
+-- RLS is row-level only; a trigger is what locks individual columns.
+create or replace function enforce_profile_admin_columns()
+returns trigger
+language plpgsql
+set search_path = public
+as $$
+begin
+  -- service role (Edge Functions) and the SQL editor (no auth.uid()) are trusted.
+  if auth.role() = 'service_role' or auth.uid() is null then
+    return new;
+  end if;
+
+  if is_admin() then
+    if new.profile_id = auth.uid()
+      and (new.is_disabled is distinct from old.is_disabled or new.role is distinct from old.role)
+    then
+      raise exception 'Admins cannot change their own role or disable their own account.';
+    end if;
+    return new;
+  end if;
+
+  if new.role is distinct from old.role
+    or new.is_disabled is distinct from old.is_disabled
+    or new.disabled_at is distinct from old.disabled_at
+    or new.disabled_reason is distinct from old.disabled_reason
+  then
+    raise exception 'Only a KEZMOTO admin can change a role or disable an account.';
+  end if;
+
+  return new;
+end;
+$$;
+
+drop trigger if exists profiles_enforce_admin_columns on profiles;
+create trigger profiles_enforce_admin_columns
+before update on profiles
+for each row execute function enforce_profile_admin_columns();
+
+-- DISABLED ACCOUNTS CAN'T WRITE ---------------------------------------------
+-- RESTRICTIVE policies are ANDed with the existing permissive ones, so a
+-- disabled user's still-valid session can read but not post, list or message.
+drop policy if exists "disabled users cannot send messages" on messages;
+create policy "disabled users cannot send messages" on messages
+  as restrictive for insert with check (not is_disabled_user());
+
+drop policy if exists "disabled users cannot create chats" on chats;
+create policy "disabled users cannot create chats" on chats
+  as restrictive for insert with check (not is_disabled_user());
+
+drop policy if exists "disabled users cannot create listings" on listings;
+create policy "disabled users cannot create listings" on listings
+  as restrictive for insert with check (not is_disabled_user());
+
+drop policy if exists "disabled users cannot update listings" on listings;
+create policy "disabled users cannot update listings" on listings
+  as restrictive for update using (not is_disabled_user());
+
+drop policy if exists "disabled users cannot create transactions" on transactions;
+create policy "disabled users cannot create transactions" on transactions
+  as restrictive for insert with check (not is_disabled_user());
+
+drop policy if exists "disabled users cannot file reports" on user_reports;
+create policy "disabled users cannot file reports" on user_reports
+  as restrictive for insert with check (not is_disabled_user());
+
+-- Make the API pick up the new table/columns immediately.
+notify pgrst, 'reload schema';

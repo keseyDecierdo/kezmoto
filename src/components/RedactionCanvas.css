@@ -1,0 +1,88 @@
+.redact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kez-space-3);
+}
+
+.redact__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--kez-space-2);
+  flex-wrap: wrap;
+}
+
+.redact__hint {
+  color: var(--kez-text-muted);
+  font-size: var(--kez-text-sm);
+  flex: 1 1 220px;
+}
+
+.redact__tools {
+  display: flex;
+  gap: var(--kez-space-1);
+  flex: 0 0 auto;
+}
+
+.redact__tools ion-button {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  margin: 0;
+  font-size: var(--kez-text-sm);
+}
+
+.redact__surface {
+  position: relative;
+  border-radius: var(--kez-radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--kez-border-strong);
+  background: var(--kez-surface-2);
+  cursor: crosshair;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.redact__surface img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+.redact__surface.is-drawing {
+  border-color: var(--kez-accent);
+}
+
+.redact__box {
+  position: absolute;
+  background: #000;
+  border: 1px solid rgba(255, 106, 0, 0.5);
+}
+
+.redact__box--draft {
+  background: rgba(0, 0, 0, 0.72);
+  border: 1px dashed var(--kez-accent);
+}
+
+.redact__remove {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--kez-border-strong);
+  background: var(--kez-surface-3);
+  color: var(--kez-text);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.redact__count {
+  font-size: var(--kez-text-xs);
+}

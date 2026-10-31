@@ -1,0 +1,216 @@
+.unit-card {
+  container-type: inline-size;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--kez-surface);
+  border: 1px solid var(--kez-border);
+  border-radius: var(--kez-tile-radius);
+  box-shadow: var(--kez-tile-shadow);
+  overflow: hidden;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+@media (hover: hover) {
+  .unit-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--kez-accent-line);
+    box-shadow: var(--kez-tile-shadow-hover);
+  }
+}
+
+.unit-card__media {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: var(--kez-bg-alt);
+  cursor: pointer;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.unit-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.unit-card__status {
+  position: absolute;
+  left: var(--kez-space-3);
+  top: var(--kez-space-3);
+  padding: 3px 10px;
+  border-radius: var(--kez-radius-pill);
+  font-size: var(--kez-text-xs);
+  font-weight: 700;
+  letter-spacing: var(--kez-tracking-wide);
+  text-transform: uppercase;
+  background: rgba(10, 10, 10, 0.82);
+  border: 1px solid var(--kez-border-strong);
+  color: var(--kez-text-soft);
+  backdrop-filter: blur(6px);
+}
+
+/* Pills sit on the photo, so they use fixed fills rather than the
+   context-dependent tokens. */
+.unit-card__status--active { background: #ff6a00; border-color: #ff6a00; color: #0a0a0a; }
+.unit-card__status--pending { background: #ffffff; border-color: #ffffff; color: #0a0a0a; }
+/* Fixed value, not var(--kez-text-muted) — that token gets redefined to a
+   dark shade by the light-body override on .app-page__content (see
+   .unit-card__fav below for the full explanation), which would wash this
+   out against the pill's own always-dark backdrop. */
+.unit-card__status--sold { background: rgba(10, 10, 10, 0.82); color: #cfcfcf; }
+
+/* Off the photo entirely now — a normal row in the body, between the
+   location/mileage meta and the action buttons, rather than an overlay
+   competing with the image (status pill, "Assisted" badge, favorite
+   heart). .unit-card__body's own flex gap spaces it consistently with
+   everything else; no positioning of its own needed as a plain flow div. */
+.unit-card__scores {
+  display: block;
+}
+
+.unit-card__assist {
+  position: absolute;
+  left: var(--kez-space-3);
+  bottom: var(--kez-space-3);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: var(--kez-radius-pill);
+  font-size: var(--kez-text-xs);
+  font-weight: 700;
+  letter-spacing: var(--kez-tracking-wide);
+  background: rgba(10, 10, 10, 0.85);
+  border: 1px solid var(--kez-accent-line);
+  color: var(--kez-accent-bright);
+  backdrop-filter: blur(6px);
+}
+
+.unit-card__fav {
+  position: absolute;
+  right: var(--kez-space-3);
+  top: var(--kez-space-3);
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--kez-border-strong);
+  background: rgba(10, 10, 10, 0.8);
+  /* Fixed, not var(--kez-text-soft) — that token is contextually redefined
+     to a dark shade (#333333) by the light-body override scoped to
+     .app-page__content (global.css), meant for text sitting directly on
+     the white page background. This button's own backdrop is always the
+     dark blur circle above, regardless of the page it's on, so it needs
+     to stay light rather than inherit whatever --kez-text-soft means in
+     that scope — same fix already applied to the AI chatbot panel for
+     the identical reason. Live-confirmed this was resolving to #333333
+     (near-invisible on the dark circle) before this fix. */
+  color: #ededed;
+  font-size: 18px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: color 140ms ease, border-color 140ms ease, transform 140ms ease;
+}
+
+.unit-card__fav.is-active {
+  color: var(--kez-accent);
+  border-color: var(--kez-accent-line);
+}
+
+.unit-card__fav:active { transform: scale(0.9); }
+
+.unit-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kez-space-2);
+  padding: var(--kez-space-4);
+  flex: 1;
+}
+
+.unit-card__heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--kez-space-2);
+}
+
+.unit-card__title {
+  font-size: var(--kez-text-lg);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.unit-card__year {
+  font-family: var(--kez-font-display);
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text-muted);
+  flex: 0 0 auto;
+}
+
+.unit-card__price {
+  font-family: var(--kez-font-display);
+  font-size: var(--kez-text-xl);
+  font-weight: 700;
+  color: var(--kez-accent);
+  margin: 0;
+  letter-spacing: var(--kez-tracking-wide);
+}
+
+.unit-card__meta {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.unit-card__meta li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--kez-text-muted);
+  font-size: var(--kez-text-sm);
+}
+
+.unit-card__meta ion-icon {
+  font-size: 15px;
+  color: var(--kez-text-muted);
+  flex: 0 0 auto;
+}
+
+.unit-card__actions {
+  display: grid;
+  gap: var(--kez-space-2);
+  margin-top: auto;
+  padding-top: var(--kez-space-3);
+}
+
+.unit-card__actions ion-button {
+  margin: 0;
+}
+
+/* When Send Message is withheld (your own listing, or landing's signed-out
+   preview) View Details is the only button — let it span both grid
+   columns instead of sitting half-width with dead space beside it. */
+.unit-card__actions ion-button:only-child {
+  grid-column: 1 / -1;
+}
+
+/* Side-by-side only when the card itself is wide enough for two buttons. */
+@container (min-width: 330px) {
+  .unit-card__actions { grid-template-columns: 1fr 1fr; }
+}
+
+/* Compact variant: no actions, tighter body */
+.unit-card--compact .unit-card__body { padding: var(--kez-space-3); gap: var(--kez-space-1); }
+.unit-card--compact .unit-card__price { font-size: var(--kez-text-lg); }

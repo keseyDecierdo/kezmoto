@@ -1,0 +1,606 @@
+.chat {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--kez-bg);
+}
+
+.chat--state {
+  padding: var(--kez-space-4);
+  overflow-y: auto;
+}
+
+/* ---------------- Header ---------------- */
+/* The header is black on every page, so it re-points the text tokens
+   (the light canvas would otherwise make the name black-on-black). */
+.chat__header {
+  --kez-text: #ffffff;
+  --kez-text-soft: #ededed;
+  --kez-text-muted: #a6a6a6;
+  --kez-border: rgba(255, 255, 255, 0.1);
+  --kez-border-strong: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  gap: var(--kez-space-3);
+  padding: var(--kez-space-3) var(--kez-space-4);
+  border-bottom: 1px solid var(--kez-border);
+  background: var(--kez-bg-alt);
+  flex: 0 0 auto;
+}
+
+.chat__back {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--kez-text);
+  font-size: 20px;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+/* A button now (links through to /profile/:id) — was a plain div, so it
+   needs its own row layout plus a full reset instead of inheriting
+   .chat__header's flex row for free. */
+.chat__who {
+  display: flex;
+  align-items: center;
+  gap: var(--kez-space-3);
+  min-width: 0;
+  flex: 1;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.chat__who > div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.chat__who:hover strong {
+  color: var(--kez-accent);
+}
+
+.chat__who strong {
+  font-size: var(--kez-text-base);
+  color: var(--kez-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 140ms ease;
+}
+
+.chat__who span {
+  font-size: var(--kez-text-xs);
+  color: var(--kez-text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--kez-tracking-wide);
+}
+
+.chat__view-profile,
+.chat__middleman,
+.chat__report {
+  margin: 0;
+  flex: 0 0 auto;
+  font-size: var(--kez-text-xs);
+}
+
+@media (max-width: 599px) {
+  .chat__view-profile,
+  .chat__middleman,
+  .chat__report {
+    --padding-start: 8px;
+    --padding-end: 8px;
+  }
+}
+
+/* ---------------- Linked unit ---------------- */
+.chat__listing-row {
+  display: flex;
+  align-items: center;
+  gap: var(--kez-space-2);
+  background: var(--kez-surface);
+  border-bottom: 1px solid var(--kez-border);
+  padding-right: var(--kez-space-3);
+  flex: 0 0 auto;
+}
+
+.chat__listing {
+  display: flex;
+  align-items: center;
+  gap: var(--kez-space-3);
+  width: 100%;
+  min-width: 0;
+  padding: var(--kez-space-2) var(--kez-space-4);
+  background: transparent;
+  border: 0;
+  color: var(--kez-text);
+  text-align: left;
+  cursor: pointer;
+  flex: 1 1 auto;
+}
+
+.chat__mark-sold {
+  margin: 0;
+  flex: 0 0 auto;
+  font-size: var(--kez-text-xs);
+  --padding-start: 10px;
+  --padding-end: 10px;
+}
+
+/* Plain label, not a clickable row — the action lives in the button beside it. */
+.chat__listing--static {
+  cursor: default;
+}
+
+.chat__open-transaction {
+  margin: 0;
+  flex: 0 0 auto;
+  font-size: var(--kez-text-xs);
+  --padding-start: 10px;
+  --padding-end: 10px;
+}
+
+.chat__listing img {
+  width: 52px;
+  height: 38px;
+  object-fit: cover;
+  border-radius: var(--kez-radius-sm);
+  border: 1px solid var(--kez-border);
+}
+
+.chat__listing span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.chat__listing small {
+  font-size: var(--kez-text-xs);
+  color: var(--kez-text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--kez-tracking-wide);
+}
+
+.chat__listing strong {
+  font-size: var(--kez-text-sm);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat__listing > ion-icon {
+  margin-left: auto;
+  color: var(--kez-text-muted);
+  flex: 0 0 auto;
+}
+
+/* ---------------- Transaction tracker ---------------- */
+.chat__tracker {
+  padding: var(--kez-space-3) var(--kez-space-4) 0;
+  flex: 0 0 auto;
+}
+
+/* ---------------- Sender identity on a bubble ---------------- */
+.chat__bubble-sender {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.chat__bubble-sender-name {
+  font-size: var(--kez-text-sm);
+  font-weight: 600;
+  color: var(--kez-text-soft);
+}
+
+.chat__bubble-sender-role {
+  padding: 1px 7px;
+  border-radius: var(--kez-radius-pill);
+  background: color-mix(in srgb, var(--kez-warning) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--kez-warning) 40%, transparent);
+  color: var(--kez-warning);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--kez-tracking-wide);
+}
+
+/* ---------------- Messages ---------------- */
+.chat__scroller {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--kez-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--kez-space-2);
+}
+
+.chat__empty {
+  margin: auto;
+  max-width: 34ch;
+  text-align: center;
+  color: var(--kez-text-muted);
+  font-size: var(--kez-text-sm);
+  line-height: 1.6;
+}
+
+.chat__bubble {
+  max-width: min(78%, 520px);
+  align-self: flex-start;
+  padding: 10px var(--kez-space-3);
+  border-radius: var(--kez-radius-md);
+  border-bottom-left-radius: 4px;
+  background: var(--kez-surface);
+  border: 1px solid var(--kez-border);
+}
+
+.chat__bubble p {
+  margin: 0;
+  font-size: var(--kez-text-base);
+  line-height: 1.5;
+  color: var(--kez-text-soft);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.chat__bubble time {
+  display: block;
+  margin-top: 4px;
+  font-size: 10px;
+  color: var(--kez-text-muted);
+}
+
+.chat__bubble-image {
+  display: block;
+  max-width: 100%;
+  max-height: 280px;
+  border-radius: var(--kez-radius-sm);
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.chat__bubble--mine {
+  align-self: flex-end;
+  background: linear-gradient(135deg, rgba(255, 106, 0, 0.18), rgba(255, 106, 0, 0.08));
+  border-color: var(--kez-accent-line);
+  border-radius: var(--kez-radius-md);
+  border-bottom-right-radius: 4px;
+}
+
+.chat__bubble--mine p { color: var(--kez-text); }
+.chat__bubble--mine time { text-align: right; color: var(--kez-text-muted); }
+
+.chat__system {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 90%;
+  padding: 6px 12px;
+  border-radius: var(--kez-radius-pill);
+  background: color-mix(in srgb, var(--kez-warning) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--kez-warning) 35%, transparent);
+  color: var(--kez-warning);
+  font-size: var(--kez-text-xs);
+  text-align: center;
+}
+
+/* ---------------- Pending attachment ---------------- */
+.chat__pending-image {
+  position: relative;
+  display: inline-flex;
+  margin: var(--kez-space-2) var(--kez-space-4) 0;
+  flex: 0 0 auto;
+}
+
+.chat__pending-image img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: var(--kez-radius-sm);
+  border: 1px solid var(--kez-border);
+}
+
+.chat__pending-image button {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--kez-text);
+  cursor: pointer;
+}
+
+.chat__pending-image button ion-icon {
+  font-size: 18px;
+  background: var(--kez-bg-alt);
+  border-radius: 50%;
+}
+
+/* ---------------- Composer ---------------- */
+.chat__composer {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--kez-space-2);
+  padding: var(--kez-space-2) var(--kez-space-3) calc(var(--kez-space-2) + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--kez-border);
+  background: var(--kez-bg-alt);
+  flex: 0 0 auto;
+}
+
+.chat__input {
+  --background: var(--kez-surface-2);
+  --color: var(--kez-text);
+  --placeholder-color: var(--kez-text-muted);
+  --padding-start: var(--kez-space-3);
+  --padding-end: var(--kez-space-3);
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  flex: 1;
+  min-width: 0;
+  min-height: 40px;
+  border: 1px solid var(--kez-border);
+  border-radius: 20px;
+  max-height: 120px;
+}
+
+.chat__emoji-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kez-space-2);
+  padding: var(--kez-space-2) var(--kez-space-4);
+  border-top: 1px solid var(--kez-border);
+  background: var(--kez-bg-alt);
+  flex: 0 0 auto;
+}
+
+.chat__emoji-row button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--kez-border);
+  border-radius: var(--kez-radius-sm);
+  background: var(--kez-surface-2);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+
+.chat__emoji-row button:hover {
+  border-color: var(--kez-accent-line);
+  background: var(--kez-accent-soft);
+}
+
+/* Middleman requested, nobody has joined yet. */
+.chat__waiting {
+  display: flex;
+  align-items: center;
+  gap: var(--kez-space-3);
+  padding: var(--kez-space-2) var(--kez-space-4);
+  border-bottom: 1px solid var(--kez-accent-line);
+  background: var(--kez-accent-soft);
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text-soft);
+}
+
+.chat__waiting strong { color: var(--kez-text); }
+
+.chat__waiting-dot {
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--kez-accent);
+  animation: kez-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes kez-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.8); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat__waiting-dot { animation: none; }
+}
+
+/* ---------------- Phones ----------------
+   Header: back + avatar + name get the whole first row (the name used to be
+   squeezed to ~28px by the action buttons); the actions drop to a second
+   row as equal-width buttons. Composer: the text box gets the full width,
+   with photo / emoji / send in a compact row beneath it. */
+@media (max-width: 599.98px) {
+  .chat__header {
+    flex-wrap: wrap;
+    row-gap: var(--kez-space-2);
+    padding: var(--kez-space-2) var(--kez-space-3);
+  }
+
+  .chat__who {
+    flex: 1 1 calc(100% - 48px);
+  }
+
+  .chat__who span {
+    white-space: nowrap;
+    letter-spacing: 0.04em;
+  }
+
+  .chat__view-profile,
+  .chat__middleman {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .chat__report {
+    flex: 0 0 auto;
+  }
+
+}
+
+/* ---------------- Messenger-style composer ----------------
+   Round "+" on the left (opens the Photo / Emoji tray), pill-shaped message
+   field in the middle, round Send on the right — one line on every size. */
+.chat__plus,
+.chat__send {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 22px;
+  transition: background 140ms ease, color 140ms ease, transform 180ms ease, opacity 140ms ease;
+}
+
+.chat__plus {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--kez-accent);
+}
+
+.chat__plus:hover { background: rgba(255, 255, 255, 0.14); }
+
+/* The + turns into a × while the tray is open. */
+.chat__plus.is-open { transform: rotate(45deg); background: var(--kez-accent); color: #0a0a0a; }
+
+.chat__send {
+  background: var(--kez-accent);
+  color: #0a0a0a;
+  font-size: 19px;
+}
+
+.chat__send:hover:not(:disabled) { background: var(--kez-accent-bright); }
+.chat__send:disabled { opacity: 0.35; cursor: default; }
+
+/* The field: pill on one line, rounded box once it wraps; grows upward to
+   about five lines, then scrolls inside. */
+.chat__composer {
+  position: relative;
+}
+
+.chat__input {
+  max-height: 128px;
+  transition: border-radius 160ms ease;
+}
+
+.chat__composer.is-multiline .chat__input {
+  border-radius: 18px;
+}
+
+/* + and send sit on the field's last line, like Messenger. */
+.chat__plus,
+.chat__send {
+  margin-bottom: 1px;
+}
+
+/* ---------------- "+" popup ----------------
+   A small card that grows out of the + button (same motion as the app's
+   modals and alerts), listing what can be added to the message. */
+.chat__popup {
+  position: absolute;
+  left: var(--kez-space-3);
+  bottom: calc(100% + 8px);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 240px;
+  max-width: calc(100% - 2 * var(--kez-space-3));
+  padding: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--kez-radius-md);
+  background: #161616;
+  box-shadow: var(--kez-shadow-3);
+  transform-origin: bottom left;
+  animation: kez-popup-in var(--kez-dur-enter) var(--kez-ease-fluid);
+}
+
+@keyframes kez-popup-in {
+  from { opacity: 0; transform: scale(0.9) translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.chat__popup button {
+  display: flex;
+  align-items: center;
+  gap: var(--kez-space-3);
+  width: 100%;
+  padding: 10px;
+  border: 0;
+  border-radius: var(--kez-radius-sm);
+  background: transparent;
+  color: #ffffff;
+  font-family: var(--kez-font-body);
+  text-align: left;
+  cursor: pointer;
+}
+
+.chat__popup button:hover,
+.chat__popup button:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.chat__popup-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--kez-accent-soft);
+  color: var(--kez-accent);
+  font-size: 19px;
+}
+
+.chat__popup strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.chat__popup small {
+  display: block;
+  font-size: 12px;
+  color: #a6a6a6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat__plus.is-open { transform: none; }
+  .chat__popup { animation: none; }
+}
+
+/* Clip the field's inner fill to its rounded shape (pill or box) and use
+   an orange border for focus instead of Ionic's underline. */
+.chat__input {
+  overflow: hidden;
+  --border-radius: inherit;
+  --highlight-height: 0;
+  transition: border-radius 160ms ease, border-color 140ms ease;
+}
+
+.chat__input:focus-within {
+  border-color: var(--kez-accent);
+}

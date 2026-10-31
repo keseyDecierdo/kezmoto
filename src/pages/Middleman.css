@@ -1,0 +1,68 @@
+.middleman-list__row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    'parties info'
+    'actions actions';
+  gap: var(--kez-space-3);
+  align-items: start;
+  align-content: start;
+}
+
+.middleman-list__parties {
+  grid-area: parties;
+  display: flex;
+}
+
+.middleman-list__parties > *:last-child {
+  margin-left: -10px;
+  border: 2px solid var(--kez-surface);
+  border-radius: 50%;
+}
+
+.middleman-list__info {
+  grid-area: info;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.middleman-list__info h3 { font-size: var(--kez-text-base); }
+
+.middleman-list__actions {
+  grid-area: actions;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+  border-top: 1px solid var(--kez-border);
+  padding-top: var(--kez-space-3);
+}
+
+.middleman-list__actions ion-button { margin: 0; }
+
+
+/* Status chip sizes to its text instead of stretching across the card. */
+.middleman-list__status { align-self: flex-start; }
+
+.middleman-list__price {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 2px 0;
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text-muted);
+}
+
+.middleman-list__price.is-agreed {
+  color: var(--kez-text);
+  font-weight: 700;
+}
+
+.middleman-list__price ion-icon { color: var(--kez-accent); }
+
+/* Unclaimed requests are the ones needing action: tint them. */
+.middleman-list__row.is-unclaimed {
+  border-color: var(--kez-accent-line);
+  background: linear-gradient(180deg, var(--kez-accent-soft) 0%, var(--kez-surface) 60%);
+}

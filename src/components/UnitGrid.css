@@ -1,0 +1,38 @@
+/* The wrapper is the size container; the grid inside picks its column
+   count from the width it really has: 1 → 2 → 3 → 4 → 5 (max). Each step
+   keeps cards at least ~230px wide. */
+.unit-grid-wrap {
+  container-type: inline-size;
+  width: 100%;
+}
+
+.unit-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--kez-gap);
+}
+
+@container (min-width: 480px) {
+  .unit-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@container (min-width: 740px) {
+  .unit-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@container (min-width: 1000px) {
+  .unit-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@container (min-width: 1260px) {
+  .unit-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+.unit-grid__col {
+  display: flex;
+  min-width: 0;
+}
+
+.unit-grid__col .unit-card {
+  width: 100%;
+}

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 320" width="500" height="320" role="img" aria-label="KTM DUKE 200">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1017"/>
+      <stop offset="55%" stop-color="#101827"/>
+      <stop offset="100%" stop-color="#070a11"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="62%" r="55%">
+      <stop offset="0%" stop-color="#a55eff" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#a55eff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="head" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="500" height="320" fill="url(#bg)"/>
+  <rect width="500" height="320" fill="url(#halo)"/>
+  <g stroke="#a55eff" stroke-opacity="0.10" stroke-width="1"><path d="M0 16 H500"/><path d="M0 48 H500"/><path d="M0 80 H500"/><path d="M0 112 H500"/><path d="M0 144 H500"/><path d="M0 176 H500"/><path d="M0 208 H500"/><path d="M0 240 H500"/><path d="M0 272 H500"/><path d="M0 304 H500"/><path d="M16 0 V320"/><path d="M48 0 V320"/><path d="M80 0 V320"/><path d="M112 0 V320"/><path d="M144 0 V320"/><path d="M176 0 V320"/><path d="M208 0 V320"/><path d="M240 0 V320"/><path d="M272 0 V320"/><path d="M304 0 V320"/><path d="M336 0 V320"/><path d="M368 0 V320"/><path d="M400 0 V320"/><path d="M432 0 V320"/><path d="M464 0 V320"/><path d="M496 0 V320"/></g>
+  <ellipse cx="262" cy="292" rx="190" ry="16" fill="#000" opacity="0.55"/>
+  
+  <g id="bike">
+    <!-- exhaust + muffler -->
+    <path d="M258 214 L188 222" stroke="#39435a" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <ellipse cx="180" cy="223" rx="19" ry="8" fill="#4a566f" transform="rotate(-5 180 223)"/>
+    <!-- swingarm -->
+    <path d="M222 208 L132 232" stroke="#2b3448" stroke-width="11" stroke-linecap="round" fill="none"/>
+    <!-- rear wheel -->
+    <circle cx="132" cy="232" r="54" fill="#0c1119" stroke="#20293a" stroke-width="13"/>
+    <circle cx="132" cy="232" r="31" fill="#151d2b" stroke="#a55eff" stroke-width="2" opacity="0.5"/>
+    <g stroke="#3a475f" stroke-width="4.5" stroke-linecap="round">
+      <path d="M132 232 L132 203"/><path d="M132 232 L159 245"/><path d="M132 232 L105 245"/>
+      <path d="M132 232 L156 216"/><path d="M132 232 L108 216"/>
+    </g>
+    <!-- front wheel -->
+    <circle cx="372" cy="232" r="54" fill="#0c1119" stroke="#20293a" stroke-width="13"/>
+    <circle cx="372" cy="232" r="31" fill="#151d2b" stroke="#a55eff" stroke-width="2" opacity="0.5"/>
+    <g stroke="#3a475f" stroke-width="4.5" stroke-linecap="round">
+      <path d="M372 232 L372 203"/><path d="M372 232 L399 245"/><path d="M372 232 L345 245"/>
+      <path d="M372 232 L396 216"/><path d="M372 232 L348 216"/>
+    </g>
+    <!-- fork -->
+    <path d="M344 158 L370 232" stroke="#6c7a94" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <path d="M338 156 L360 208" stroke="#93a3bd" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+    <!-- engine -->
+    <path d="M238 172 L306 176 L312 210 L246 212 Z" fill="#232d40"/>
+    <path d="M248 182 L302 185" stroke="#39435a" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M249 194 L303 197" stroke="#39435a" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- belly pan -->
+    <path d="M222 196 Q270 218 330 208 L318 188 Q266 198 226 184 Z" fill="#a55eff" opacity="0.8"/>
+    <!-- tail -->
+    <path d="M112 140 L176 132 L200 152 L150 168 Z" fill="#a55eff"/>
+    <path d="M112 140 L176 132 L168 143 L120 150 Z" fill="#ffffff" opacity="0.2"/>
+    <!-- seat + tank -->
+    <path d="M164 140 Q220 118 276 130 L292 154 Q232 170 182 160 Z" fill="#e9edf4"/>
+    <path d="M176 142 Q224 128 268 136 L274 146 Q226 138 182 152" fill="#ffffff" opacity="0.5"/>
+    <!-- nose fairing (kept inside the wheelbase) -->
+    <path d="M272 126 Q326 130 352 158 Q360 186 332 200 Q304 200 292 180 Q288 152 272 146 Z" fill="#a55eff"/>
+    <path d="M288 136 Q332 142 348 162 Q330 152 300 148 Z" fill="#ffffff" opacity="0.32"/>
+    <!-- windscreen -->
+    <path d="M290 118 Q328 124 346 144 L312 132 Q304 124 288 126 Z" fill="#9fe9ff" opacity="0.45"/>
+    <!-- headlight -->
+    <path d="M344 154 L364 168 L342 182 Z" fill="#eafcff"/>
+    <circle cx="350" cy="168" r="22" fill="url(#head)" opacity="0.9"/>
+    <!-- mirror + bar -->
+    <path d="M312 122 L332 112" stroke="#6c7a94" stroke-width="4.5" stroke-linecap="round"/>
+    <ellipse cx="336" cy="110" rx="8" ry="4.5" fill="#93a3bd"/>
+  </g>
+</svg>

@@ -1,0 +1,70 @@
+.splash ion-content {
+  --background: radial-gradient(120% 90% at 50% 40%, #1a1a1a 0%, #0a0a0a 55%, #000000 100%);
+}
+
+.splash__inner {
+  position: relative;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--kez-space-5);
+  overflow: hidden;
+  padding: var(--kez-space-5);
+}
+
+.splash__glow {
+  position: absolute;
+  width: min(760px, 150%);
+  aspect-ratio: 1;
+  background: radial-gradient(circle, rgba(255, 106, 0, 0.24) 0%, transparent 62%);
+  pointer-events: none;
+}
+
+.splash__bike {
+  position: absolute;
+  width: min(760px, 150%);
+  opacity: 0.45;
+  transform: translateY(14%);
+  pointer-events: none;
+}
+
+.splash__brand {
+  position: relative;
+  align-items: center;
+  animation: splash-rise 700ms ease-out both;
+}
+
+@keyframes splash-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+.splash__bar {
+  position: relative;
+  width: 132px;
+  height: 3px;
+  border-radius: var(--kez-radius-pill);
+  background: var(--kez-surface-2);
+  overflow: hidden;
+}
+
+.splash__bar span {
+  display: block;
+  height: 100%;
+  width: 40%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, var(--kez-accent), transparent);
+  animation: splash-sweep 1.2s ease-in-out infinite;
+}
+
+@keyframes splash-sweep {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(320%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash__brand,
+  .splash__bar span { animation: none; }
+}

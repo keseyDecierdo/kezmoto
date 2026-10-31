@@ -1,0 +1,29 @@
+.brandmark {
+  display: inline-flex;
+}
+
+.brandmark__logo {
+  display: block;
+  height: auto;
+  /* Lets the collapsed-sidebar override (84px -> 44px) animate in sync
+     with the rail's own 220ms collapse/expand transition instead of
+     snapping instantly. No-op everywhere else, since width is otherwise
+     static per size variant. */
+  transition: width 220ms ease;
+}
+
+/* Bumped up from the old text version's metrics — a raster badge carrying
+   the wordmark, icon and tagline together in one image needs more room to
+   stay legible than crisp vector text did at the same visual weight. */
+.brandmark--sm .brandmark__logo { width: 64px; }
+.brandmark--md .brandmark__logo { width: 84px; }
+.brandmark--lg .brandmark__logo { width: 132px; }
+.brandmark--xl .brandmark__logo { width: 190px; }
+
+@media (min-width: 600px) {
+  .brandmark--xl .brandmark__logo { width: 240px; }
+}
+
+@media (min-width: 1024px) {
+  .brandmark--xl .brandmark__logo { width: 300px; }
+}

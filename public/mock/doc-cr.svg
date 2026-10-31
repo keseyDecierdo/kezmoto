@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="480" height="300" role="img" aria-label="CERTIFICATE OF REGISTRATION">
+  <rect width="480" height="300" fill="#eef2f7"/>
+  <rect x="12" y="12" width="456" height="276" fill="none" stroke="#c8cfdb" stroke-width="2"/>
+  <text x="32" y="52" font-family="Bahnschrift, Segoe UI, sans-serif" font-size="19" font-weight="700" fill="#1b2333" letter-spacing="1">CERTIFICATE OF REGISTRATION</text>
+  <path d="M32 64 H448" stroke="#1b2333" stroke-width="2"/>
+  <text x="32" y="96" font-family="Segoe UI, sans-serif" font-size="13" fill="#3d4759">ENGINE NUMBER</text>
+  <text x="210" y="96" font-family="Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#0f1420">REDACT THIS NUMBER</text>
+  <text x="32" y="126" font-family="Segoe UI, sans-serif" font-size="13" fill="#3d4759">CHASSIS NUMBER</text>
+  <text x="210" y="126" font-family="Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#0f1420">REDACT THIS NUMBER</text>
+  <text x="32" y="156" font-family="Segoe UI, sans-serif" font-size="13" fill="#3d4759">MAKE / SERIES</text>
+  <text x="210" y="156" font-family="Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#0f1420">YAMAHA / YZF-R15</text>
+  <text x="32" y="186" font-family="Segoe UI, sans-serif" font-size="13" fill="#3d4759">YEAR MODEL</text>
+  <text x="210" y="186" font-family="Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#0f1420">2021</text>
+  <text x="32" y="216" font-family="Segoe UI, sans-serif" font-size="13" fill="#3d4759">COLOR</text>
+  <text x="210" y="216" font-family="Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#0f1420">BLUE / BLACK</text>
+  <text x="32" y="246" font-family="Segoe UI, sans-serif" font-size="13" fill="#3d4759">OWNER TIN</text>
+  <text x="210" y="246" font-family="Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#0f1420">REDACT THIS TIN</text>
+  <rect x="330" y="200" width="110" height="66" fill="none" stroke="#9aa5b6" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="352" y="238" font-family="Segoe UI, sans-serif" font-size="11" fill="#9aa5b6">DRY SEAL</text>
+</svg>

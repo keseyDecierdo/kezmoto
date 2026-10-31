@@ -1,0 +1,25 @@
+.chat-page__content {
+  --overflow: hidden;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --background: var(--kez-bg);
+}
+
+.chat-page__inner {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* On wide screens the inbox owns the split view, so cap the standalone
+   thread width to keep line lengths readable when deep-linked. */
+@media (min-width: 1024px) {
+  /* Leaves an 88px lane on each side for the AI assistant button. */
+  .chat-page__inner {
+    max-width: min(900px, calc(100% - 176px));
+    margin: 0 auto;
+    width: 100%;
+    border-inline: 1px solid var(--kez-border);
+  }
+}

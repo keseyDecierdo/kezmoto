@@ -1,0 +1,155 @@
+.market-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding: 10px;
+  border-radius: var(--kez-radius-md);
+  background: transparent;
+  transition: background 160ms ease;
+}
+
+@media (hover: hover) {
+  .market-card:hover { background: var(--kez-surface); }
+  .market-card:hover .market-card__media img { transform: scale(1.03); }
+}
+
+.market-card__seller {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.market-card__seller-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.25;
+}
+
+.market-card__seller-text strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--kez-text-sm);
+  font-weight: 600;
+  color: var(--kez-text);
+}
+
+.market-card__seller-text span {
+  font-size: var(--kez-text-xs);
+  color: var(--kez-text-muted);
+}
+
+.market-card__media {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: var(--kez-radius-sm);
+  overflow: hidden;
+  background: var(--kez-bg-alt);
+  cursor: pointer;
+}
+
+.market-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 260ms ease;
+}
+
+.market-card__badge {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--kez-radius-pill);
+  background: rgba(10, 10, 10, 0.78);
+  backdrop-filter: blur(6px);
+  color: var(--kez-accent-bright);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.market-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.market-card__title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: var(--kez-text-sm);
+  line-height: 1.35;
+  color: var(--kez-text-soft);
+}
+
+.market-card__price {
+  margin-top: 2px;
+  font-family: var(--kez-font-display);
+  font-size: var(--kez-text-lg);
+  font-weight: 700;
+  color: var(--kez-text);
+}
+
+.market-card__specs,
+.market-card__location {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--kez-text-xs);
+  color: var(--kez-text-muted);
+}
+
+.market-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.market-card__condition {
+  font-size: var(--kez-text-xs);
+  color: var(--kez-text-muted);
+}
+
+.market-card__like {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--kez-text-muted);
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 140ms ease, background 140ms ease;
+}
+
+.market-card__like:hover { background: var(--kez-surface-2); color: var(--kez-text); }
+.market-card__like.is-active { color: var(--kez-accent); }
+
+@media (prefers-reduced-motion: reduce) {
+  .market-card__media img { transition: none; }
+}

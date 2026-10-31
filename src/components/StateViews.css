@@ -1,0 +1,187 @@
+/* Left-anchored on anything wide enough to take it — a row, not a centered
+   badge stack. Centering everything (icon-in-circle, heading, body, button,
+   all dead-center) is the single most recognizable "empty state" template;
+   this is the highest-leverage place to break that, since every list screen
+   in the app renders through this one component. */
+.kez-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--kez-space-3);
+  text-align: center;
+  padding: var(--kez-space-7) var(--kez-space-4);
+  min-height: 240px;
+  justify-content: center;
+  background: var(--kez-surface);
+  border: 1px dashed var(--kez-border-strong);
+  border-radius: var(--kez-tile-radius);
+}
+
+.kez-state__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--kez-space-2);
+}
+
+.kez-state__message {
+  max-width: 42ch;
+}
+
+.kez-state__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  border-radius: var(--kez-radius-sm);
+  background: var(--kez-accent-soft);
+  border: 1px solid var(--kez-accent-line);
+  color: var(--kez-accent);
+  font-size: 22px;
+}
+
+.kez-state__icon--danger {
+  background: rgba(255, 71, 87, 0.12);
+  border-color: rgba(255, 71, 87, 0.4);
+  color: var(--kez-danger);
+}
+
+@media (min-width: 600px) {
+  .kez-state {
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left;
+    justify-content: flex-start;
+    gap: var(--kez-space-4);
+    padding: var(--kez-space-6) var(--kez-space-5);
+  }
+
+  .kez-state__body { align-items: flex-start; }
+}
+
+/* ---------- Skeletons ----------
+   A soft light band sweeps across each placeholder (a transform on a
+   pseudo-element, so it stays smooth). --kez-shimmer is a faint highlight
+   on the dark landing page and a bright one on the white app canvas. */
+@keyframes kez-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.kez-skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--kez-surface-2);
+  border-radius: var(--kez-radius-sm);
+}
+
+.kez-skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent 0%, var(--kez-shimmer) 50%, transparent 100%);
+  animation: kez-shimmer 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kez-skeleton::after { animation: none; }
+}
+
+.kez-skeleton--media { aspect-ratio: 16 / 10; width: 100%; border-radius: 0; }
+.kez-skeleton--line { height: 12px; }
+.kez-skeleton--avatar { width: 42px; height: 42px; border-radius: 50%; flex: 0 0 auto; }
+.kez-skeleton--avatar-lg { width: 72px; height: 72px; border-radius: 50%; }
+.kez-skeleton--button { height: var(--kez-btn-h, 36px); width: 100%; margin-top: auto; }
+.kez-skeleton--field { height: 52px; width: 100%; }
+.kez-skeleton--gallery { width: 100%; height: 100%; min-height: 260px; border-radius: var(--kez-radius-md); }
+.kez-skeleton--on-dark { background: rgba(255, 255, 255, 0.1); --kez-shimmer: rgba(255, 255, 255, 0.1); }
+
+/* Unit-card skeletons use the same column logic as UnitGrid. */
+.kez-skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+  gap: var(--kez-gap);
+}
+
+.kez-skeleton-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--kez-surface);
+  border: 1px solid var(--kez-border);
+  border-radius: var(--kez-tile-radius);
+  overflow: hidden;
+}
+
+.kez-skeleton-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kez-space-3);
+  padding: var(--kez-tile-pad);
+}
+
+.kez-skeleton-tile { gap: var(--kez-space-3); min-height: 96px; }
+.kez-skeleton-tile--center { align-items: center; }
+
+.kez-skeleton-hero {
+  gap: var(--kez-space-3);
+  background: #0a0a0a;
+  border-color: #0a0a0a;
+  min-height: 120px;
+  justify-content: center;
+}
+
+.kez-skeleton-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--kez-space-3);
+}
+
+.kez-skeleton-row {
+  display: flex;
+  align-items: center;
+  gap: var(--kez-space-3);
+  padding: var(--kez-space-3);
+  background: var(--kez-surface);
+  border: 1px solid var(--kez-border);
+  border-radius: var(--kez-radius-md);
+}
+
+.kez-skeleton-row__head {
+  display: flex;
+  align-items: center;
+  gap: var(--kez-space-3);
+}
+
+.kez-skeleton-row__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kez-space-2);
+  flex: 1;
+}
+
+.kez-skeleton-chat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kez-space-3);
+  padding: var(--kez-space-4);
+}
+
+.kez-skeleton--bubble {
+  height: 40px;
+  border-radius: var(--kez-radius-md);
+  border-bottom-left-radius: 4px;
+}
+
+.kez-skeleton--bubble.is-mine {
+  align-self: flex-end;
+  border-bottom-left-radius: var(--kez-radius-md);
+  border-bottom-right-radius: 4px;
+}
+
+.kez-stat__skeleton {
+  width: 44px;
+  height: 26px;
+}

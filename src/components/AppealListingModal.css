@@ -1,0 +1,5 @@
+.appeal-listing-modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.4vh, 12px);
+}

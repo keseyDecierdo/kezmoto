@@ -1,0 +1,84 @@
+/* The camera frame is sized off the viewport height as well as the width,
+   so header + frame + hint + button always fit on screen together. 250px
+   is that surrounding chrome. */
+.face-capture__modal {
+  --face-frame-w: min(100%, 420px, calc((100vh - 250px) * 0.75));
+  --face-frame-w: min(100%, 420px, calc((100dvh - 250px) * 0.75));
+}
+
+.face-capture__stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 1.8vh, 16px);
+}
+
+.face-capture__frame {
+  position: relative;
+  width: var(--face-frame-w);
+  aspect-ratio: 3 / 4;
+  border-radius: var(--kez-radius-md);
+  overflow: hidden;
+  background: #000;
+}
+
+.face-capture__video,
+.face-capture__preview {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Front camera feed mirrored, same as a phone's own selfie preview. */
+  transform: scaleX(-1);
+}
+
+.face-capture__preview {
+  width: var(--face-frame-w);
+  height: auto;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--kez-radius-md);
+}
+
+/* Static guide — centered oval, no coordinate math needed since it never
+   moves, unlike RedactionCanvas's user-drawn boxes. */
+.face-capture__guide {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 62%;
+  height: 78%;
+  transform: translate(-50%, -50%);
+  border: 2px dashed rgba(255, 255, 255, 0.75);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.face-capture__hint {
+  font-size: var(--kez-text-sm);
+  text-align: center;
+  margin: 0;
+}
+
+.face-capture__actions {
+  display: flex;
+  gap: var(--kez-space-3);
+}
+
+.face-capture__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--kez-space-3);
+  padding: var(--kez-space-5) var(--kez-space-3);
+  text-align: center;
+  color: var(--kez-danger);
+}
+
+.face-capture__error p {
+  margin: 0;
+  color: var(--kez-text-soft);
+}
+
+.face-capture__error ion-icon {
+  font-size: 32px;
+}

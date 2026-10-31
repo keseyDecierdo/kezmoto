@@ -1,0 +1,129 @@
+/* ---------------- Hero ----------------
+   One compact black banner: greeting on the left, a normal-sized
+   "List a unit" button on the right (stacked under the copy on phones). */
+.home__head {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--kez-space-4);
+  padding-block: clamp(18px, 2.2vw, 28px);
+}
+
+.home__head-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.home__greeting {
+  font-size: var(--kez-text-2xl);
+}
+
+.home__head .kez-muted {
+  max-width: 56ch;
+}
+
+.home__sell {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+@media (min-width: 600px) {
+  .home__head {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .home__greeting { font-size: var(--kez-text-3xl); }
+}
+
+/* ---------------- Stats: highlighted numbers ---------------- */
+.home__stat {
+  border-left: 3px solid var(--kez-accent);
+}
+
+/* ---------------- Admin banner ---------------- */
+.home__admin-banner {
+  flex-direction: row;
+  align-items: flex-start;
+  color: var(--kez-text-soft);
+  font-size: var(--kez-text-sm);
+  line-height: 1.5;
+}
+
+.home__admin-banner ion-icon {
+  color: var(--kez-warning);
+  font-size: 20px;
+  flex: 0 0 auto;
+}
+
+.home__admin-banner strong {
+  color: var(--kez-text);
+}
+
+/* ---------------- Filters ---------------- */
+.home__filters {
+  gap: var(--kez-space-3);
+}
+
+.home__search {
+  --background: var(--kez-surface-2);
+  --color: var(--kez-text);
+  --placeholder-color: var(--kez-text-muted);
+  --icon-color: var(--kez-text-muted);
+  --border-radius: var(--kez-radius-sm);
+  --box-shadow: none;
+  padding: 0;
+  border: 1px solid var(--kez-border);
+  border-radius: var(--kez-radius-sm);
+}
+
+.home__chiprow {
+  display: flex;
+  align-items: center;
+  gap: var(--kez-space-2);
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+  min-width: 0;
+}
+
+.home__chiprow::-webkit-scrollbar { display: none; }
+
+.home__chiprow .kez-chip {
+  cursor: pointer;
+  flex: 0 0 auto;
+  min-height: 32px;
+  padding-inline: 12px;
+}
+
+.home__chiplabel {
+  display: inline-flex;
+  align-items: center;
+  color: var(--kez-text-muted);
+  font-size: 18px;
+  flex: 0 0 auto;
+}
+
+/* ---------------- Results ---------------- */
+.home__results {
+  gap: var(--kez-space-2);
+}
+
+.home__count {
+  font-size: var(--kez-text-xs);
+  letter-spacing: var(--kez-tracking-wide);
+  text-transform: uppercase;
+}
+
+@media (min-width: 900px) {
+  .home__filters {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .home__search { flex: 1 1 320px; }
+  .home__chiprow { flex: 0 1 auto; }
+}

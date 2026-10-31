@@ -1,0 +1,137 @@
+.notification-bell {
+  position: relative;
+}
+
+.notification-bell__trigger {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--kez-text);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.notification-bell__badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: var(--kez-radius-pill);
+  background: var(--kez-accent);
+  color: #0a0a0a;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.notification-bell__panel {
+  /* top/right are set inline, computed from the trigger's own rect — see
+     NotificationBell.tsx's toggle(). This panel is portalled to <body>,
+     so it can't be positioned relative to its React parent via CSS. */
+  position: fixed;
+  z-index: 1000;
+  width: min(340px, 88vw);
+  max-height: min(70vh, 460px);
+  display: flex;
+  flex-direction: column;
+  background: var(--kez-bg-alt);
+  border: 1px solid var(--kez-border-strong);
+  border-radius: var(--kez-radius-lg);
+  box-shadow: var(--kez-shadow-3);
+  overflow: hidden;
+}
+
+.notification-bell__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--kez-space-2);
+  padding: var(--kez-space-3) var(--kez-space-4);
+  background: var(--kez-surface);
+  border-bottom: 1px solid var(--kez-border);
+  font-family: var(--kez-font-display);
+  font-weight: 700;
+  letter-spacing: var(--kez-tracking-wide);
+  color: var(--kez-text);
+}
+
+.notification-bell__head button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--kez-accent);
+  font-family: var(--kez-font-body);
+  font-size: var(--kez-text-xs);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.notification-bell__list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.notification-bell__empty {
+  margin: 0;
+  padding: var(--kez-space-4);
+  text-align: center;
+  color: var(--kez-text-muted);
+  font-size: var(--kez-text-sm);
+}
+
+.notification-bell__item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: var(--kez-space-3) var(--kez-space-4);
+  border: 0;
+  border-bottom: 1px solid var(--kez-border);
+  background: transparent;
+  color: var(--kez-text-soft);
+  text-align: left;
+  cursor: pointer;
+}
+
+.notification-bell__item:last-child {
+  border-bottom: 0;
+}
+
+.notification-bell__item.is-unread {
+  background: var(--kez-accent-soft);
+}
+
+.notification-bell__item strong {
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text);
+}
+
+.notification-bell__item span {
+  font-size: var(--kez-text-xs);
+  color: var(--kez-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notification-bell__item time {
+  margin-top: 2px;
+  font-size: 10px;
+  color: var(--kez-text-muted);
+}

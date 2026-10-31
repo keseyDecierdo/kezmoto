@@ -1,0 +1,30 @@
+ion-modal.offer-modal {
+  --width: min(440px, calc(100vw - 2 * var(--kez-modal-gutter)));
+}
+
+.offer-modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.4vh, 12px);
+}
+
+.offer-modal__listed {
+  margin: 0;
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text-muted);
+}
+
+.offer-modal__listed strong {
+  color: var(--kez-text);
+}
+
+.offer-modal__amount { margin-bottom: 0; }
+
+.offer-modal__delta {
+  margin: 0;
+  font-size: var(--kez-text-sm);
+  font-weight: 600;
+  color: var(--kez-accent);
+}
+
+.offer-modal__delta.is-above { color: var(--kez-text-soft); }

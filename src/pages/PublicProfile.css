@@ -1,0 +1,59 @@
+.public-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  gap: var(--kez-space-3);
+  padding-block: clamp(24px, 4vw, 40px);
+}
+
+.public-profile__chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--kez-space-2);
+}
+
+.public-profile__chips .kez-chip ion-icon {
+  font-size: 13px;
+}
+
+.public-profile__facts {
+  list-style: none;
+  margin: var(--kez-space-2) 0 0;
+  padding: var(--kez-space-3) 0 0;
+  border-top: 1px solid var(--kez-border);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--kez-space-2);
+}
+
+.public-profile__facts li {
+  display: flex;
+  align-items: center;
+  gap: var(--kez-space-2);
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text-soft);
+}
+
+.public-profile__facts ion-icon {
+  color: var(--kez-text-muted);
+  font-size: 16px;
+  flex: 0 0 auto;
+}
+
+.public-profile__facts a {
+  color: var(--kez-accent);
+  font-weight: 600;
+}
+
+.public-profile__bio h2 {
+  font-size: var(--kez-text-lg);
+}
+
+.public-profile__units {
+  margin: var(--kez-space-2) 0 0;
+}

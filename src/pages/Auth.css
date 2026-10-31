@@ -1,0 +1,291 @@
+.auth ion-content {
+  --background: var(--kez-bg);
+}
+
+.auth__layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100%;
+}
+
+/* Brand panel is desktop-only; mobile gets the compact wordmark instead. */
+.auth__aside {
+  display: none;
+}
+
+.auth__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kez-space-4);
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: var(--kez-space-5) var(--kez-space-4) var(--kez-space-7);
+}
+
+.auth__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--kez-text-muted);
+  font-size: var(--kez-text-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Phones: the logo sits centred above the heading. */
+.auth__brand-mobile {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--kez-space-2);
+}
+
+.auth__brand-mobile .brandmark__logo { width: 96px; }
+
+/* Sits inside the password field's wrapper, right-aligned under it. */
+.auth__forgot {
+  display: block;
+  margin: calc(-1 * var(--kez-space-1)) 0 var(--kez-space-2) auto;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  color: var(--kez-accent);
+  font-family: var(--kez-font-body);
+  font-size: var(--kez-text-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth__forgot:hover { text-decoration: underline; }
+
+.auth__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kez-space-2);
+}
+
+.auth__head h1 {
+  font-size: var(--kez-text-2xl);
+}
+
+.auth__form {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--kez-space-2);
+}
+
+.auth__field { min-width: 0; }
+
+.auth__submit {
+  margin-top: var(--kez-space-3);
+  min-height: var(--kez-tap);
+}
+
+/* ---------------- Register: fits one screen ----------------
+   Six fields on a phone would normally scroll. Pairs share a row
+   (phone | city, password | confirm, and name | email once there is
+   room), and every vertical gap is tied to the viewport height so short
+   screens tighten up instead of scrolling. */
+.auth__form--register {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--kez-space-3);
+  margin-top: 0;
+}
+
+.auth__form--register .auth__field--pair,
+.auth__form--register .auth__strength,
+.auth__form--register .auth__submit {
+  grid-column: 1 / -1;
+}
+
+.auth--register .auth__panel {
+  gap: clamp(8px, 1.8vh, 16px);
+  padding-block: clamp(12px, 3vh, 32px) clamp(12px, 3vh, 40px);
+}
+
+.auth--register .auth__head { gap: 4px; }
+.auth--register .auth__head h1 { font-size: var(--kez-text-xl); }
+
+.auth--register .kez-field {
+  --padding-top: 2px;
+  --padding-bottom: 2px;
+  min-height: clamp(50px, 7vh, 58px);
+  margin-bottom: clamp(6px, 1.3vh, 12px);
+}
+
+.auth--register .kez-form-error {
+  margin-top: calc(-1 * clamp(2px, 0.8vh, 8px));
+  margin-bottom: clamp(4px, 1vh, 8px);
+  font-size: var(--kez-text-xs);
+}
+
+.auth--register .auth__submit { margin-top: clamp(2px, 0.8vh, 8px); }
+
+/* Narrow phones: the eye button would truncate "Confirm password", so the
+   two password fields get a full row each. */
+@media (max-width: 419.98px) {
+  .auth__form--register .auth__field:has(.auth__eye) { grid-column: 1 / -1; }
+}
+
+/* Short screens drop the duplicate wordmark; the back link stays. */
+@media (max-height: 760px) {
+  .auth--register .auth__brand-mobile { display: none; }
+}
+
+@media (min-width: 600px) {
+  .auth--register .auth__panel { max-width: 620px; }
+
+  .auth__form--register .auth__field--pair { grid-column: auto; }
+
+  .auth--register .auth__head h1 { font-size: var(--kez-text-2xl); }
+}
+
+.auth__switch {
+  margin: 0;
+  color: var(--kez-text-muted);
+  font-size: var(--kez-text-sm);
+}
+
+.auth__switch button {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--kez-accent);
+  font-size: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.auth__fineprint {
+  margin: 0;
+  color: var(--kez-text-muted);
+  font-size: var(--kez-text-xs);
+}
+
+@media (min-width: 1024px) {
+  /* A slightly uneven split, and the aside's content top-anchored rather
+     than dead-center — two panes both vertically centered against a hard
+     dividing line is the classic split-screen auth template; anchoring the
+     logo/copy high (leaving the photo's own focal point clear lower down)
+     and dropping the hard border for a soft edge fade breaks that reading. */
+  .auth__layout {
+    grid-template-columns: 1.25fr 1fr;
+  }
+
+  .auth__aside {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    overflow: hidden;
+    /* Photo as the base layer; a top-weighted scrim above it keeps the logo
+       (now anchored to the top via align-items: flex-start, so it reads
+       clearly instead of competing with the busiest, brightest part of the
+       photo lower down) legible against a full-color image the way the old
+       translucent bike SVG never needed help with. Fades to var(--kez-bg)
+       at the very edge, same "blend into the panel divider" idea as the
+       ::after fade below. */
+    background:
+      linear-gradient(180deg, var(--kez-bg) 0%, rgba(10, 10, 10, 0.82) 22%, rgba(10, 10, 10, 0.35) 65%, rgba(10, 10, 10, 0.15) 100%),
+      radial-gradient(120% 90% at 30% 20%, rgba(255, 106, 0, 0.12) 0%, transparent 60%),
+      url('/landing/banner-moto.jpg') center 60% / cover no-repeat;
+  }
+
+  .auth__aside::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 120px;
+    background: linear-gradient(90deg, transparent 0%, var(--kez-bg) 100%);
+    pointer-events: none;
+  }
+
+  .auth__aside-glow {
+    position: absolute;
+    left: 20%;
+    top: 45%;
+    width: 640px;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(255, 106, 0, 0.2) 0%, transparent 62%);
+  }
+
+  .auth__aside-inner {
+    position: relative;
+    padding: var(--kez-space-8);
+    padding-bottom: var(--kez-space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--kez-space-4);
+  }
+
+  .auth__aside-copy {
+    max-width: 34ch;
+    color: var(--kez-text-soft);
+    font-size: var(--kez-text-lg);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .auth__brand-mobile { display: none; }
+
+  .auth__panel {
+    justify-content: center;
+    padding: var(--kez-space-8) var(--kez-space-7);
+    max-width: 520px;
+  }
+
+  .auth__head h1 { font-size: var(--kez-text-3xl); }
+
+  /* Register: the form panel gets more of the split so name | email can
+     share a row, and keeps the height-tied padding from above. */
+  .auth--register .auth__layout { grid-template-columns: 1fr 1fr; }
+
+  .auth--register .auth__panel {
+    max-width: 620px;
+    padding-inline: clamp(24px, 4vw, 56px);
+  }
+
+  .auth--register .auth__head h1 { font-size: var(--kez-text-2xl); }
+}
+
+/* Show / hide password eye inside the field. */
+.auth__eye {
+  --color: var(--kez-text-muted);
+  --padding-start: 6px;
+  --padding-end: 6px;
+  margin: 0;
+  height: 32px;
+  min-height: 0;
+  font-size: 13px;
+}
+
+.auth__eye:hover { --color: var(--kez-accent); }
+
+/* Info line on the Forgot / Reset password screens. */
+.auth__notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--kez-space-2);
+  margin: 0 0 var(--kez-space-3);
+  padding: var(--kez-space-3);
+  border: 1px solid var(--kez-accent-line);
+  border-radius: var(--kez-radius-sm);
+  background: var(--kez-accent-soft);
+  color: var(--kez-text-soft);
+  font-size: var(--kez-text-sm);
+  line-height: 1.5;
+}
+
+.auth__notice ion-icon {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: var(--kez-accent);
+  font-size: 16px;
+}

@@ -1,0 +1,88 @@
+.my-units__stats {
+  margin-bottom: var(--kez-gap);
+}
+
+/* Each unit is a card tile: photo on top, details, price, then actions. */
+.my-units__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'thumb thumb'
+    'info info'
+    'price price'
+    'actions actions';
+  gap: 0;
+  align-content: start;
+}
+
+.my-units__thumb {
+  grid-area: thumb;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  background: var(--kez-bg-alt);
+}
+
+.my-units__info {
+  grid-area: info;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--kez-tile-pad) var(--kez-tile-pad) 0;
+}
+
+.my-units__info h3 {
+  font-size: var(--kez-text-lg);
+}
+
+.my-units__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.my-units__price {
+  grid-area: price;
+  margin: 0;
+  padding: var(--kez-space-2) var(--kez-tile-pad) 0;
+  font-family: var(--kez-font-display);
+  font-size: var(--kez-text-xl);
+  font-weight: 700;
+  color: var(--kez-accent);
+}
+
+.my-units__actions {
+  grid-area: actions;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kez-space-1);
+  margin-top: var(--kez-space-3);
+  padding: var(--kez-space-2) var(--kez-space-2);
+  border-top: 1px solid var(--kez-border);
+}
+
+.my-units__actions ion-button {
+  margin: 0;
+  flex: 1 1 auto;
+  font-size: var(--kez-text-sm);
+}
+
+.my-units__removed-head {
+  margin: var(--kez-space-6) 0 var(--kez-space-3);
+  font-size: var(--kez-text-lg);
+}
+
+/* Removed rows have no price, so that grid area is dropped. */
+.my-units--removed .my-units__row {
+  grid-template-areas:
+    'thumb thumb'
+    'info info'
+    'actions actions';
+}
+
+.my-units--removed .my-units__thumb {
+  filter: grayscale(0.6);
+  opacity: 0.8;
+}

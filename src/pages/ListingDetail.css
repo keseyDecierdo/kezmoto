@@ -1,0 +1,312 @@
+/* Gallery owns its own frame; the tile just clips it to the radius. */
+.detail__gallery {
+  justify-content: center;
+  padding: clamp(8px, 0.8vw, 12px);
+}
+
+.detail__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kez-space-3);
+}
+
+.detail__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kez-space-2);
+}
+
+.detail__title {
+  font-size: var(--kez-text-2xl);
+}
+
+.detail__title span {
+  color: var(--kez-text-muted);
+  font-weight: 600;
+}
+
+.detail__price {
+  font-family: var(--kez-font-display);
+  font-size: var(--kez-text-3xl);
+  font-weight: 700;
+  color: var(--kez-accent);
+  margin: 0;
+  letter-spacing: var(--kez-tracking-wide);
+}
+
+.detail__section {
+  gap: var(--kez-space-3);
+}
+
+.detail__section h2 {
+  font-size: var(--kez-text-lg);
+}
+
+.detail__doc-note {
+  margin-top: calc(-1 * var(--kez-space-2));
+}
+
+/* ---------- Specs ---------- */
+.detail__specs {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--kez-space-2);
+  margin: 0;
+}
+
+.detail__specs > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--kez-space-3);
+  padding: var(--kez-space-3);
+  background: var(--kez-surface-2);
+  border-radius: var(--kez-radius-sm);
+}
+
+.detail__specs dt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--kez-text-muted);
+  font-size: var(--kez-text-sm);
+}
+
+.detail__specs dt ion-icon {
+  font-size: 15px;
+}
+
+.detail__specs dd {
+  margin: 0;
+  font-weight: 600;
+  color: var(--kez-text);
+  font-size: var(--kez-text-sm);
+  text-align: right;
+}
+
+@media (min-width: 600px) {
+  .detail__specs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ---------- Condition ---------- */
+.detail__condition {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--kez-space-3);
+}
+
+@media (min-width: 600px) {
+  .detail__condition { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.detail__condition-item {
+  padding: var(--kez-space-3);
+  background: var(--kez-surface-2);
+  border-radius: var(--kez-radius-sm);
+}
+
+.detail__condition-label {
+  display: block;
+  font-family: var(--kez-font-display);
+  font-size: var(--kez-text-xs);
+  font-weight: 700;
+  letter-spacing: var(--kez-tracking-brand);
+  text-transform: uppercase;
+  color: var(--kez-accent);
+  margin-bottom: 6px;
+}
+
+/* ---------- Documents ---------- */
+.detail__docs {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--kez-space-3);
+}
+
+@media (min-width: 600px) {
+  .detail__docs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.detail__doc {
+  margin: 0;
+  background: var(--kez-surface);
+  border: 1px solid var(--kez-border);
+  border-radius: var(--kez-radius-sm);
+  overflow: hidden;
+}
+
+.detail__doc-frame {
+  position: relative;
+  line-height: 0;
+}
+
+.detail__doc-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.detail__doc-redaction {
+  position: absolute;
+  background: #000;
+}
+
+.detail__doc figcaption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: var(--kez-space-3);
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text-soft);
+  border-top: 1px solid var(--kez-border);
+}
+
+.detail__doc figcaption ion-icon {
+  color: var(--kez-text-muted);
+}
+
+/* ---------- Sticky mobile bar ---------- */
+.detail__stickybar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--kez-space-3);
+  padding: var(--kez-space-3) var(--kez-space-4);
+  background: var(--kez-bg-alt);
+  border-top: 1px solid var(--kez-border);
+}
+
+.detail__stickybar ion-button {
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.detail__stickybar-price {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.detail__stickybar-price span {
+  font-size: var(--kez-text-xs);
+  color: var(--kez-text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--kez-tracking-wide);
+}
+
+.detail__stickybar-price strong {
+  font-family: var(--kez-font-display);
+  font-size: var(--kez-text-lg);
+  color: var(--kez-accent);
+}
+
+/* ---------- Desktop summary rail ---------- */
+.detail__aside {
+  justify-content: flex-start;
+}
+
+/* Two-column tablets: the summary takes its own full row instead of
+   sitting half-width beside nothing. */
+@media (max-width: 1179.98px) {
+  .detail__aside { grid-column: 1 / -1; }
+}
+
+.detail__summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kez-space-3);
+  height: 100%;
+}
+
+.detail__summary ion-button {
+  margin: 0;
+}
+
+.detail__summary-label {
+  margin: 0;
+  font-size: var(--kez-text-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--kez-tracking-wide);
+  color: var(--kez-text-muted);
+}
+
+.detail__summary-meta {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detail__summary-meta li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--kez-text-muted);
+  font-size: var(--kez-text-sm);
+}
+
+.detail__seller {
+  display: flex;
+  align-items: center;
+  gap: var(--kez-space-3);
+  width: 100%;
+  padding: var(--kez-space-3) 0;
+  border: 0;
+  border-top: 1px solid var(--kez-border);
+  border-bottom: 1px solid var(--kez-border);
+  background: transparent;
+  /* A <button> doesn't inherit text color the way the <div> this used to
+     be did — without this, the name fell back to the browser's default
+     button-text color, invisible against this card's dark background
+     until :hover overrode it to the accent color below. */
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.detail__seller:hover strong {
+  color: var(--kez-accent);
+}
+
+.detail__seller strong {
+  display: block;
+  font-size: var(--kez-text-base);
+  transition: color 140ms ease;
+}
+
+.detail__seller span {
+  font-size: var(--kez-text-xs);
+  color: var(--kez-text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--kez-tracking-wide);
+}
+
+.detail__seller-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--kez-border-strong);
+  text-underline-offset: 3px;
+}
+
+.detail__seller-link:hover {
+  color: var(--kez-accent);
+}
+
+.detail__summary-note {
+  margin: 0;
+  font-size: var(--kez-text-xs);
+  color: var(--kez-text-muted);
+  line-height: 1.5;
+}
+
+@media (min-width: 1024px) {
+  .detail__title { font-size: var(--kez-text-3xl); }
+}

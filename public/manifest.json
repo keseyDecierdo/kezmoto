@@ -1,0 +1,21 @@
+{
+  "short_name": "KEZMOTO",
+  "name": "KEZMOTO — Buy. Sell. Ride.",
+  "icons": [
+    {
+      "src": "/brand/favicon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/brand/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#0a0a0a",
+  "background_color": "#0a0a0a"
+}

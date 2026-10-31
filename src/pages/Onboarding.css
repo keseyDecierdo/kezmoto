@@ -1,0 +1,90 @@
+.onboarding ion-content {
+  --background: radial-gradient(120% 80% at 50% 12%, #1a1a1a 0%, #0a0a0a 58%, #000000 100%);
+}
+
+.onboarding__inner {
+  position: relative;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--kez-space-5);
+  padding: var(--kez-space-6) var(--kez-space-4) var(--kez-space-5);
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.onboarding__skip {
+  position: absolute;
+  top: var(--kez-space-4);
+  right: var(--kez-space-4);
+  background: none;
+  border: 0;
+  color: var(--kez-text-muted);
+  font-size: var(--kez-text-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.onboarding__art {
+  width: 100%;
+  border-radius: var(--kez-radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--kez-border);
+  box-shadow: var(--kez-shadow-2);
+}
+
+.onboarding__art img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.onboarding__copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kez-space-2);
+}
+
+.onboarding__copy h1 {
+  font-size: var(--kez-text-2xl);
+}
+
+.onboarding__copy p {
+  max-width: 46ch;
+  margin-inline: auto;
+}
+
+.onboarding__dots {
+  display: flex;
+  gap: 6px;
+}
+
+.onboarding__dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--kez-surface-3);
+  transition: width 160ms ease, background 160ms ease;
+}
+
+.onboarding__dots span.is-active {
+  width: 24px;
+  border-radius: var(--kez-radius-pill);
+  background: var(--kez-accent);
+}
+
+.onboarding__actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--kez-space-1);
+  margin-top: auto;
+}
+
+@media (min-width: 1024px) {
+  .onboarding__copy h1 { font-size: var(--kez-text-3xl); }
+  .onboarding__inner { max-width: 640px; }
+}

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="480" height="300" role="img" aria-label="OFFICIAL RECEIPT - LTO">
+  <rect width="480" height="300" fill="#f2f5f9"/>
+  <rect x="12" y="12" width="456" height="276" fill="none" stroke="#c8cfdb" stroke-width="2"/>
+  <text x="32" y="52" font-family="Bahnschrift, Segoe UI, sans-serif" font-size="19" font-weight="700" fill="#1b2333" letter-spacing="1">OFFICIAL RECEIPT - LTO</text>
+  <path d="M32 64 H448" stroke="#1b2333" stroke-width="2"/>
+  <text x="32" y="96" font-family="Segoe UI, sans-serif" font-size="13" fill="#3d4759">MV FILE NUMBER</text>
+  <text x="210" y="96" font-family="Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#0f1420">1234-00009876543</text>
+  <text x="32" y="126" font-family="Segoe UI, sans-serif" font-size="13" fill="#3d4759">PLATE NUMBER</text>
+  <text x="210" y="126" font-family="Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#0f1420">NBC 4821</text>
+  <text x="32" y="156" font-family="Segoe UI, sans-serif" font-size="13" fill="#3d4759">REGISTERED OWNER</text>
+  <text x="210" y="156" font-family="Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#0f1420">REDACT THIS NAME</text>
+  <text x="32" y="186" font-family="Segoe UI, sans-serif" font-size="13" fill="#3d4759">ADDRESS</text>
+  <text x="210" y="186" font-family="Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#0f1420">REDACT THIS ADDRESS</text>
+  <text x="32" y="216" font-family="Segoe UI, sans-serif" font-size="13" fill="#3d4759">DATE ISSUED</text>
+  <text x="210" y="216" font-family="Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#0f1420">14 MARCH 2025</text>
+  <text x="32" y="246" font-family="Segoe UI, sans-serif" font-size="13" fill="#3d4759">AMOUNT PAID</text>
+  <text x="210" y="246" font-family="Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#0f1420">PHP 1,240.00</text>
+  <rect x="330" y="200" width="110" height="66" fill="none" stroke="#9aa5b6" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="352" y="238" font-family="Segoe UI, sans-serif" font-size="11" fill="#9aa5b6">DRY SEAL</text>
+</svg>

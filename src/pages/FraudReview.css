@@ -1,0 +1,58 @@
+.fraud-review__group {
+  gap: 0;
+}
+
+.fraud-review__group-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--kez-space-3);
+  padding: var(--kez-tile-pad);
+  background: var(--kez-surface-2);
+  cursor: pointer;
+}
+
+.fraud-review__group-head strong { font-family: var(--kez-font-display); }
+
+.fraud-review__flags {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.fraud-review__flag {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--kez-space-3);
+  padding: var(--kez-space-3) var(--kez-tile-pad);
+  border-top: 1px solid var(--kez-border);
+}
+
+.fraud-review__flag-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+}
+
+.fraud-review__flag-body p {
+  margin: 0;
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text-soft);
+}
+
+.fraud-review__meta {
+  font-size: var(--kez-text-xs);
+  color: var(--kez-text-muted);
+}
+
+.fraud-review__flag-actions {
+  display: flex;
+  gap: var(--kez-space-2);
+  flex: 0 0 auto;
+}
+
+.fraud-review__flag-actions ion-button { margin: 0; }

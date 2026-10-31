@@ -1,0 +1,266 @@
+/* KEZMOTO Sweet Alert — vanilla, themed entirely off theme/variables.css.
+
+   KEZMOTO's own <body> is kept at `position: fixed; height: 0` with a
+   transform (Ionic/Capacitor's scroll-lock technique — the app's real
+   content is sized by #root/ion-app, not by body's box). A transformed
+   ancestor becomes the containing block for position:fixed descendants,
+   so a naive `inset: 0` overlay appended to <body> would resolve against
+   body's 0-height box and collapse to a sliver (confirmed live in an
+   earlier pass with sweetalert2's own container). Viewport units
+   sidestep the whole containing-block question instead of fighting it,
+   since vh/vw always mean the true viewport regardless of ancestor
+   transforms — same fix, carried over into this from-scratch markup.
+
+   env(safe-area-inset-*) keeps the backdrop/popup inside the notch/
+   status-bar/home-indicator area on a real device, matching AppTabBar.css
+   and AiChatbot.css. */
+
+.kez-alert-backdrop {
+  position: fixed;
+  top: env(safe-area-inset-top, 0px);
+  right: env(safe-area-inset-right, 0px);
+  bottom: env(safe-area-inset-bottom, 0px);
+  left: env(safe-area-inset-left, 0px);
+  width: calc(100vw - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px));
+  height: calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--kez-space-4);
+
+  /* Real glassmorphism this time: a dark tint plus a blur of whatever sits
+     behind it, rather than the old no-tint transparent backdrop. */
+  background: var(--kez-scrim);
+  backdrop-filter: blur(var(--kez-scrim-blur));
+  -webkit-backdrop-filter: blur(var(--kez-scrim-blur));
+  opacity: 0;
+  transition: opacity var(--kez-dur-enter) var(--kez-ease-fluid);
+}
+
+.kez-alert-backdrop--visible {
+  opacity: 1;
+}
+
+.kez-alert-backdrop--leaving {
+  opacity: 0;
+  transition: opacity var(--kez-dur-exit) var(--kez-ease-exit);
+}
+
+.kez-alert-backdrop--leaving .kez-alert {
+  opacity: 0;
+  transform: scale(0.94) translateY(12px);
+  transition:
+    opacity var(--kez-dur-exit) var(--kez-ease-exit),
+    transform var(--kez-dur-exit) var(--kez-ease-exit);
+}
+
+.kez-alert {
+  position: relative;
+  width: min(92vw, 420px);
+  max-height: calc(100% - var(--kez-space-4) * 2);
+  overflow-y: auto;
+  padding: clamp(20px, 4vh, 32px) clamp(16px, 4vw, 24px) clamp(16px, 3vh, 24px);
+  border-radius: var(--kez-radius-lg);
+  background: var(--kez-surface);
+  border: 1px solid var(--kez-border-strong);
+  box-shadow: var(--kez-shadow-3);
+  font-family: var(--kez-font-body, inherit);
+
+  /* Spring entrance: overshoot past 1 then settle, via a cubic-bezier with
+     a > 1 control point rather than a multi-keyframe bounce. */
+  opacity: 0;
+  /* Shared with IonModal (src/lib/motion.ts): same start pose, easing
+     and durations, so every overlay enters and leaves the same way. */
+  transform: scale(0.94) translateY(12px);
+  transition:
+    opacity var(--kez-dur-enter) var(--kez-ease-fluid),
+    transform var(--kez-dur-enter) var(--kez-ease-fluid);
+}
+
+.kez-alert--visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.kez-alert--shake {
+  animation: kez-alert-shake 420ms ease;
+}
+
+@keyframes kez-alert-shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(3px); }
+  30%, 50%, 70% { transform: translateX(-7px); }
+  40%, 60% { transform: translateX(7px); }
+}
+
+.kez-alert__close {
+  position: absolute;
+  top: var(--kez-space-3);
+  right: var(--kez-space-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--kez-radius-sm);
+  background: transparent;
+  color: var(--kez-text-muted);
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease;
+}
+
+.kez-alert__close:hover {
+  background: var(--kez-surface-2);
+  color: var(--kez-text);
+}
+
+.kez-alert__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--kez-space-2);
+}
+
+.kez-alert__icon {
+  margin-bottom: var(--kez-space-2);
+}
+
+.kez-alert__icon-svg {
+  width: clamp(48px, 8vh, 64px);
+  height: clamp(48px, 8vh, 64px);
+}
+
+.kez-alert__icon-circle {
+  stroke: var(--kez-accent);
+  transition: stroke-dashoffset 520ms ease;
+}
+
+.kez-alert__icon-mark {
+  stroke: var(--kez-accent);
+  transition: stroke-dashoffset 320ms ease;
+}
+
+.kez-alert--success .kez-alert__icon-circle,
+.kez-alert--success .kez-alert__icon-mark {
+  stroke: var(--kez-success);
+}
+
+.kez-alert--error .kez-alert__icon-circle,
+.kez-alert--error .kez-alert__icon-mark {
+  stroke: var(--kez-danger);
+}
+
+.kez-alert--warning .kez-alert__icon-circle,
+.kez-alert--warning .kez-alert__icon-mark {
+  stroke: var(--kez-warning);
+}
+
+.kez-alert--info .kez-alert__icon-circle,
+.kez-alert--info .kez-alert__icon-mark {
+  stroke: var(--kez-accent);
+}
+
+.kez-alert__title {
+  margin: 0;
+  color: var(--kez-text);
+  font-family: var(--kez-font-display, inherit);
+  font-size: var(--kez-text-xl);
+}
+
+.kez-alert__text {
+  margin: 0;
+  color: var(--kez-text-soft);
+  font-size: var(--kez-text-base);
+  line-height: 1.55;
+}
+
+.kez-alert__actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--kez-space-3);
+  margin-top: clamp(14px, 3vh, 24px);
+}
+
+.kez-alert__btn {
+  font-size: var(--kez-text-sm);
+  font-weight: 600;
+  min-height: var(--kez-btn-h, 36px);
+  padding: 8px 18px;
+  border-radius: var(--kez-radius-pill);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: filter 150ms ease, background 150ms ease;
+}
+
+.kez-alert__btn:hover {
+  filter: brightness(1.1);
+}
+
+.kez-alert__btn:focus-visible {
+  outline: 2px solid var(--kez-accent-line);
+  outline-offset: 2px;
+}
+
+.kez-alert__btn--confirm {
+  background: var(--kez-accent);
+  color: var(--kez-bg);
+}
+
+.kez-alert__btn--confirm.kez-alert__btn--danger {
+  background: var(--kez-danger);
+  color: var(--kez-text);
+}
+
+.kez-alert__btn--cancel {
+  background: transparent;
+  color: var(--kez-text-soft);
+  border-color: var(--kez-border-strong);
+}
+
+.kez-alert__progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 0 0 var(--kez-radius-lg) var(--kez-radius-lg);
+  background: var(--kez-surface-2);
+}
+
+.kez-alert__progress-bar {
+  height: 100%;
+  width: 100%;
+  background: var(--kez-accent);
+  transform-origin: left;
+  transform: scaleX(1);
+  transition-property: transform;
+  transition-timing-function: linear;
+}
+
+.kez-alert__progress-bar--draining {
+  transform: scaleX(0);
+}
+
+@media (max-width: 480px) {
+  .kez-alert__actions {
+    flex-direction: column-reverse;
+  }
+
+  .kez-alert__btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kez-alert,
+  .kez-alert-backdrop,
+  .kez-alert-backdrop--leaving .kez-alert {
+    transform: none;
+    transition: opacity 140ms linear;
+  }
+}

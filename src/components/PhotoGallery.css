@@ -1,0 +1,159 @@
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kez-space-3);
+}
+
+.gallery--empty {
+  aspect-ratio: 16 / 10;
+  display: grid;
+  place-items: center;
+  background: var(--kez-surface);
+  border: 1px dashed var(--kez-border-strong);
+  border-radius: var(--kez-radius-md);
+  color: var(--kez-text-muted);
+  font-size: var(--kez-text-sm);
+}
+
+.gallery__stage {
+  position: relative;
+  border-radius: var(--kez-radius-md);
+  overflow: hidden;
+  background: var(--kez-bg-alt);
+  border: 1px solid var(--kez-border);
+}
+
+.gallery__track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gallery__track::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery__slide {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  aspect-ratio: 16 / 10;
+}
+
+.gallery__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  /* Fixed light colors: these controls always sit on the photo, so the
+     light canvas's dark text tokens would make them invisible. */
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(10, 10, 10, 0.72);
+  color: #ffffff;
+  font-size: 20px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: border-color 140ms ease, color 140ms ease, opacity 140ms ease;
+}
+
+.gallery__arrow:hover:not(:disabled) {
+  border-color: var(--kez-accent);
+  color: var(--kez-accent);
+}
+
+.gallery__arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.gallery__arrow--prev { left: var(--kez-space-3); }
+.gallery__arrow--next { right: var(--kez-space-3); }
+
+.gallery__counter {
+  position: absolute;
+  right: var(--kez-space-3);
+  bottom: var(--kez-space-3);
+  padding: 3px 10px;
+  border-radius: var(--kez-radius-pill);
+  background: rgba(10, 10, 10, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  font-size: var(--kez-text-xs);
+  font-weight: 600;
+  backdrop-filter: blur(6px);
+}
+
+.gallery__dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.gallery__dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border-radius: 50%;
+  border: 0;
+  background: var(--kez-surface-3);
+  cursor: pointer;
+  transition: width 160ms ease, background 160ms ease;
+}
+
+.gallery__dot.is-active {
+  width: 22px;
+  border-radius: var(--kez-radius-pill);
+  background: var(--kez-accent);
+}
+
+.gallery__thumbs {
+  display: flex;
+  gap: var(--kez-space-2);
+  overflow-x: auto;
+  padding: 2px;
+  scrollbar-width: none;
+}
+
+.gallery__thumbs::-webkit-scrollbar { display: none; }
+
+/* Every thumbnail is the same fixed slot; the photo is cropped to fit. */
+.gallery__thumb {
+  flex: 0 0 auto;
+  width: 84px;
+  height: 60px;
+  padding: 0;
+  border-radius: var(--kez-radius-sm);
+  overflow: hidden;
+  border: 2px solid transparent;
+  background: var(--kez-bg-alt);
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 140ms ease, border-color 140ms ease;
+}
+
+.gallery__thumb:hover { opacity: 1; }
+
+.gallery__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery__thumb.is-active {
+  opacity: 1;
+  border-color: var(--kez-accent);
+}

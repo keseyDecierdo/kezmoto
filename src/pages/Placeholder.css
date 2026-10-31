@@ -1,0 +1,29 @@
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--kez-space-3);
+  min-height: min(60vh, 520px);
+  max-width: 640px;
+  margin: 0 auto;
+  padding-inline: clamp(20px, 5vw, 56px);
+}
+
+.placeholder__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: var(--kez-radius-lg);
+  background: var(--kez-surface-2);
+  border: 1px dashed var(--kez-border-strong);
+  color: var(--kez-accent);
+  font-size: 32px;
+}
+
+.placeholder ion-button {
+  margin-top: var(--kez-space-2);
+}

@@ -1,0 +1,126 @@
+.wanted__head {
+  flex-direction: column;
+  gap: var(--kez-space-4);
+  margin-bottom: var(--kez-gap);
+}
+
+.wanted__head h1 {
+  font-size: var(--kez-text-2xl);
+  margin-bottom: 4px;
+}
+
+.wanted__cta {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.wanted__card {
+  gap: var(--kez-space-2);
+}
+
+.wanted__card h3 {
+  font-size: var(--kez-text-lg);
+}
+
+.wanted__card-head {
+  display: flex;
+  align-items: center;
+  gap: var(--kez-space-2);
+}
+
+.wanted__card-head div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.wanted__card-head strong {
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text);
+}
+
+.wanted__card-head span {
+  font-size: var(--kez-text-xs);
+  color: var(--kez-text-muted);
+}
+
+.wanted__card-head .kez-chip {
+  margin-left: auto;
+}
+
+.wanted__meta {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kez-space-3);
+}
+
+.wanted__meta li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text-soft);
+}
+
+.wanted__meta li:first-child {
+  color: var(--kez-accent);
+  font-weight: 600;
+}
+
+.wanted__meta ion-icon {
+  font-size: 16px;
+  color: var(--kez-text-muted);
+}
+
+.wanted__notes {
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text-muted);
+}
+
+.wanted__card-actions {
+  margin-top: auto;
+  padding-top: var(--kez-space-3);
+  border-top: 1px solid var(--kez-border);
+}
+
+.wanted__card-actions ion-button {
+  margin: 0;
+}
+
+.wanted__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.wanted__form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: var(--kez-space-3);
+}
+
+.wanted__modal {
+  --background: var(--kez-bg);
+}
+
+@media (min-width: 600px) {
+  .wanted__head {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .wanted__form-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Phones keep the full-width CTA in the hero tile. */
+@media (max-width: 599.98px) {
+  .wanted__cta { width: 100%; }
+}
+
+/* Phones too: pairs share a row so the whole form fits without scrolling. */
+@media (min-width: 340px) {
+  .wanted__form-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

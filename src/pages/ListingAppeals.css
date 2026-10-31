@@ -1,0 +1,38 @@
+.listing-appeals__filters {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--kez-space-2);
+  margin-bottom: var(--kez-gap);
+}
+
+.listing-appeals__filters .kez-chip { cursor: pointer; min-height: 32px; padding-inline: 12px; }
+
+.listing-appeals__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kez-space-2);
+}
+
+.listing-appeals__head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--kez-space-2); }
+.listing-appeals__head strong { font-family: var(--kez-font-display); }
+
+.listing-appeals__message {
+  margin: 0;
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text-soft);
+}
+
+.listing-appeals__meta {
+  font-size: var(--kez-text-xs);
+  color: var(--kez-text-muted);
+}
+
+.listing-appeals__actions {
+  margin-top: auto;
+  padding-top: var(--kez-space-2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kez-space-2);
+}
+
+.listing-appeals__actions ion-button { margin: 0; }

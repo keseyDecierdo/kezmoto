@@ -1,0 +1,7 @@
+{
+  "name": "kezmoto",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}

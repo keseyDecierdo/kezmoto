@@ -1,0 +1,312 @@
+.side-menu {
+  --background: var(--kez-bg-alt);
+}
+
+.side-menu__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--kez-space-3);
+}
+
+.side-menu__brand .brandmark__logo { width: 64px; }
+
+.side-menu__header {
+  position: relative;
+  flex: 0 0 auto;
+  background: var(--kez-bg-alt);
+  border-bottom: 1px solid var(--kez-border);
+  box-shadow: none;
+  z-index: 2;
+}
+
+/* Soft fade so nav items visibly tuck under the fixed logo as they scroll. */
+.side-menu__header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 14px;
+  background: linear-gradient(180deg, var(--kez-bg-alt) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.side-menu__content {
+  --background: var(--kez-bg-alt);
+  --padding-top: var(--kez-space-3);
+  --padding-bottom: var(--kez-space-4);
+}
+
+.side-menu__user {
+  display: flex;
+  align-items: center;
+  gap: var(--kez-space-3);
+  width: calc(100% - var(--kez-space-5));
+  margin: 0 10px var(--kez-space-3);
+  padding: 10px;
+  border-radius: var(--kez-radius-md);
+  background: var(--kez-surface);
+  border: 1px solid var(--kez-border);
+  color: var(--kez-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.side-menu__user-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.side-menu__user-text strong {
+  font-size: var(--kez-text-sm);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.side-menu__user-text span {
+  font-size: var(--kez-text-xs);
+  color: var(--kez-accent);
+  letter-spacing: var(--kez-tracking-wide);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.side-menu__section {
+  margin: var(--kez-space-3) var(--kez-space-4) 6px;
+  font-family: var(--kez-font-display);
+  font-size: var(--kez-text-xs);
+  font-weight: 700;
+  letter-spacing: var(--kez-tracking-brand);
+  text-transform: uppercase;
+  color: var(--kez-text-muted);
+}
+
+.side-menu__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 var(--kez-space-2);
+}
+
+.side-menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--kez-space-3);
+  width: 100%;
+  padding: 8px var(--kez-space-3);
+  border: 0;
+  border-radius: var(--kez-radius-sm);
+  background: transparent;
+  color: var(--kez-text-soft);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease;
+}
+
+.side-menu__item ion-icon {
+  font-size: 18px;
+  flex: 0 0 auto;
+  color: var(--kez-text-muted);
+}
+
+.side-menu__item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.side-menu__item.is-active {
+  background: var(--kez-accent);
+  color: #0a0a0a;
+}
+
+.side-menu__item.is-active ion-icon {
+  color: #0a0a0a;
+}
+
+.side-menu__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.side-menu__soon {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--kez-text-muted);
+  border: 1px solid var(--kez-border-strong);
+  border-radius: var(--kez-radius-pill);
+  padding: 2px 7px;
+  flex: 0 0 auto;
+}
+
+.side-menu__item--danger {
+  color: var(--kez-danger);
+}
+
+.side-menu__item--danger ion-icon {
+  color: var(--kez-danger);
+}
+
+.side-menu__footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kez-space-2);
+  background: var(--kez-bg-alt);
+  border-top: 1px solid var(--kez-border);
+  padding: var(--kez-space-3) var(--kez-space-2) var(--kez-space-2);
+}
+
+.side-menu__footer::before {
+  display: none;
+}
+
+/* The profile card no longer needs its own bottom margin now that it's a
+   sibling of Sign out inside the footer's own flex gap, not the last item
+   scrolling past in the nav list. */
+.side-menu__footer .side-menu__user {
+  width: calc(100% - var(--kez-space-2));
+  margin: 0 var(--kez-space-1);
+}
+
+/* ---------------- Desktop collapse: icon rail, not fully hidden ----------
+   Ionic's own core CSS hard-sets `min-width: 270px` on ion-menu in split
+   mode — confirmed live that neither the --side-width custom property nor
+   an inline style can beat it, only a real stylesheet rule with
+   !important, which is why the collapsed rule below needs one. Below
+   1024px this entire block is inert — the split pane isn't docked there,
+   so the menu is the normal mobile/tablet overlay drawer, untouched. */
+@media (min-width: 1024px) {
+  /* !important for the same reason as the collapsed rule below: Ionic's
+     split-pane CSS pins a 270px min-width otherwise. */
+  ion-menu.side-menu {
+    width: var(--kez-sidebar-width) !important;
+    min-width: var(--kez-sidebar-width) !important;
+    max-width: var(--kez-sidebar-width) !important;
+    transition: width 220ms ease, min-width 220ms ease, max-width 220ms ease;
+  }
+
+  ion-menu.side-menu.side-menu--collapsed {
+    width: 72px !important;
+    min-width: 72px !important;
+    max-width: 72px !important;
+  }
+
+  /* Labels fade out as part of the same motion rather than snapping away
+     the instant the rail starts narrowing. */
+  .side-menu__brand,
+  .side-menu__user-text,
+  .side-menu__section,
+  .side-menu__label,
+  .side-menu__soon {
+    overflow: hidden;
+    transition: opacity 160ms ease, max-width 200ms ease, max-height 200ms ease, margin 200ms ease,
+      padding 200ms ease;
+  }
+
+  /* .side-menu__brand and .side-menu__section are block-level (a <div> and
+     a <p>), so zeroing only their width leaves their own line-height
+     quietly reserving vertical space even though nothing is visible there
+     — confirmed live: with a 13-item admin nav, that leaked space alone
+     pushed almost half the list below the fold, needing a scroll no
+     shorter rail ever hinted existed. max-height on both closes that gap;
+     .side-menu__label/__soon don't need it — they sit inline in a nav row
+     whose height comes from the icon/padding, not the label text.
+     __brand gets a taller cap than __section: the logo image itself needs
+     ~83px (84px-wide badge at its ~1:1 ratio) plus 32px of top/bottom
+     --kez-space-4 padding, which the old shared 80px would have clipped. */
+  .side-menu__brand {
+    max-height: 130px;
+  }
+
+  .side-menu__section {
+    max-height: 80px;
+  }
+
+  .side-menu--collapsed .side-menu__user-text,
+  .side-menu--collapsed .side-menu__section,
+  .side-menu--collapsed .side-menu__label,
+  .side-menu--collapsed .side-menu__soon {
+    opacity: 0;
+    max-width: 0;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  .side-menu--collapsed .side-menu__section {
+    max-height: 0;
+  }
+
+  /* Unlike the section labels above, the brand mark stays visible in the
+     rail — it just shrinks to fit the 72px width instead of disappearing.
+     Live-tested at 72px: a 44px logo with this padding centers with a few
+     px to spare on either side and doesn't crowd the first nav icon. */
+  .side-menu--collapsed .side-menu__brand {
+    padding: var(--kez-space-3) var(--kez-space-2);
+    max-height: 76px;
+  }
+
+  .side-menu--collapsed .side-menu__brand .brandmark__logo {
+    width: 44px;
+  }
+
+  /* A modest squeeze on top of the header-leak fix above — still a
+     comfortable ~36px tap target, just tighter than the expanded row's
+     44px, so a full admin nav (13 items) has the best chance of fitting
+     without a scroll on ordinary desktop window heights. */
+  .side-menu--collapsed .side-menu__item {
+    justify-content: center;
+    /* Without this, the item's own `gap` (meant to space icon/label/soon
+       apart) still applies between every still-in-flow child even once
+       label/soon are collapsed to zero width — an extra 12px after the
+       icon on every row, and a *second* 12px on the comingSoon row
+       (icon, label, soon) that plain rows (icon, label) don't have. That
+       mismatch is exactly what put Verification Checklist's icon out of
+       line with the rest. */
+    gap: 0;
+    padding-block: 8px;
+  }
+
+  .side-menu--collapsed .side-menu__nav {
+    gap: 0;
+  }
+
+  .side-menu--collapsed .side-menu__content {
+    --padding-top: var(--kez-space-2);
+    --padding-bottom: var(--kez-space-2);
+  }
+
+  /* width alone left height content-driven (42px avatar + 8px top/bottom
+     padding = 58px), against a 48px width — a lopsided portrait rectangle,
+     not the small square this is meant to be. height matches width now,
+     and padding is trimmed to fit the 42px avatar evenly on every side. */
+  .side-menu--collapsed .side-menu__user {
+    justify-content: center;
+    gap: 0;
+    width: 48px;
+    height: 48px;
+    padding: 3px;
+    margin-inline: auto;
+  }
+}
+
+/* Phones: the drawer is the "Menu" page for non-technical users — bigger
+   rows and labels, easy to tap. */
+@media (max-width: 599.98px) {
+  .side-menu__item {
+    padding: 12px var(--kez-space-3);
+    font-size: 15px;
+  }
+
+  .side-menu__item ion-icon { font-size: 20px; }
+}
