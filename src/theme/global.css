@@ -256,6 +256,24 @@ ion-button.kez-cta {
   ::-webkit-scrollbar-thumb:hover { background: var(--kez-accent-line); }
 }
 
+/* ---------- Scrollbars (phones, tablets, touch screens) ----------
+   Swipe-only: scrolling still works, the bar is just never drawn. Ionic's
+   page scroller sits in ion-content's shadow DOM, hence ::part(scroll). */
+@media (max-width: 1023.98px), (pointer: coarse) {
+  *,
+  ion-content::part(scroll) {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  ::-webkit-scrollbar,
+  ion-content::part(scroll)::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
+
 /* ---------- Visibility helpers ---------- */
 /* These helpers only ever hide. They never set or reset `display`
    elsewhere, so an element's own flex/grid display survives — a

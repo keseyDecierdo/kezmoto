@@ -86,8 +86,11 @@ emails an hour (and only to team members), so route it through Brevo:
    `http://127.0.0.1:5180/reset-password`, `http://localhost:5173/reset-password`
    and your production `https://<domain>/reset-password`. A link to any other
    URL falls back to the Site URL and the reset screen never opens.
-4. Optional: Authentication → Emails → Templates → **Reset password**, e.g.
-   subject "Reset your KEZMOTO password" with a button linking `{{ .ConfirmationURL }}`.
+4. Authentication → Emails → Templates → **Reset password**: subject
+   `Reset your KEZMOTO password`, body = the whole of
+   `supabase/templates/reset-password.html` (logo, message, orange button).
+   The logo loads from `{{ .SiteURL }}/brand/email-logo.png`, so the Site URL
+   must be the live Render address for it to show in Gmail.
 5. Optional: Authentication → Rate Limits → raise "emails sent per hour" now
    that Brevo carries the load (the app itself waits 60 s between requests).
 
