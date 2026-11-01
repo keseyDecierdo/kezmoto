@@ -42,6 +42,7 @@ more buyers.
 | 🤖 **AI features** | Buying assistant chatbot, listing-quality score, condition score, fraud detection (Gemini via Edge Functions) |
 | 💸 **GCash commission** | Seller pays 5% (3% on Pro) after a sale; admin confirms the receipt |
 | 💎 **KEZMOTO Pro & Boosts** | Unlimited listings, lower commission, Featured placement |
+| 📈 **Admin earnings** | Commission, Pro and Boost revenue per payment, 12-month chart, CSV export |
 | 🔐 **Secure sign-up** | Email verification code (Brevo SMTP), password reset, +63 mobile, region → barangay address |
 | 📱 **Mobile-first** | Bento layout, bottom tab bar, swipe-only scrolling, no-scroll modals |
 | ⚖️ **Privacy & legal** | Privacy Policy, Terms and Refund Policy pages; consent at sign-up and before ID/face scans; self-service account deletion; no tracking cookies or third-party fonts |

@@ -2,6 +2,7 @@ import {
   addCircleOutline,
   arrowUndoOutline,
   bookmarkOutline,
+  cashOutline,
   chatbubblesOutline,
   flagOutline,
   gridOutline,
@@ -101,6 +102,13 @@ export const ADMIN_NAV: NavItem[] = [
     label: 'Plan Payments',
     href: '/admin/plans',
     icon: diamondOutline,
+    role: 'admin',
+  },
+  {
+    id: 'earnings',
+    label: 'Earnings',
+    href: '/admin/earnings',
+    icon: cashOutline,
     role: 'admin',
   },
   {

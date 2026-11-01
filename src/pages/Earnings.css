@@ -1,0 +1,233 @@
+/* Series colours - validated (dataviz validator) for lightness, chroma,
+   colour-blind separation and 3:1 contrast on the dark and light surfaces.
+   Fixed order: Commission, Pro, Boost. */
+:root {
+  --earn-commission: #e85d00;
+  --earn-subscription: #3b8fd1;
+  --earn-boost: #a68a1f;
+}
+
+.earnings__filters {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--kez-space-2) var(--kez-space-4);
+  margin-bottom: var(--kez-gap);
+}
+
+.earnings__filters > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.earnings__filters .kez-chip { cursor: pointer; min-height: 32px; padding-inline: 12px; }
+
+.earnings__tile-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px var(--kez-space-3);
+  margin-bottom: var(--kez-space-3);
+}
+
+.earnings__tile-head h2 { margin: 0; font-size: var(--kez-text-lg); }
+.earnings__tile-head .kez-muted { font-size: var(--kez-text-xs); }
+
+/* ---------------- chart ---------------- */
+.earn-swatch { display: inline-block; width: 10px; height: 10px; border-radius: 3px; }
+.earn-swatch--commission { background: var(--earn-commission); }
+.earn-swatch--subscription { background: var(--earn-subscription); }
+.earn-swatch--boost { background: var(--earn-boost); }
+
+.earn-chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-bottom: var(--kez-space-3);
+  font-size: var(--kez-text-xs);
+  color: var(--kez-text-soft);
+}
+
+.earn-chart__legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+.earn-chart__plot {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-items: end;
+  gap: 4px;
+  height: 200px;
+  padding-top: 18px;
+  /* Recessive baseline and top gridline. */
+  border-bottom: 1px solid var(--kez-border);
+  background: linear-gradient(var(--kez-border), var(--kez-border)) 0 18px / 100% 1px no-repeat;
+}
+
+.earn-chart__max {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 10px;
+  color: var(--kez-text-muted);
+}
+
+.earn-chart__col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 6px 6px 0 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.earn-chart__col:hover,
+.earn-chart__col.is-active { background: rgba(255, 255, 255, 0.04); }
+
+/* Thin stacked bar: 2px surface gap between segments, 4px rounded top. */
+.earn-chart__bar {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 2px;
+  width: min(60%, 26px);
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 4px 4px 0 0;
+}
+
+.earn-chart__seg { display: block; min-height: 2px; }
+
+.earn-chart__month {
+  position: absolute;
+  bottom: -20px;
+  font-size: 10px;
+  color: var(--kez-text-muted);
+}
+
+.earn-chart__tip {
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 150px;
+  padding: 10px 12px;
+  border: 1px solid var(--kez-border);
+  border-radius: var(--kez-radius-sm);
+  background: var(--kez-surface-2);
+  box-shadow: var(--kez-tile-shadow);
+  font-size: var(--kez-text-xs);
+  color: var(--kez-text-soft);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.earn-chart__tip strong { color: var(--kez-text); font-size: var(--kez-text-sm); }
+.earn-chart__tip-total { font-family: var(--kez-font-display); font-size: var(--kez-text-lg); font-weight: 700; color: var(--kez-text); }
+.earn-chart__tip-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 6px; }
+.earn-chart__tip-row b { color: var(--kez-text); font-weight: 700; }
+
+.earnings__chart-tile { padding-bottom: calc(var(--kez-space-4) + 20px); }
+
+/* ---------------- ledger ---------------- */
+.earnings__ledger {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.earnings__ledger li + li { border-top: 1px solid var(--kez-border); }
+
+/* Desktop: one line per payment. Phones: a stacked card (below). */
+.earnings__row {
+  display: grid;
+  grid-template-columns: 96px 130px minmax(0, 1fr) minmax(0, 170px) 120px;
+  align-items: center;
+  gap: var(--kez-space-3);
+  width: 100%;
+  padding: 10px 6px;
+  border: 0;
+  border-radius: var(--kez-radius-sm);
+  background: transparent;
+  color: var(--kez-text-soft);
+  font-family: var(--kez-font-body);
+  font-size: var(--kez-text-sm);
+  text-align: left;
+  cursor: pointer;
+}
+
+.earnings__row:hover { background: var(--kez-surface-2); }
+
+.earnings__date { color: var(--kez-text-muted); font-size: var(--kez-text-xs); }
+
+.earnings__source {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-self: start;
+  padding: 3px 9px;
+  border-radius: var(--kez-radius-pill);
+  border: 1px solid var(--kez-border);
+  font-size: var(--kez-text-xs);
+  font-weight: 700;
+  color: var(--kez-text);
+  white-space: nowrap;
+}
+
+.earnings__source ion-icon { font-size: 13px; }
+.earnings__source--commission ion-icon { color: var(--earn-commission); }
+.earnings__source--subscription ion-icon { color: var(--earn-subscription); }
+.earnings__source--boost ion-icon { color: var(--earn-boost); }
+
+.earnings__who { display: flex; flex-direction: column; min-width: 0; }
+.earnings__who strong { color: var(--kez-text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.earnings__who span { color: var(--kez-text-muted); font-size: var(--kez-text-xs); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.earnings__basis { color: var(--kez-text-muted); font-size: var(--kez-text-xs); }
+
+.earnings__amount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  font-family: var(--kez-font-display);
+  font-size: var(--kez-text-base);
+  font-weight: 700;
+  color: var(--kez-text);
+}
+
+.earnings__amount em { font-style: normal; font-size: 10px; }
+
+@media (max-width: 759.98px) {
+  .earn-chart__plot { height: 160px; gap: 2px; }
+  .earn-chart__month { font-size: 9px; }
+
+  .earnings__row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'source amount'
+      'who amount'
+      'basis date';
+    row-gap: 4px;
+  }
+
+  .earnings__source { grid-area: source; }
+  .earnings__who { grid-area: who; }
+  .earnings__basis { grid-area: basis; }
+  .earnings__amount { grid-area: amount; }
+  .earnings__date { grid-area: date; text-align: right; }
+}
+
+.earn-chart__empty {
+  position: absolute;
+  inset: 18px 0 0;
+  display: grid;
+  place-items: center;
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text-muted);
+  pointer-events: none;
+}
