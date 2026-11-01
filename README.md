@@ -44,6 +44,7 @@ more buyers.
 | 💎 **KEZMOTO Pro & Boosts** | Unlimited listings, lower commission, Featured placement |
 | 🔐 **Secure sign-up** | Email verification code (Brevo SMTP), password reset, +63 mobile, region → barangay address |
 | 📱 **Mobile-first** | Bento layout, bottom tab bar, swipe-only scrolling, no-scroll modals |
+| ⚖️ **Privacy & legal** | Privacy Policy, Terms and Refund Policy pages; consent at sign-up and before ID/face scans; self-service account deletion; no tracking cookies or third-party fonts |
 
 ## Screenshots
 
@@ -84,7 +85,7 @@ Ionic React + TypeScript (Vite)
         │
         ▼
 Supabase ── Auth (email code, password reset via Brevo SMTP)
-         ├─ Postgres + Row Level Security (36 migrations)
+         ├─ Postgres + Row Level Security (38 migrations)
          ├─ Storage (listing photos, documents, IDs, receipts)
          ├─ Realtime (chat, offers, payments)
          └─ Edge Functions ──► Google Gemini (chatbot, scores, ID/face checks, fraud)

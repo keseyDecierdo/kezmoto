@@ -481,3 +481,17 @@ ol.stepper { flex-direction: row; }
 }
 
 .unit-form__limit-actions ion-button { margin: 0; }
+
+/* Commission disclosure on the last step, before posting. */
+.unit-form__fee {
+  margin: var(--kez-space-3) 0 0;
+  padding: var(--kez-space-3);
+  border-radius: var(--kez-radius-sm);
+  background: var(--kez-accent-soft);
+  border: 1px solid var(--kez-accent-line);
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text-soft);
+}
+
+.unit-form__fee strong { color: var(--kez-text); }
+.unit-form__fee a { color: var(--kez-accent); }

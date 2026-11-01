@@ -79,6 +79,9 @@ export interface User {
   proUntil: string;
   /** Free boosts left (2 come with each Pro purchase). */
   boostCredits: number;
+  /** When the user agreed that their ID and face photos are processed for
+      verification; '' = not yet (asked before the first upload). */
+  biometricConsentAt: string;
 }
 
 export type Sex = 'male' | 'female';

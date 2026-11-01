@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { IonButton, IonIcon, IonInput, IonSpinner, IonTextarea, useIonRouter, useIonToast } from '@ionic/react';
 import { useLocation } from 'react-router-dom';
 import {
-  logOutOutline,
   mailOutline,
   phonePortraitOutline,
   locationOutline,
@@ -20,6 +19,7 @@ import AppPage from '../components/AppPage';
 import Avatar from '../components/Avatar';
 import FaceCaptureModal from '../components/FaceCaptureModal';
 import { useAuth } from '../context/AuthContext';
+import { confirmAction } from '../lib/sweetAlert';
 import { photoUrl, signIdDocumentUrl, uploadPhoto } from '../services/storageService';
 import type { IdType } from '../types';
 import { ID_TYPE_LABEL } from '../types';
@@ -39,7 +39,8 @@ const Profile: React.FC = () => {
     submitFaceCapture,
     retryIdVerification,
     retryFaceCapture,
-    logout,
+    deleteAccount,
+    recordBiometricConsent,
   } = useAuth();
   const [present] = useIonToast();
   const router = useIonRouter();
@@ -64,6 +65,8 @@ const Profile: React.FC = () => {
      usefully re-run against the same photo, so it needs its own state. */
   const [idError, setIdError] = useState<string | null>(null);
   const [faceError, setFaceError] = useState<string | null>(null);
+  const [savingConsent, setSavingConsent] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const idInputRef = useRef<HTMLInputElement>(null);
   const avatarInputRef = useRef<HTMLInputElement>(null);
 
@@ -210,6 +213,59 @@ const Profile: React.FC = () => {
     }
   };
 
+  /* ID and face photos are sensitive personal information (RA 10173), so
+     the user agrees before the first upload; the time is saved (0038). */
+  const giveBiometricConsent = async () => {
+    setSavingConsent(true);
+    try {
+      await recordBiometricConsent();
+    } catch (err) {
+      await present({
+        message: err instanceof Error ? err.message : 'Could not save your consent.',
+        duration: 2400,
+        color: 'danger',
+        position: 'top',
+      });
+    } finally {
+      setSavingConsent(false);
+    }
+  };
+
+  const removeAccount = async () => {
+    const first = await confirmAction({
+      title: 'Delete your account?',
+      text:
+        'This permanently deletes your profile, listings, Wanted posts, saved units, chats, ID and face photos. ' +
+        'Payment records are kept without your name for accounting. Open deals must be finished or cancelled first.',
+      confirmText: 'Continue',
+      danger: true,
+    });
+    if (!first) return;
+    const second = await confirmAction({
+      title: 'This cannot be undone',
+      text: `Delete the KEZMOTO account for ${user.email} now?`,
+      confirmText: 'Delete my account',
+      danger: true,
+    });
+    if (!second) return;
+
+    setDeleting(true);
+    try {
+      await deleteAccount();
+      router.push('/', 'root', 'replace');
+      await present({ message: 'Your account has been deleted.', duration: 2600, position: 'top' });
+    } catch (err) {
+      await present({
+        message: err instanceof Error ? err.message : 'Could not delete your account.',
+        duration: 3200,
+        color: 'danger',
+        position: 'top',
+      });
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   const viewId = async () => {
     setViewingId(true);
     try {
@@ -337,15 +393,16 @@ const Profile: React.FC = () => {
             )}
           </ul>
 
-          <IonButton
-            fill="outline"
-            color="danger"
-            className="profile__signout"
-            onClick={() => logout()}
-          >
-            <IonIcon slot="start" icon={logOutOutline} />
-            Logout
-          </IonButton>
+          <nav className="profile__legal" aria-label="Legal">
+            <a href="/privacy" target="_blank" rel="noopener">Privacy</a>
+            <a href="/terms" target="_blank" rel="noopener">Terms</a>
+            <a href="/refunds" target="_blank" rel="noopener">Refunds</a>
+            {!isAdmin && (
+              <button type="button" className="profile__delete" onClick={() => void removeAccount()} disabled={deleting}>
+                {deleting ? 'Deleting…' : 'Delete account'}
+              </button>
+            )}
+          </nav>
         </section>
 
         <section className="kez-tile kez-tile--w2 profile__form-wrap">
@@ -415,6 +472,25 @@ const Profile: React.FC = () => {
               your ID or selfie.
             </p>
 
+            {!user.biometricConsentAt && (
+              <label className="profile__consent">
+                <input
+                  type="checkbox"
+                  checked={false}
+                  disabled={savingConsent}
+                  onChange={() => void giveBiometricConsent()}
+                />
+                <span>
+                  I agree that KEZMOTO and its AI provider (Google Gemini) process my ID and face photos
+                  only to verify my identity, as described in the{' '}
+                  <a href="/privacy" target="_blank" rel="noopener">
+                    Privacy Policy
+                  </a>
+                  .
+                </span>
+              </label>
+            )}
+
             {/* ---------------------- Step 1 — valid ID ---------------------- */}
             <p className="profile__step-label">
               <span className={`profile__step-num${user.idNameMatched ? ' is-done' : ''}`}>1</span>
@@ -454,6 +530,7 @@ const Profile: React.FC = () => {
                 <button
                   type="button"
                   className="profile__id-picker"
+                  disabled={!user.biometricConsentAt}
                   onClick={() => idInputRef.current?.click()}
                 >
                   <IonIcon icon={cloudUploadOutline} />
@@ -521,6 +598,7 @@ const Profile: React.FC = () => {
                 <button
                   type="button"
                   className="profile__id-picker"
+                  disabled={!user.biometricConsentAt}
                   onClick={() => setFaceModalOpen(true)}
                 >
                   <IonIcon icon={user.faceVerified ? shieldCheckmarkOutline : cameraOutline} />

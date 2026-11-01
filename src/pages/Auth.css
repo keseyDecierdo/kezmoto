@@ -427,3 +427,26 @@
   color: var(--kez-accent);
   font-size: 16px;
 }
+
+/* Required "I agree to the Terms and Privacy Policy" on the last sign-up step. */
+.auth__agree {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: clamp(6px, 1.3vh, 12px);
+  font-size: var(--kez-text-sm);
+  line-height: 1.45;
+  color: var(--kez-text-soft);
+  cursor: pointer;
+}
+
+.auth__agree input {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin: 1px 0 0;
+  accent-color: var(--kez-accent);
+  cursor: pointer;
+}
+
+.auth__agree a { color: var(--kez-accent); font-weight: 600; }

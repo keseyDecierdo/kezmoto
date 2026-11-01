@@ -29,7 +29,7 @@ import LocationPicker from '../components/LocationPicker';
 import { rememberFile } from '../services/storageService';
 import type { ListingDraft, RedactionBox, UnitDocument } from '../types';
 import { EMOJIS } from '../utils/emojis';
-import { FREE_LISTING_LIMIT, freeSlotsLeft, isPro } from '../utils/plans';
+import { FREE_LISTING_LIMIT, commissionRateFor, freeSlotsLeft, isPro } from '../utils/plans';
 import './UnitForm.css';
 
 const MIN_PHOTOS = 5;
@@ -704,6 +704,14 @@ const UnitForm: React.FC = () => {
                     </li>
                   ))}
                 </ul>
+                <p className="unit-form__fee">
+                  Posting is free. When this unit sells, KEZMOTO charges a{' '}
+                  <strong>{Math.round(commissionRateFor(isPro(user)) * 100)}% commission</strong> on the final
+                  agreed price, paid by GCash. No other fees.{' '}
+                  <a href="/terms" target="_blank" rel="noopener">
+                    Terms
+                  </a>
+                </p>
               </div>
             </section>
           )}

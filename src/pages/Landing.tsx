@@ -82,7 +82,7 @@ const HOW_IT_WORKS = [
   },
   {
     title: 'List yours in minutes',
-    body: 'Five photos, two documents, condition notes and your price. Black out anything private on the OR/CR before it goes live.',
+    body: 'Five photos, two documents, condition notes and your price. Listing is free; KEZMOTO charges 5% of the final price only when it sells (3% with Pro).',
   },
   {
     title: 'Chat with the owner',
@@ -534,6 +534,13 @@ const Landing: React.FC = () => {
               <button type="button" onClick={() => router.push('/login', 'forward')}>Log in</button>
               <button type="button" onClick={() => router.push('/register', 'forward')}>Create account</button>
               <button type="button" onClick={() => void scrollToSection('how-it-works')}>How it works</button>
+            </nav>
+
+            <nav className="landing__footer-col" aria-label="Legal">
+              <h4>Legal</h4>
+              <a href="/privacy">Privacy Policy</a>
+              <a href="/terms">Terms of Service</a>
+              <a href="/refunds">Refund Policy</a>
             </nav>
 
             <div className="landing__footer-col">

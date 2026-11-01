@@ -46,6 +46,7 @@ import FraudReview from './pages/FraudReview';
 import Home from './pages/Home';
 import Landing from './pages/Landing';
 import AdminPlans from './pages/AdminPlans';
+import Legal from './pages/Legal';
 import ListingAppeals from './pages/ListingAppeals';
 import Plans from './pages/Plans';
 import ListingDetail from './pages/ListingDetail';
@@ -70,7 +71,7 @@ import Wanted from './pages/Wanted';
 setupIonicReact({ modalEnter, modalLeave });
 
 /** Marketing and auth screens never show the app chrome. */
-const PUBLIC_ROUTES = ['/', '/splash', '/onboarding', '/login', '/register', '/forgot-password', '/reset-password'];
+const PUBLIC_ROUTES = ['/', '/splash', '/onboarding', '/login', '/register', '/forgot-password', '/reset-password', '/privacy', '/terms', '/refunds'];
 
 /**
  * Split pane docks the sidebar from 1024px up for signed-in users on app
@@ -111,6 +112,9 @@ const Shell: React.FC = () => {
         <Route path="/register" element={<Auth mode="register" />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/privacy" element={<Legal doc="privacy" />} />
+        <Route path="/terms" element={<Legal doc="terms" />} />
+        <Route path="/refunds" element={<Legal doc="refunds" />} />
         <Route path="/listing/:id" element={<ListingDetail />} />
 
         {/* ---------------- Customer & Admin ---------------- */}

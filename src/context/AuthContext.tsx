@@ -15,6 +15,10 @@ interface AuthContextValue {
   /** Finishes sign-up with the code from the verification email. */
   verifySignup: (email: string, code: string) => Promise<User>;
   logout: () => void;
+  /** Permanently deletes the signed-in customer's account and signs out. */
+  deleteAccount: () => Promise<void>;
+  /** Saves consent to process ID / face photos (asked before the first upload). */
+  recordBiometricConsent: () => Promise<void>;
   /** Re-reads the signed-in profile (e.g. after a Pro purchase is approved). */
   refreshUser: () => Promise<void>;
   updateProfile: (patch: Partial<User>) => Promise<User>;
@@ -88,6 +92,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     void authApi.logout();
   }, []);
 
+  const deleteAccount = useCallback(async () => {
+    if (!user) throw new Error('Log in first.');
+    await authApi.deleteAccount(user.id);
+    setUser(null);
+  }, [user]);
+
+  const recordBiometricConsent = useCallback(async () => {
+    await authApi.recordBiometricConsent();
+    setUser((prev) => (prev ? { ...prev, biometricConsentAt: prev.biometricConsentAt || new Date().toISOString() } : prev));
+  }, []);
+
   const refreshUser = useCallback(async () => {
     try {
       const next = await authApi.currentUser();
@@ -154,6 +169,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       register,
       verifySignup,
       logout,
+      deleteAccount,
+      recordBiometricConsent,
       refreshUser,
       updateProfile,
       submitIdVerification,
@@ -168,6 +185,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       register,
       verifySignup,
       logout,
+      deleteAccount,
+      recordBiometricConsent,
       refreshUser,
       updateProfile,
       submitIdVerification,

@@ -733,3 +733,28 @@ ion-modal.kez-modal ion-toolbar {
   letter-spacing: 0.08em;
   vertical-align: middle;
 }
+
+/* ---------- Keyboard focus ----------
+   A clear orange ring whenever something is reached with the keyboard
+   (Tab), never on a mouse click or tap. Inputs that hide their own outline
+   show the ring on their field box instead. */
+:where(a, button, [role='button'], [role='radio'], [tabindex]:not([tabindex='-1']), summary):focus-visible,
+ion-button:focus-visible,
+input[type='checkbox']:focus-visible {
+  outline: 2px solid var(--kez-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.kez-field:has(:focus-visible),
+.loc-picker__field:has(select:focus-visible),
+.auth__native:has(input:focus-visible) {
+  outline: 2px solid var(--kez-accent);
+  outline-offset: 1px;
+}
+
+.landing__search:has(input:focus-visible),
+.landing__select:has(select:focus-visible) {
+  outline: 2px solid var(--kez-accent);
+  outline-offset: 2px;
+}

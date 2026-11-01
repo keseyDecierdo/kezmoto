@@ -773,7 +773,7 @@
 }
 
 @media (min-width: 768px) {
-  .landing__footer-grid { grid-template-columns: 1.4fr repeat(3, minmax(0, 1fr)); }
+  .landing__footer-grid { grid-template-columns: 1.4fr repeat(4, minmax(0, 1fr)); }
   .landing__footer-brand,
   .landing__footer-col:last-child { grid-column: auto; }
 

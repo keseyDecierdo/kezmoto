@@ -110,6 +110,7 @@ export const mapProfile = (row: ProfileRow, email = ''): User => ({
   street: row.street ?? '',
   proUntil: row.pro_until ?? '',
   boostCredits: row.boost_credits ?? 0,
+  biometricConsentAt: row.biometric_consent_at ?? '',
 });
 
 /* ------------------------------------------------------------ listings */

@@ -15,7 +15,7 @@ const SLIDES = [
     id: 'list',
     eyebrow: 'Step two',
     title: 'List yours in minutes',
-    body: 'Five photos, two documents, condition notes and your price. Black out anything private on the OR/CR before it goes live.',
+    body: 'Five photos, two documents, condition notes and your price. Listing is free; KEZMOTO charges 5% of the final price only when it sells (3% with Pro).',
     art: '/mock/bike-03.svg',
   },
   {

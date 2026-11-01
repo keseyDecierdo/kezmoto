@@ -17,7 +17,8 @@ export interface RegisterInput {
   firstName: string;
   middleName: string;
   lastName: string;
-  sex: Sex;
+  /** Optional. */
+  sex: Sex | '';
   /** YYYY-MM-DD. */
   birthdate: string;
   email: string;
@@ -31,6 +32,20 @@ export interface RegisterInput {
   street: string;
   password: string;
 }
+
+/** Date of the Terms / Privacy Policy wording the user agreed to. */
+export const TERMS_VERSION = '2026-11-01';
+
+/** Buckets whose `<uid>/…` files are removed with the account. Payment
+    receipts stay with the (anonymised) payment records. */
+const PERSONAL_BUCKETS = ['listing-photos', 'listing-documents', 'id-documents', 'face-captures'];
+
+const deleteErrorMessage = (message: string): string =>
+  message.includes('KEZ_OPEN_DEAL')
+    ? 'Finish or cancel your open deals first, then delete your account.'
+    : /could not find the function|does not exist/i.test(message)
+      ? 'Account deletion is not available yet — the site is being updated. Please contact KEZMOTO.'
+      : message;
 
 /** "Juan Santos Dela Cruz": the form the ID name check compares against. */
 export const composeFullName = (first: string, middle: string, last: string): string =>
@@ -111,6 +126,8 @@ export const authApi = {
           city: input.city,
           barangay: input.barangay,
           street: input.street.trim(),
+          // Ticked "I agree to the Terms and Privacy Policy" (stamped by 0038).
+          terms_version: TERMS_VERSION,
         },
       },
     });
@@ -155,6 +172,45 @@ export const authApi = {
   async resendSignupCode(email: string): Promise<void> {
     const { error } = await supabase.auth.resend({ type: 'signup', email: email.trim() });
     if (error) throw new Error(error.message);
+  },
+
+  /** Records the user's consent before their first ID / face upload. */
+  async recordBiometricConsent(): Promise<void> {
+    const { error } = await supabase.rpc('record_biometric_consent');
+    if (error) {
+      throw new Error(
+        /could not find the function|does not exist/i.test(error.message)
+          ? 'Consent could not be saved yet — the site is being updated. Please try again later or contact KEZMOTO.'
+          : `Could not save your consent. (${error.message})`
+      );
+    }
+  },
+
+  /**
+   * Permanently deletes the signed-in customer's account: their uploaded
+   * files first (best effort), then everything else in one database call
+   * (0038 delete_my_account), then signs out.
+   */
+  async deleteAccount(userId: string): Promise<void> {
+    // Checks only (open deals, admin, update installed) before touching files.
+    const check = await supabase.rpc('delete_my_account', { p_dry_run: true });
+    if (check.error) throw new Error(deleteErrorMessage(check.error.message));
+
+    await Promise.all(
+      PERSONAL_BUCKETS.map(async (bucket) => {
+        try {
+          const { data } = await supabase.storage.from(bucket).list(userId, { limit: 1000 });
+          const paths = (data ?? []).map((file) => `${userId}/${file.name}`);
+          if (paths.length) await supabase.storage.from(bucket).remove(paths);
+        } catch {
+          // A leftover file is not worth blocking the deletion over.
+        }
+      })
+    );
+
+    const { error } = await supabase.rpc('delete_my_account', { p_dry_run: false });
+    if (error) throw new Error(deleteErrorMessage(error.message));
+    await supabase.auth.signOut();
   },
 
   async logout(): Promise<void> {

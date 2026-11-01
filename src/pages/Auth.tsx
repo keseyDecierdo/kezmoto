@@ -52,6 +52,8 @@ interface FormState {
   street: string;
   password: string;
   confirm: string;
+  /** "I agree to the Terms of Service and Privacy Policy" (required). */
+  agree: boolean;
 }
 
 type Errors = Partial<Record<keyof FormState, string>>;
@@ -71,6 +73,7 @@ const EMPTY: FormState = {
   street: '',
   password: '',
   confirm: '',
+  agree: false,
 };
 
 const STEP_TITLES: Record<1 | 2 | 3, string> = {
@@ -159,7 +162,6 @@ const Auth: React.FC<AuthProps> = ({ mode: routeMode }) => {
     } else if (which === 1) {
       if (form.firstName.trim().length < 2) next.firstName = 'Enter your first name.';
       if (form.lastName.trim().length < 2) next.lastName = 'Enter your last name.';
-      if (!form.sex) next.sex = 'Select male or female.';
       if (!form.birthdate) next.birthdate = 'Enter your birthday.';
       else if (form.birthdate > maxBirthdate) next.birthdate = `You must be at least ${MIN_AGE} to use KEZMOTO.`;
     } else if (which === 2) {
@@ -170,6 +172,7 @@ const Auth: React.FC<AuthProps> = ({ mode: routeMode }) => {
     } else if (which === 3) {
       if (form.password.length < 6) next.password = 'Use at least 6 characters.';
       if (form.confirm !== form.password) next.confirm = 'Passwords do not match.';
+      if (!form.agree) next.agree = 'Tick the box to agree to the Terms and Privacy Policy.';
     }
     setErrors(next);
     return Object.keys(next).length === 0;
@@ -206,7 +209,7 @@ const Auth: React.FC<AuthProps> = ({ mode: routeMode }) => {
         firstName: form.firstName.trim(),
         middleName: form.middleName.trim(),
         lastName: form.lastName.trim(),
-        sex: form.sex as Sex,
+        sex: form.sex,
         birthdate: form.birthdate,
         email: form.email.trim(),
         phone: toE164Ph(form.phone),
@@ -398,7 +401,8 @@ const Auth: React.FC<AuthProps> = ({ mode: routeMode }) => {
           </div>
 
           <div className="auth__field">
-            <div className="auth__sex" role="radiogroup" aria-label="Sex">
+            {/* Optional: tap the selected one again to clear it. */}
+            <div className="auth__sex" role="radiogroup" aria-label="Sex (optional)">
               {(
                 [
                   ['male', 'Male', maleOutline],
@@ -411,14 +415,14 @@ const Auth: React.FC<AuthProps> = ({ mode: routeMode }) => {
                   role="radio"
                   aria-checked={form.sex === value}
                   className={`auth__sex-option${form.sex === value ? ' is-selected' : ''}`}
-                  onClick={() => setValue('sex', value)}
+                  onClick={() => setValue('sex', form.sex === value ? '' : value)}
                 >
                   <IonIcon icon={icon} aria-hidden="true" />
                   {label}
                 </button>
               ))}
             </div>
-            {fieldError('sex')}
+            <p className="auth__hint">Sex is optional.</p>
           </div>
           <div className="auth__field">
             <label className="kez-field auth__native">
@@ -525,6 +529,27 @@ const Auth: React.FC<AuthProps> = ({ mode: routeMode }) => {
           </div>
           <div className="auth__strength">
             <PasswordStrength password={form.password} />
+          </div>
+          <div className="auth__field auth__field--full">
+            <label className="auth__agree">
+              <input
+                type="checkbox"
+                checked={form.agree}
+                onChange={(e) => setValue('agree', e.target.checked)}
+              />
+              <span>
+                I am 18 or older and I agree to the{' '}
+                <a href="/terms" target="_blank" rel="noopener">
+                  Terms of Service
+                </a>{' '}
+                and{' '}
+                <a href="/privacy" target="_blank" rel="noopener">
+                  Privacy Policy
+                </a>
+                .
+              </span>
+            </label>
+            {fieldError('agree')}
           </div>
           {form.city && (
             <p className="auth__hint auth__summary">

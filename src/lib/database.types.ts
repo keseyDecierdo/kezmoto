@@ -74,6 +74,10 @@ export type ProfileRow = {
   /** Seller Pro active until then (0036). */
   pro_until: string | null;
   boost_credits: number | null;
+  /** Consent records (0038). */
+  terms_accepted_at: string | null;
+  terms_version: string | null;
+  biometric_consent_at: string | null;
   created_at: string;
 }
 
@@ -347,6 +351,8 @@ export type Database = {
     Views: Record<string, never>;
     Functions: {
       use_boost_credit: { Args: { p_listing: string }; Returns: string };
+      record_biometric_consent: { Args: Record<string, never>; Returns: string };
+      delete_my_account: { Args: { p_dry_run?: boolean }; Returns: undefined };
     };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;

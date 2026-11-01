@@ -152,6 +152,14 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
 
             {error && <p className="kez-form-error">{error}</p>}
 
+            <p className="purchase-modal__terms">
+              Activated after an admin confirms the payment. Refunds follow the{' '}
+              <a href="/refunds" target="_blank" rel="noopener">
+                Refund Policy
+              </a>
+              .
+            </p>
+
             <IonButton type="submit" expand="block" className="kez-cta" disabled={saving}>
               {saving ? <IonSpinner name="crescent" /> : `Submit ${formatPrice(price)} payment`}
             </IonButton>

@@ -76,3 +76,6 @@ ion-modal.purchase-modal {
 .purchase-modal__done .kez-muted { margin: 0; }
 
 .purchase-modal__done ion-button { align-self: stretch; }
+
+.purchase-modal__terms { margin: 0; font-size: var(--kez-text-xs); color: var(--kez-text-muted); }
+.purchase-modal__terms a { color: var(--kez-accent); }
