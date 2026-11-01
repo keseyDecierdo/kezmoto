@@ -47,7 +47,9 @@ export const SECONDARY_NAV: NavItem[] = [
   { id: 'my-units', label: 'My Units', href: '/units', icon: bookmarkOutline },
   { id: 'sellers', label: 'Sellers', href: '/sellers', icon: storefrontOutline },
   { id: 'transactions', label: 'Transactions', href: '/transactions', icon: receiptOutline },
-  { id: 'plans', label: 'KEZMOTO Pro', href: '/plans', icon: diamondOutline },
+  // Customers only: admins already have unlimited listings and review the
+  // payments on Plan Payments instead.
+  { id: 'plans', label: 'KEZMOTO Pro', href: '/plans', icon: diamondOutline, role: 'customer' },
 ];
 
 /** Pinned to the sidebar footer, just above Logout. */

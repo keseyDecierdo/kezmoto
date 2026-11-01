@@ -310,3 +310,34 @@
 
   .side-menu__item ion-icon { font-size: 20px; }
 }
+
+/* "Go Pro" card for Free customers, above the profile row. */
+.side-menu__pro {
+  display: flex;
+  align-items: center;
+  gap: var(--kez-space-3);
+  width: 100%;
+  margin-bottom: var(--kez-space-2);
+  padding: 10px 12px;
+  border: 0;
+  border-radius: var(--kez-radius-sm);
+  background: var(--kez-accent);
+  color: #0a0a0a;
+  font-family: var(--kez-font-body);
+  text-align: left;
+  cursor: pointer;
+}
+
+.side-menu__pro:hover { background: var(--kez-accent-bright); }
+
+.side-menu__pro ion-icon { flex: 0 0 auto; font-size: 20px; }
+
+.side-menu__pro span { display: flex; flex-direction: column; min-width: 0; }
+
+.side-menu__pro strong { font-size: var(--kez-text-sm); font-weight: 800; }
+
+.side-menu__pro small { font-size: var(--kez-text-xs); opacity: 0.8; }
+
+.side-menu--collapsed .side-menu__pro span { display: none; }
+
+.side-menu--collapsed .side-menu__pro { justify-content: center; padding: 10px 0; }

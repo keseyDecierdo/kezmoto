@@ -29,6 +29,7 @@ import './theme/global.css';
 import AiChatbot from './components/AiChatbot';
 import { modalEnter, modalLeave } from './lib/motion';
 import RequireAuth from './components/RequireAuth';
+import CustomerOnly from './components/CustomerOnly';
 import SideMenu from './components/SideMenu';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { MarketplaceProvider } from './context/MarketplaceContext';
@@ -235,7 +236,9 @@ const Shell: React.FC = () => {
           path="/plans"
           element={
             <RequireAuth>
-              <Plans />
+              <CustomerOnly redirectTo="/admin/plans">
+                <Plans />
+              </CustomerOnly>
             </RequireAuth>
           }
         />

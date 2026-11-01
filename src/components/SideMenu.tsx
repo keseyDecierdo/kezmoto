@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonContent, IonFooter, IonHeader, IonIcon, IonMenu, IonMenuToggle, useIonRouter } from '@ionic/react';
-import { logOutOutline } from 'ionicons/icons';
+import { diamond, logOutOutline } from 'ionicons/icons';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useSidebar } from '../context/SidebarContext';
@@ -11,6 +11,7 @@ import Avatar from './Avatar';
 import BrandMark from './BrandMark';
 import './SideMenu.css';
 import ProBadge from './ProBadge';
+import { isPro } from '../utils/plans';
 
 const SAVED_NAV = PRIMARY_NAV.find((item) => item.id === 'favorites');
 
@@ -83,11 +84,23 @@ const SideMenu: React.FC<{ disabled?: boolean }> = ({ disabled = false }) => {
         <nav className="side-menu__nav" aria-label="Secondary">
           {/* On phones Saved left the bottom bar for the Menu tab, so it lives here. */}
           <div className="kez-only-mobile">{SAVED_NAV && renderItem(SAVED_NAV)}</div>
-          {SECONDARY_NAV.map(renderItem)}
+          {SECONDARY_NAV.filter((item) => !item.role || item.role === user.role).map(renderItem)}
         </nav>
       </IonContent>
 
       <IonFooter className="side-menu__footer">
+        {/* Customers on the Free plan: a visible way to upgrade. */}
+        {!isAdmin && !isPro(user) && (
+          <IonMenuToggle autoHide={false}>
+            <button type="button" className="side-menu__pro" onClick={() => go('/plans')}>
+              <IonIcon icon={diamond} aria-hidden="true" />
+              <span>
+                <strong>Go Pro · ₱149</strong>
+                <small>Unlimited listings, 3% commission</small>
+              </span>
+            </button>
+          </IonMenuToggle>
+        )}
         <IonMenuToggle autoHide={false}>
           <button type="button" className="side-menu__user" onClick={() => go('/profile')}>
             <Avatar name={user.name} color={user.avatarColor} imageUrl={user.avatarUrl} verified={user.verified} />
