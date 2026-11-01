@@ -7,8 +7,8 @@ const SLIDES = [
   {
     id: 'browse',
     eyebrow: 'Step one',
-    title: 'Browse real units',
-    body: 'Every listing is posted by the person who owns the motorcycle, with photos, mileage, condition notes and the reason it is being sold.',
+    title: 'Browse listed units',
+    body: 'Sellers verify their ID before posting, and each listing shows photos, mileage, condition notes and the reason it is being sold.',
     art: '/mock/bike-01.svg',
   },
   {
@@ -22,7 +22,7 @@ const SLIDES = [
     id: 'assist',
     eyebrow: 'Step three',
     title: 'Bring in a middleman',
-    body: 'Not comfortable meeting a stranger with cash? Request a KEZMOTO admin to handle the hand-off for either side of the deal.',
+    body: 'Not comfortable meeting a stranger with cash? Request a KEZMOTO admin to help with the paperwork check and hand-off.',
     art: '/mock/bike-06.svg',
   },
 ];

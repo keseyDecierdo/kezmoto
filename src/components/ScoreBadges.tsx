@@ -33,7 +33,7 @@ const ScoreBadges: React.FC<ScoreBadgesProps> = ({ listing, compact = false }) =
         {listing.listingQualityScore != null && (
           <span
             className={`score-pill score-pill--${tier(listing.listingQualityScore)}`}
-            title="Listing Quality score (0–100): how complete and trustworthy this listing's details are."
+            title="Listing Quality score (0–100): an AI estimate of how complete this listing's details are."
           >
             <IonIcon icon={sparklesOutline} />
             Quality {listing.listingQualityScore}%
@@ -42,7 +42,7 @@ const ScoreBadges: React.FC<ScoreBadgesProps> = ({ listing, compact = false }) =
         {listing.conditionScore != null && (
           <span
             className={`score-pill score-pill--${tier(listing.conditionScore)}`}
-            title="Condition score (0–100): the motorcycle's assessed physical condition, based on seller-reported details."
+            title="Condition score (0–100): an AI estimate from the seller's own photos and notes, not an inspection."
           >
             <IonIcon icon={pulseOutline} />
             Condition {listing.conditionScore}%

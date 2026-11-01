@@ -47,7 +47,7 @@ const TRUST_SIGNALS = [
   {
     icon: shieldCheckmarkOutline,
     title: 'Admin-assisted deals',
-    body: 'Ask a KEZMOTO admin to sit in as middleman for the hand-off, payment and paperwork.',
+    body: 'Request a KEZMOTO admin as middleman to help check the papers and guide the meetup and hand-off.',
   },
   {
     icon: documentLockOutline,
@@ -56,8 +56,8 @@ const TRUST_SIGNALS = [
   },
   {
     icon: chatbubblesOutline,
-    title: 'Talk to the actual owner',
-    body: 'Every unit links to a direct thread with its seller. No agents, no relisted stock.',
+    title: 'Talk to the seller directly',
+    body: 'Every unit links to a chat with the person who listed it. Sellers must verify their ID and face before posting.',
   },
   {
     icon: megaphoneOutline,
@@ -77,8 +77,8 @@ const CONTACT = {
 /** The landing page's own "How it works" section (same story as the Onboarding slides). */
 const HOW_IT_WORKS = [
   {
-    title: 'Browse real units',
-    body: 'Every listing is posted by the person who owns the motorcycle, with photos, mileage, condition notes and the reason it is being sold.',
+    title: 'Browse listed units',
+    body: 'Sellers verify their ID before posting, and each listing shows photos, mileage, condition notes and the reason it is being sold.',
   },
   {
     title: 'List yours in minutes',
@@ -90,7 +90,7 @@ const HOW_IT_WORKS = [
   },
   {
     title: 'Bring in a middleman',
-    body: 'Not comfortable meeting a stranger with cash? Request a KEZMOTO admin to handle the hand-off for either side of the deal.',
+    body: 'Not comfortable meeting a stranger with cash? Request a KEZMOTO admin to help with the paperwork check and hand-off.',
   },
 ];
 
@@ -304,7 +304,7 @@ const Landing: React.FC = () => {
           <header className="landing__title">
             <h1 className="kez-display">Motorcycles for sale</h1>
             <p className="kez-muted">
-              {loading ? 'Loading listings…' : `${active.length} second-hand motorcycles, sold directly by their owners`}
+              {loading ? 'Loading listings…' : `${active.length} second-hand motorcycles from ID-verified sellers`}
             </p>
           </header>
 
@@ -314,8 +314,8 @@ const Landing: React.FC = () => {
               <p className="kez-eyebrow">Buy. Sell. Ride.</p>
               <h2 className="kez-display">Got a motorcycle to let go?</h2>
               <p>
-                Post it in minutes, chat with buyers directly — and bring in a KEZMOTO admin as
-                middleman whenever the deal needs one.
+                Post it in minutes, chat with buyers directly — and request a KEZMOTO admin as
+                middleman if you want help with the deal.
               </p>
               <div className="landing__banner-actions">
                 <IonButton className="kez-cta landing__btn" onClick={sell}>
@@ -496,14 +496,15 @@ const Landing: React.FC = () => {
             <h2 id="about-head" className="landing__section-title">Buying a second-hand motorcycle on KEZMOTO</h2>
             <div className="landing__about-cols">
               <p className="kez-muted">
-                KEZMOTO lets people buy and sell second-hand motorcycles directly, with optional
-                admin-assisted transactions for safer buying and selling. Every account can do both —
+                KEZMOTO lets people buy and sell second-hand motorcycles directly, with an optional
+                KEZMOTO admin to help with the deal. Every account can do both —
                 list the unit you are letting go of and message a seller about your next one.
               </p>
               <p className="kez-muted">
                 Before you pay, check the OR/CR against the seller&apos;s ID, test the engine, brakes,
-                tires and lights, and meet somewhere public. If anything feels off, ask a KEZMOTO admin
-                to join the conversation as middleman.
+                tires and lights, and meet somewhere public. KEZMOTO is not a party to the sale and
+                cannot guarantee a unit or a seller — if anything feels off, don&apos;t pay, and report
+                the seller or ask a KEZMOTO admin to join the conversation.
               </p>
             </div>
           </section>
@@ -515,8 +516,8 @@ const Landing: React.FC = () => {
             <div className="landing__footer-brand">
               <BrandMark size="md" />
               <p className="kez-muted">
-                Second-hand motorcycles, sold directly by their owners — with an admin middleman
-                whenever a deal needs one.
+                Second-hand motorcycles from ID-verified sellers — with a KEZMOTO admin middleman
+                you can request for your deal.
               </p>
             </div>
 

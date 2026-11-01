@@ -5,7 +5,7 @@
 # KEZMOTO
 
 **Buy. Sell. Ride.** — a second-hand motorcycle marketplace for the Philippines,
-with an admin middleman for safer deals.
+with an optional admin middleman for your deal.
 
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
 ![Ionic](https://img.shields.io/badge/Ionic-9-3880FF?logo=ionic&logoColor=white)
@@ -21,10 +21,10 @@ with an admin middleman for safer deals.
 ## About
 
 KEZMOTO helps people buy and sell used motorcycles directly. Sellers post a unit
-with photos, documents (OR/CR) and honest condition notes; buyers browse, save,
-chat and make price offers. When a deal needs extra trust, a KEZMOTO admin joins
-the conversation as a **middleman**, checks the unit and its papers, and guides
-both sides to a finished sale.
+with photos, documents (OR/CR) and condition notes; buyers browse, save,
+chat and make price offers. When either side wants help, they can request a KEZMOTO admin to join the
+conversation as a **middleman**, help check the papers and guide the meetup.
+KEZMOTO is not a party to the sale itself.
 
 Everything a buyer needs is free. Sellers pay a small commission only when a
 unit sells, and can upgrade to **KEZMOTO Pro** or **Boost** a listing to reach
