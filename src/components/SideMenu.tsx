@@ -45,6 +45,8 @@ const SideMenu: React.FC<{ disabled?: boolean }> = ({ disabled = false }) => {
     </IonMenuToggle>
   );
 
+  const showGoPro = Boolean(user) && !isAdmin && !isPro(user);
+
   // Signed out, or on a marketing/auth screen: the drawer is not offered.
   if (!user || disabled) {
     return <IonMenu contentId="main" disabled className="side-menu" />;
@@ -84,13 +86,18 @@ const SideMenu: React.FC<{ disabled?: boolean }> = ({ disabled = false }) => {
         <nav className="side-menu__nav" aria-label="Secondary">
           {/* On phones Saved left the bottom bar for the Menu tab, so it lives here. */}
           <div className="kez-only-mobile">{SAVED_NAV && renderItem(SAVED_NAV)}</div>
-          {SECONDARY_NAV.filter((item) => !item.role || item.role === user.role).map(renderItem)}
+          {SECONDARY_NAV.filter(
+            (item) =>
+              (!item.role || item.role === user.role) &&
+              // Free customers reach Pro through the Go Pro card below; one entry, not two.
+              !(item.id === 'plans' && showGoPro)
+          ).map(renderItem)}
         </nav>
       </IonContent>
 
       <IonFooter className="side-menu__footer">
         {/* Customers on the Free plan: a visible way to upgrade. */}
-        {!isAdmin && !isPro(user) && (
+        {showGoPro && (
           <IonMenuToggle autoHide={false}>
             <button type="button" className="side-menu__pro" onClick={() => go('/plans')}>
               <IonIcon icon={diamond} aria-hidden="true" />
