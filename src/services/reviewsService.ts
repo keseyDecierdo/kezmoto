@@ -1,6 +1,6 @@
 /* =========================================================================
-   KEZMOTO — Reviews
-   One review per (transaction, reviewer) — each side rates the other once a
+   KEZMOTO - Reviews
+   One review per (transaction, reviewer) - each side rates the other once a
    deal completes. profiles.rating_avg is kept current by a database trigger
    (refresh_rating_avg), so nothing here recomputes it client-side.
    ========================================================================= */

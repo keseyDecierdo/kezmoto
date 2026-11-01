@@ -114,7 +114,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ threadId, prefill, onBack }) => {
     };
   }, [data?.listingId]);
 
-  // Live updates once a transaction exists — this is how an admin's
+  // Live updates once a transaction exists - this is how an admin's
   // commission confirm/reject (or any other status move) reaches the
   // tracker without the customer refreshing the page.
   useEffect(() => {
@@ -402,7 +402,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ threadId, prefill, onBack }) => {
   }
 
   // Looks a message's sender up among every party in the thread (buyer,
-  // seller, and the admin once one has joined) — `thread.participant` only
+  // seller, and the admin once one has joined) - `thread.participant` only
   // ever names "the other side of the deal", which isn't enough once a
   // middleman makes this a three-way conversation.
   const partyFor = (senderId: string) => thread.parties.find((party) => party.id === senderId);
@@ -590,7 +590,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ threadId, prefill, onBack }) => {
       <div className="chat__scroller" ref={scrollerRef}>
         {messages.length === 0 && (
           <p className="chat__empty">
-            No messages yet — say hello and ask whatever you need to know about the unit.
+            No messages yet - say hello and ask whatever you need to know about the unit.
           </p>
         )}
 

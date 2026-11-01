@@ -23,7 +23,7 @@ import type { Listing } from '../types';
 import { formatDate, formatPrice } from '../utils/format';
 import './MyUnits.css';
 
-/** "Manage" half of the Add/Manage flow — the units this account has posted. */
+/** "Manage" half of the Add/Manage flow - the units this account has posted. */
 const MyUnits: React.FC = () => {
   const router = useIonRouter();
   const { user, refreshUser } = useAuth();
@@ -37,7 +37,7 @@ const MyUnits: React.FC = () => {
     [user?.id, revision]
   );
 
-  // Removed units are excluded from listBySeller above on purpose — shown
+  // Removed units are excluded from listBySeller above on purpose - shown
   // separately here so the seller can still see why and appeal it.
   const { data: removedData, reload: reloadRemoved } = useAsync<Listing[]>(
     () => (user ? listingsApi.listRemovedBySeller(user.id) : Promise.resolve([])),
@@ -110,7 +110,7 @@ const MyUnits: React.FC = () => {
         <EmptyState
           icon={addCircleOutline}
           title="You have not listed a unit yet"
-          message="Post your motorcycle with photos, documents and condition notes — it takes about five minutes."
+          message="Post your motorcycle with photos, documents and condition notes - it takes about five minutes."
           actionLabel="List a unit"
           onAction={() => router.push('/units/new', 'forward')}
         />

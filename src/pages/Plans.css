@@ -1,4 +1,4 @@
-/* Free | Pro | Your plan — one screen on desktop, stacked on phones. */
+/* Free | Pro | Your plan - one screen on desktop, stacked on phones. */
 .plans {
   grid-template-columns: minmax(0, 1fr);
 }

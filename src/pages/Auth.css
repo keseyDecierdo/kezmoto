@@ -317,7 +317,7 @@
 
 @media (min-width: 1024px) {
   /* A slightly uneven split, and the aside's content top-anchored rather
-     than dead-center — two panes both vertically centered against a hard
+     than dead-center - two panes both vertically centered against a hard
      dividing line is the classic split-screen auth template; anchoring the
      logo/copy high (leaving the photo's own focal point clear lower down)
      and dropping the hard border for a soft edge fade breaks that reading. */

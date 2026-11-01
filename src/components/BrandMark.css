@@ -12,7 +12,7 @@
   transition: width 220ms ease;
 }
 
-/* Bumped up from the old text version's metrics — a raster badge carrying
+/* Bumped up from the old text version's metrics - a raster badge carrying
    the wordmark, icon and tagline together in one image needs more room to
    stay legible than crisp vector text did at the same visual weight. */
 .brandmark--sm .brandmark__logo { width: 64px; }

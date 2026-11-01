@@ -180,10 +180,10 @@
 
 /* ---------------- Desktop collapse: icon rail, not fully hidden ----------
    Ionic's own core CSS hard-sets `min-width: 270px` on ion-menu in split
-   mode — confirmed live that neither the --side-width custom property nor
+   mode - confirmed live that neither the --side-width custom property nor
    an inline style can beat it, only a real stylesheet rule with
    !important, which is why the collapsed rule below needs one. Below
-   1024px this entire block is inert — the split pane isn't docked there,
+   1024px this entire block is inert - the split pane isn't docked there,
    so the menu is the normal mobile/tablet overlay drawer, untouched. */
 @media (min-width: 1024px) {
   /* !important for the same reason as the collapsed rule below: Ionic's
@@ -216,10 +216,10 @@
   /* .side-menu__brand and .side-menu__section are block-level (a <div> and
      a <p>), so zeroing only their width leaves their own line-height
      quietly reserving vertical space even though nothing is visible there
-     — confirmed live: with a 13-item admin nav, that leaked space alone
+     - confirmed live: with a 13-item admin nav, that leaked space alone
      pushed almost half the list below the fold, needing a scroll no
      shorter rail ever hinted existed. max-height on both closes that gap;
-     .side-menu__label/__soon don't need it — they sit inline in a nav row
+     .side-menu__label/__soon don't need it - they sit inline in a nav row
      whose height comes from the icon/padding, not the label text.
      __brand gets a taller cap than __section: the logo image itself needs
      ~83px (84px-wide badge at its ~1:1 ratio) plus 32px of top/bottom
@@ -248,7 +248,7 @@
   }
 
   /* Unlike the section labels above, the brand mark stays visible in the
-     rail — it just shrinks to fit the 72px width instead of disappearing.
+     rail - it just shrinks to fit the 72px width instead of disappearing.
      Live-tested at 72px: a 44px logo with this padding centers with a few
      px to spare on either side and doesn't crowd the first nav icon. */
   .side-menu--collapsed .side-menu__brand {
@@ -260,7 +260,7 @@
     width: 44px;
   }
 
-  /* A modest squeeze on top of the header-leak fix above — still a
+  /* A modest squeeze on top of the header-leak fix above - still a
      comfortable ~36px tap target, just tighter than the expanded row's
      44px, so a full admin nav (13 items) has the best chance of fitting
      without a scroll on ordinary desktop window heights. */
@@ -268,7 +268,7 @@
     justify-content: center;
     /* Without this, the item's own `gap` (meant to space icon/label/soon
        apart) still applies between every still-in-flow child even once
-       label/soon are collapsed to zero width — an extra 12px after the
+       label/soon are collapsed to zero width - an extra 12px after the
        icon on every row, and a *second* 12px on the comingSoon row
        (icon, label, soon) that plain rows (icon, label) don't have. That
        mismatch is exactly what put Verification Checklist's icon out of
@@ -287,7 +287,7 @@
   }
 
   /* width alone left height content-driven (42px avatar + 8px top/bottom
-     padding = 58px), against a 48px width — a lopsided portrait rectangle,
+     padding = 58px), against a 48px width - a lopsided portrait rectangle,
      not the small square this is meant to be. height matches width now,
      and padding is trimmed to fit the 42px avatar evenly on every side. */
   .side-menu--collapsed .side-menu__user {
@@ -300,7 +300,7 @@
   }
 }
 
-/* Phones: the drawer is the "Menu" page for non-technical users — bigger
+/* Phones: the drawer is the "Menu" page for non-technical users - bigger
    rows and labels, easy to tap. */
 @media (max-width: 599.98px) {
   .side-menu__item {

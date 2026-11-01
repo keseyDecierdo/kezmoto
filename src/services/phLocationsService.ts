@@ -1,14 +1,14 @@
 /* =========================================================================
-   KEZMOTO — Philippine province / city / barangay lookups
+   KEZMOTO - Philippine province / city / barangay lookups
 
    Static data under public/data/ph-locations/, prepared once from the
    isaacdarcilla/philippine-addresses dataset (Apache-2.0) and trimmed to
-   just {code, name} — provinces.json (~3KB) and cities.json (~98KB) are
+   just {code, name} - provinces.json (~3KB) and cities.json (~98KB) are
    small enough to fetch in full and filter client-side; barangays.json
    would be ~4.8MB and ~42,000 rows for the whole country, so those are
    pre-split into one small file per city (barangays/<cityCode>.json) and
    only ever fetched for the one city just picked. Each list is cached in
-   memory after its first fetch — the Sell form's Location step re-mounts
+   memory after its first fetch - the Sell form's Location step re-mounts
    whenever the wizard step changes, so without this every step visit
    would re-fetch.
    ========================================================================= */
@@ -24,7 +24,7 @@ export interface PhProvince {
 }
 
 /** The 17 regions. A province's PSGC code starts with its region's two
-    digits, so no region file is needed — see regionOf(). */
+    digits, so no region file is needed - see regionOf(). */
 export const REGIONS: PhRegion[] = [
   { code: '13', name: 'NCR – Metro Manila' },
   { code: '14', name: 'CAR – Cordillera' },
@@ -85,7 +85,7 @@ export const phLocationsApi = {
     return provincesCache;
   },
 
-  /** All cities, nationwide — callers filter by provinceCode themselves
+  /** All cities, nationwide - callers filter by provinceCode themselves
       (cheap in-memory filter, cheaper than a second data shape). */
   async listCities(): Promise<PhCity[]> {
     if (!citiesCache) {

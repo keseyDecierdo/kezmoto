@@ -25,7 +25,7 @@ interface AuthContextValue {
   submitIdVerification: (file: File, idType: IdType) => Promise<{ matched: boolean; extractedName: string }>;
   submitFaceCapture: (file: File) => Promise<{ matched: boolean; confidence: number }>;
   /** Re-run a verification step's AI check against the photo already
-      stored — for a failed check, not a genuine mismatch. */
+      stored - for a failed check, not a genuine mismatch. */
   retryIdVerification: (idType: IdType) => Promise<{ matched: boolean; extractedName: string }>;
   retryFaceCapture: () => Promise<{ matched: boolean; confidence: number }>;
 }
@@ -46,7 +46,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const next = await authApi.currentUser(session);
         if (active) setUser(next);
       } catch {
-        if (active) setUser(null); // session without a readable profile — start signed out
+        if (active) setUser(null); // session without a readable profile - start signed out
       } finally {
         if (active) setInitializing(false);
       }

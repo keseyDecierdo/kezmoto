@@ -3,7 +3,7 @@ import React, { createContext, useContext, useMemo, useState } from 'react';
 /**
  * Whether the desktop-docked sidebar (App.tsx's <IonSplitPane>) is
  * collapsed. Lives here rather than on Shell itself because the toggle
- * button is rendered per-page inside AppPage — a sibling of the split pane,
+ * button is rendered per-page inside AppPage - a sibling of the split pane,
  * not a descendant of it. In-memory only; resets on reload by design.
  */
 interface SidebarContextValue {

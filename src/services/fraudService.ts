@@ -1,7 +1,7 @@
 /* =========================================================================
-   KEZMOTO — Fraud flag review (admin-only)
+   KEZMOTO - Fraud flag review (admin-only)
    Every read/write here is gated by the single "admin manages fraud flags"
-   RLS policy (0013) — a non-admin session gets nothing back, not an error.
+   RLS policy (0013) - a non-admin session gets nothing back, not an error.
    ========================================================================= */
 
 import { supabase } from '../lib/supabaseClient';
@@ -16,7 +16,7 @@ type ListingStub = Pick<ListingRow, 'listing_id' | 'brand' | 'model' | 'year' | 
 type SellerStub = { profile_id: string; full_name: string | null };
 
 export const fraudApi = {
-  /** Pending flags, grouped by listing on the client side — see FraudReview.tsx. */
+  /** Pending flags, grouped by listing on the client side - see FraudReview.tsx. */
   async listPending(): Promise<FraudFlag[]> {
     return settle(async () => {
       const { data: flags, error } = await supabase
@@ -54,11 +54,11 @@ export const fraudApi = {
   },
 
   /**
-   * `reviewed_removed` also removes the listing — via the
+   * `reviewed_removed` also removes the listing - via the
    * `sync_fraud_removal` trigger (0012), not a second write here, so the two
    * can never end up inconsistent with each other. `adminNote` is the
    * admin's own typed reason, kept separate from `detail` (the AI/rule
-   * explanation) — on a removal it's also sent to the seller as a
+   * explanation) - on a removal it's also sent to the seller as a
    * notification, best-effort, same as every other notification in the app.
    */
   async review(
@@ -78,7 +78,7 @@ export const fraudApi = {
   },
 
   /**
-   * Ad-hoc removal — an admin removing a listing that has no pending flag
+   * Ad-hoc removal - an admin removing a listing that has no pending flag
    * yet (e.g. from the Sellers → View Units page), with a required reason.
    * Creates its own flag record (flag_type 'admin_removed') then reviews it
    * immediately, so it goes through the exact same removal + notification

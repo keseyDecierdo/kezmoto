@@ -1,7 +1,7 @@
-/* KEZMOTO Sweet Alert — vanilla, themed entirely off theme/variables.css.
+/* KEZMOTO Sweet Alert - vanilla, themed entirely off theme/variables.css.
 
    KEZMOTO's own <body> is kept at `position: fixed; height: 0` with a
-   transform (Ionic/Capacitor's scroll-lock technique — the app's real
+   transform (Ionic/Capacitor's scroll-lock technique - the app's real
    content is sized by #root/ion-app, not by body's box). A transformed
    ancestor becomes the containing block for position:fixed descendants,
    so a naive `inset: 0` overlay appended to <body> would resolve against
@@ -9,7 +9,7 @@
    earlier pass with sweetalert2's own container). Viewport units
    sidestep the whole containing-block question instead of fighting it,
    since vh/vw always mean the true viewport regardless of ancestor
-   transforms — same fix, carried over into this from-scratch markup.
+   transforms - same fix, carried over into this from-scratch markup.
 
    env(safe-area-inset-*) keeps the backdrop/popup inside the notch/
    status-bar/home-indicator area on a real device, matching AppTabBar.css

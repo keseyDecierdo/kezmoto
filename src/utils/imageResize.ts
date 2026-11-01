@@ -1,5 +1,5 @@
 /* =========================================================================
-   KEZMOTO — Image downscaling
+   KEZMOTO - Image downscaling
 
    A raw photo straight off a phone camera is 3-12 MB, and the AI features
    send one (verify-id) or two (face-match) of them to Gemini as base64,
@@ -7,8 +7,8 @@
    the quota/overload failures and the slowness, so anything headed for an
    AI check gets shrunk here first.
 
-   Decoding follows the same approach as imageHash.ts — createImageBitmap
-   straight off the File, into an OffscreenCanvas — but this produces a new
+   Decoding follows the same approach as imageHash.ts - createImageBitmap
+   straight off the File, into an OffscreenCanvas - but this produces a new
    JPEG File rather than reading pixels back.
    ========================================================================= */
 
@@ -19,7 +19,7 @@ export const AI_IMAGE_MAX_EDGE = 2000;
 const DEFAULT_QUALITY = 0.85;
 
 /** Longest-edge-constrained dimensions, preserving aspect ratio. Never
-    upscales — a photo already smaller than the cap is left at its own size. */
+    upscales - a photo already smaller than the cap is left at its own size. */
 const fit = (width: number, height: number, maxEdge: number) => {
   const scale = Math.min(1, maxEdge / Math.max(width, height));
   return {
@@ -57,7 +57,7 @@ export async function downscaleImage(
     const blob = await canvas.convertToBlob({ type: 'image/jpeg', quality });
 
     // Re-encoding a small, already-compressed photo can come out bigger than
-    // it went in — keep whichever is actually smaller.
+    // it went in - keep whichever is actually smaller.
     if (blob.size >= file.size) return file;
 
     const name = file.name.replace(/\.[^.]+$/, '') || 'photo';

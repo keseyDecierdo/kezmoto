@@ -26,7 +26,7 @@ const FILTERS: { id: ReportStatus; label: string }[] = [
 
 /**
  * Admin-only queue of reports customers filed from a chat. The reported
- * user is never told a report exists — RLS (0027) keeps the table admin-only.
+ * user is never told a report exists - RLS (0027) keeps the table admin-only.
  */
 const UserReports: React.FC = () => {
   const router = useIonRouter();

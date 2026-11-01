@@ -71,7 +71,7 @@ const ListingDetail: React.FC = () => {
   );
 
   // The AI quality/condition scores land a few seconds (sometimes longer)
-  // after the unit is first posted (see UnitForm.submit()) — poll quietly
+  // after the unit is first posted (see UnitForm.submit()) - poll quietly
   // until both are in so the "Scoring…" pills resolve on their own, instead
   // of staying stuck until the seller happens to refresh. Reads the latest
   // listing off a ref rather than depending on it directly, so the interval
@@ -81,7 +81,7 @@ const ListingDetail: React.FC = () => {
 
   useEffect(() => {
     let attempts = 0;
-    const maxAttempts = 18; // ~90s at 5s each — past the Edge Functions' worst-case retry budget
+    const maxAttempts = 18; // ~90s at 5s each - past the Edge Functions' worst-case retry budget
     const timer = window.setInterval(() => {
       attempts += 1;
       const current = listingRef.current;
@@ -160,7 +160,7 @@ const ListingDetail: React.FC = () => {
             <PhotoGallery photos={listing.photos} alt={`${title} ${listing.year}`} />
           </div>
 
-          {/* Summary tile beside the gallery — tablet/desktop only */}
+          {/* Summary tile beside the gallery - tablet/desktop only */}
           <aside className="kez-tile kez-tile--h2 detail__aside kez-hide-mobile">
             <div className="detail__summary">
               <p className="detail__summary-label">Asking price</p>
@@ -316,7 +316,7 @@ const ListingDetail: React.FC = () => {
           <section className="kez-tile kez-tile--w2 detail__section">
             <h2 className="kez-display">AI assessment</h2>
             <p className="kez-muted detail__doc-note">
-              Automated, not a physical inspection — see the condition score's own note below.
+              Automated, not a physical inspection - see the condition score's own note below.
             </p>
             <ScoreBadges listing={listing} />
           </section>

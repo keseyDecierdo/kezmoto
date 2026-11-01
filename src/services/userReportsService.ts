@@ -1,5 +1,5 @@
 /* =========================================================================
-   KEZMOTO — User reports
+   KEZMOTO - User reports
    Customers file a report from a chat; only admins can list or review them
    (RLS in 0027). The reported user never sees that a report exists.
    ========================================================================= */

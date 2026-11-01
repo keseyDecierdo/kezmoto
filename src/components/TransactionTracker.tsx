@@ -20,24 +20,24 @@ import { TRANSACTION_STATUS_LABEL, TRANSACTION_STATUS_SEQUENCE } from '../types'
 import { formatPrice } from '../utils/format';
 import './TransactionTracker.css';
 
-/** Where the seller sends the commission. One constant — update here if it ever changes. */
+/** Where the seller sends the commission. One constant - update here if it ever changes. */
 
 const COMMISSION_STATUS_LABEL: Record<string, string> = {
   pending: 'Pending',
   paid: 'Paid',
-  failed: 'Failed — try again',
+  failed: 'Failed - try again',
   waived: 'Waived',
 };
 
 interface TransactionTrackerProps {
   transaction: Transaction;
-  /** Refetches the transaction — passed so a submitted review can flip the prompt off. */
+  /** Refetches the transaction - passed so a submitted review can flip the prompt off. */
   onReviewed?: () => void;
 }
 
 /**
  * Read-only status stepper for buyers and sellers. Admin-only fields
- * (verification notes) never reach this component — the
+ * (verification notes) never reach this component - the
  * transaction row itself is all a customer's RLS session can see.
  */
 const TransactionTracker: React.FC<TransactionTrackerProps> = ({ transaction, onReviewed }) => {
@@ -45,7 +45,7 @@ const TransactionTracker: React.FC<TransactionTrackerProps> = ({ transaction, on
   // The seller pays; KEZMOTO Pro sellers get the lower rate.
   const commissionRate = commissionRateFor(user?.id === transaction.seller?.id && isPro(user));
   const [present] = useIonToast();
-  // Collapsed by default — this sits above the message scroller inside
+  // Collapsed by default - this sits above the message scroller inside
   // ChatPanel, and left open it was tall enough to push the conversation
   // out of view. A tap reveals the full stepper/commission/review panel;
   // the same control collapses it again.
@@ -139,7 +139,7 @@ const TransactionTracker: React.FC<TransactionTrackerProps> = ({ transaction, on
       setReferenceNumber('');
       setProofFile(null);
       await present({
-        message: 'Payment submitted — an admin will confirm it shortly.',
+        message: 'Payment submitted - an admin will confirm it shortly.',
         duration: 2600,
         color: 'success',
         position: 'top',
@@ -266,7 +266,7 @@ const TransactionTracker: React.FC<TransactionTrackerProps> = ({ transaction, on
               {myPayment?.status === 'pending' ? (
                 <p className="kez-muted tx-tracker__pending-note">
                   <IonIcon icon={timeOutline} />
-                  Submitted {formatPrice(myPayment.amount)} · ref {myPayment.referenceNumber} — waiting
+                  Submitted {formatPrice(myPayment.amount)} · ref {myPayment.referenceNumber} - waiting
                   for an admin to confirm it.
                 </p>
               ) : (

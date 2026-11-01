@@ -58,13 +58,13 @@
    context-dependent tokens. */
 .unit-card__status--active { background: #ff6a00; border-color: #ff6a00; color: #0a0a0a; }
 .unit-card__status--pending { background: #ffffff; border-color: #ffffff; color: #0a0a0a; }
-/* Fixed value, not var(--kez-text-muted) — that token gets redefined to a
+/* Fixed value, not var(--kez-text-muted) - that token gets redefined to a
    dark shade by the light-body override on .app-page__content (see
    .unit-card__fav below for the full explanation), which would wash this
    out against the pill's own always-dark backdrop. */
 .unit-card__status--sold { background: rgba(10, 10, 10, 0.82); color: #cfcfcf; }
 
-/* Off the photo entirely now — a normal row in the body, between the
+/* Off the photo entirely now - a normal row in the body, between the
    location/mileage meta and the action buttons, rather than an overlay
    competing with the image (status pill, "Assisted" badge, favorite
    heart). .unit-card__body's own flex gap spaces it consistently with
@@ -103,13 +103,13 @@
   border-radius: 50%;
   border: 1px solid var(--kez-border-strong);
   background: rgba(10, 10, 10, 0.8);
-  /* Fixed, not var(--kez-text-soft) — that token is contextually redefined
+  /* Fixed, not var(--kez-text-soft) - that token is contextually redefined
      to a dark shade (#333333) by the light-body override scoped to
      .app-page__content (global.css), meant for text sitting directly on
      the white page background. This button's own backdrop is always the
      dark blur circle above, regardless of the page it's on, so it needs
      to stay light rather than inherit whatever --kez-text-soft means in
-     that scope — same fix already applied to the AI chatbot panel for
+     that scope - same fix already applied to the AI chatbot panel for
      the identical reason. Live-confirmed this was resolving to #333333
      (near-invisible on the dark circle) before this fix. */
   color: #ededed;
@@ -200,7 +200,7 @@
 }
 
 /* When Send Message is withheld (your own listing, or landing's signed-out
-   preview) View Details is the only button — let it span both grid
+   preview) View Details is the only button - let it span both grid
    columns instead of sitting half-width with dead space beside it. */
 .unit-card__actions ion-button:only-child {
   grid-column: 1 / -1;

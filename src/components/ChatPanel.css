@@ -44,7 +44,7 @@
   flex: 0 0 auto;
 }
 
-/* A button now (links through to /profile/:id) — was a plain div, so it
+/* A button now (links through to /profile/:id) - was a plain div, so it
    needs its own row layout plus a full reset instead of inheriting
    .chat__header's flex row for free. */
 .chat__who {
@@ -139,7 +139,7 @@
   --padding-end: 10px;
 }
 
-/* Plain label, not a clickable row — the action lives in the button beside it. */
+/* Plain label, not a clickable row - the action lives in the button beside it. */
 .chat__listing--static {
   cursor: default;
 }
@@ -458,7 +458,7 @@
 
 /* ---------------- Messenger-style composer ----------------
    Round "+" on the left (opens the Photo / Emoji tray), pill-shaped message
-   field in the middle, round Send on the right — one line on every size. */
+   field in the middle, round Send on the right - one line on every size. */
 .chat__plus,
 .chat__send {
   flex: 0 0 auto;

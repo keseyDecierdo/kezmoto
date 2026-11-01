@@ -1,4 +1,4 @@
-/* Left-anchored on anything wide enough to take it — a row, not a centered
+/* Left-anchored on anything wide enough to take it - a row, not a centered
    badge stack. Centering everything (icon-in-circle, heading, body, button,
    all dead-center) is the single most recognizable "empty state" template;
    this is the highest-leverage place to break that, since every list screen

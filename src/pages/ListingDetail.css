@@ -258,7 +258,7 @@
   border-bottom: 1px solid var(--kez-border);
   background: transparent;
   /* A <button> doesn't inherit text color the way the <div> this used to
-     be did — without this, the name fell back to the browser's default
+     be did - without this, the name fell back to the browser's default
      button-text color, invisible against this card's dark background
      until :hover overrode it to the accent color below. */
   color: inherit;

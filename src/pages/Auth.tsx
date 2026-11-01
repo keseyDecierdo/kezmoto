@@ -650,7 +650,7 @@ const Auth: React.FC<AuthProps> = ({ mode: routeMode }) => {
                 Buy. Sell. <span>Ride.</span>
               </p>
               <p className="auth__aside-copy">
-                Buy and sell second-hand motorcycles directly — and request a KEZMOTO admin as
+                Buy and sell second-hand motorcycles directly - and request a KEZMOTO admin as
                 middleman when you want help with a deal.
               </p>
             </div>

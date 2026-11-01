@@ -16,13 +16,13 @@ const tier = (score: number): 'good' | 'ok' | 'poor' =>
 
 interface ScoreBadgesProps {
   listing: Listing;
-  /** Compact renders just the two number pills — for UnitCard. Full (default) is the Listing Detail layout. */
+  /** Compact renders just the two number pills - for UnitCard. Full (default) is the Listing Detail layout. */
   compact?: boolean;
 }
 
 /**
  * The real Listing Quality and Condition scores from Phase 5. Fraud
- * detection is deliberately not shown here — those flags are admin-only
+ * detection is deliberately not shown here - those flags are admin-only
  * (see fraud_flags' RLS in 0013), so neither a buyer nor the seller ever
  * sees whether, or why, a listing was flagged.
  */
@@ -105,7 +105,7 @@ const ScoreBadges: React.FC<ScoreBadgesProps> = ({ listing, compact = false }) =
         )}
         <p className="scores__disclaimer">
           <IonIcon icon={informationCircleOutline} />
-          Based on seller-reported information, not a physical inspection — see the KEZMOTO admin
+          Based on seller-reported information, not a physical inspection - see the KEZMOTO admin
           verification for confirmed details.
         </p>
       </div>

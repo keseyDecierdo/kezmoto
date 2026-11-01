@@ -1,7 +1,7 @@
 /* =========================================================================
-   KEZMOTO — AI features (Phase 5)
+   KEZMOTO - AI features (Phase 5)
 
-   The app never calls Gemini directly and never sees an API key — every
+   The app never calls Gemini directly and never sees an API key - every
    call here goes through a Supabase Edge Function, which holds the key as
    a secret and is the only thing that ever writes a score or a fraud flag.
    This file is a thin, typed wrapper over `supabase.functions.invoke`.
@@ -40,11 +40,11 @@ export interface FaceMatchResult {
 
 /**
  * A non-2xx response's `error.message` from supabase-js is always the
- * generic "Edge Function returned a non-2xx status code" — the function's
+ * generic "Edge Function returned a non-2xx status code" - the function's
  * own `{ error: "..." }` body (see every function's `json({ error }, ...)`
  * calls) is only reachable via `error.context`, the raw Response. Every AI
  * call benefits from surfacing that real message instead of the generic
- * one — verify-id in particular has several specific, user-facing errors
+ * one - verify-id in particular has several specific, user-facing errors
  * (blank name, unreadable photo) that would otherwise be silently lost.
  */
 const messageFrom = async (error: { message?: string; context?: unknown }): Promise<string> => {
@@ -54,10 +54,10 @@ const messageFrom = async (error: { message?: string; context?: unknown }): Prom
       const body = (await context.clone().json()) as { error?: string };
       if (body?.error) return body.error;
     } catch {
-      // body wasn't JSON — fall through to the generic message below
+      // body wasn't JSON - fall through to the generic message below
     }
   }
-  return error.message ?? 'Edge Function unavailable — has it been deployed?';
+  return error.message ?? 'Edge Function unavailable - has it been deployed?';
 };
 
 const RETRY_DELAYS_MS = [2000, 4000];
@@ -71,7 +71,7 @@ const invoke = async <T>(name: string, body: Record<string, unknown>): Promise<T
       return data;
     }
     const message = await messageFrom(error);
-    // Busy/overloaded AI is usually gone in seconds — retry quietly before
+    // Busy/overloaded AI is usually gone in seconds - retry quietly before
     // bothering the user with an error.
     if (attempt < RETRY_DELAYS_MS.length && isTransient(message)) {
       await new Promise((resolve) => setTimeout(resolve, RETRY_DELAYS_MS[attempt]));
@@ -82,7 +82,7 @@ const invoke = async <T>(name: string, body: Record<string, unknown>): Promise<T
 };
 
 export const aiApi = {
-  /** `listingId` is optional — omit it for a general buying-advice question. */
+  /** `listingId` is optional - omit it for a general buying-advice question. */
   askChatbot(question: string, listingId?: string): Promise<AskChatbotResult> {
     return invoke('ask-chatbot', { question, listing_id: listingId });
   },
@@ -92,7 +92,7 @@ export const aiApi = {
     return invoke('score-listing-quality', { listing_id: listingId });
   },
 
-  /** The "worth buying" score — mileage/price/condition-text reasoning against comparables. */
+  /** The "worth buying" score - mileage/price/condition-text reasoning against comparables. */
   scoreCondition(listingId: string): Promise<ScoreConditionResult> {
     return invoke('score-condition', { listing_id: listingId });
   },
@@ -103,14 +103,14 @@ export const aiApi = {
   },
 
   /** Reads the printed name off an uploaded valid ID and matches it against
-      the caller's own profile name — sets `profiles.id_name_matched` (step
+      the caller's own profile name - sets `profiles.id_name_matched` (step
       1 of 2; see faceMatch for the other half of `verified`). */
   verifyId(idDocumentPath: string, idType: IdType): Promise<VerifyIdResult> {
     return invoke('verify-id', { id_document_path: idDocumentPath, id_type: idType });
   },
 
   /** Compares a freshly captured live selfie against the ID photo already
-      on file (the function reads that path itself) — sets
+      on file (the function reads that path itself) - sets
       `profiles.face_verified`, and `profiles.verified` once both steps
       have passed. */
   faceMatch(faceCapturePath: string): Promise<FaceMatchResult> {

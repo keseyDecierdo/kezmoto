@@ -1,5 +1,5 @@
 /* =========================================================================
-   KEZMOTO — Listing appeals
+   KEZMOTO - Listing appeals
    A seller appeals a listing an admin removed; only admins can list or
    review appeals (RLS in 0032). Approving one reinstates the listing via
    the sync_listing_appeal_approval trigger (0031), not a second write here.
@@ -101,7 +101,7 @@ export const listingAppealsApi = {
     }, []);
   },
 
-  /** 'approved' also reinstates the listing — via the trigger, not here. */
+  /** 'approved' also reinstates the listing - via the trigger, not here. */
   async review(appealId: string, status: Exclude<ListingAppealStatus, 'pending'>, adminNote: string): Promise<void> {
     const adminId = (await supabase.auth.getSession()).data.session?.user.id ?? null;
     const { error } = await supabase

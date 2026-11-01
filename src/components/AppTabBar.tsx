@@ -12,7 +12,7 @@ const TAB_ITEMS = PRIMARY_NAV.filter((item) => item.id !== 'favorites');
 /**
  * Primary navigation for mobile and tablet. Hidden from 1024px up, where the
  * persistent sidebar in the split pane takes over (see global.css). The last
- * tab, "Menu", opens the drawer with every other page — a labelled button
+ * tab, "Menu", opens the drawer with every other page - a labelled button
  * is far easier to find than the small ☰ in the header.
  */
 const AppTabBar: React.FC = () => {

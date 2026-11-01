@@ -1,5 +1,5 @@
 /* =========================================================================
-   Review helpers — unchanged from Phase 1.
+   Review helpers - unchanged from Phase 1.
    Append ?simulate=empty | error | slow to any URL to see the empty, error or
    loading state of a screen without touching the database. `none` (the
    default) lets every call through to Supabase untouched.

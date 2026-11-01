@@ -1,5 +1,5 @@
 /* =========================================================================
-   KEZMOTO — Database row shapes
+   KEZMOTO - Database row shapes
    Hand-written to match supabase/migrations/0001_schema.sql. Keep the two in
    step; regenerate with `supabase gen types typescript` once the CLI is set
    up if you prefer.

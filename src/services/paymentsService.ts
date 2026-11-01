@@ -1,10 +1,10 @@
 /* =========================================================================
-   KEZMOTO — Payments (Phase 4, manual GCash commission)
+   KEZMOTO - Payments (Phase 4, manual GCash commission)
 
    No payment gateway, no Edge Function, no webhook. The seller pays
    KEZMOTO's GCash number directly and submits a reference number plus a
    screenshot; an admin reviews it and confirms or rejects. That confirm
-   action is the entire trust boundary — see supabase/migrations/0009 and
+   action is the entire trust boundary - see supabase/migrations/0009 and
    0010 for how RLS enforces "only an admin, never the payer, can move a
    payment to succeeded/failed."
    ========================================================================= */
@@ -17,7 +17,7 @@ import { signProofUrl, uploadProof } from './storageService';
 import { settle } from './simulate';
 
 /** Seller pays; flat percentage of the agreed price. One constant, easy to
-    change later — not per-deal configurable in this phase. */
+    change later - not per-deal configurable in this phase. */
 export const COMMISSION_RATE = 0.05;
 
 /** KEZMOTO Pro sellers pass their lower rate (see utils/plans.ts). */
@@ -40,7 +40,7 @@ export const paymentsApi = {
     }, []);
   },
 
-  /** Every payment on the platform — the Commission Report's numeric source. Admin-only via RLS. */
+  /** Every payment on the platform - the Commission Report's numeric source. Admin-only via RLS. */
   async listAll(): Promise<Payment[]> {
     return settle(async () => {
       const { data, error } = await supabase
@@ -52,14 +52,14 @@ export const paymentsApi = {
     }, []);
   },
 
-  /** Signed URL for a proof screenshot, minted on demand — null if there is none. */
+  /** Signed URL for a proof screenshot, minted on demand - null if there is none. */
   async proofUrlFor(payment: Payment): Promise<string | null> {
     return signProofUrl(payment.proofUrl);
   },
 
   /**
    * Seller submits proof of a GCash payment they already made. The amount is
-   * calculated here from the deal's agreed price — informational for the
+   * calculated here from the deal's agreed price - informational for the
    * admin to compare against the screenshot, not a security boundary; the
    * admin's own review is what actually confirms it.
    */

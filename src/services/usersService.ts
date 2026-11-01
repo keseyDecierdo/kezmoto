@@ -1,5 +1,5 @@
 /* =========================================================================
-   KEZMOTO — Public profile lookups
+   KEZMOTO - Public profile lookups
    Profiles are readable by everyone, so this is the one place a screen can
    ask about someone other than the signed-in user.
    ========================================================================= */
@@ -28,7 +28,7 @@ export const usersApi = {
   },
 
   /** Admin-only in practice (the screen is admin-gated); every profile is
-      readable, but only an admin can change the disabled flag — see 0027. */
+      readable, but only an admin can change the disabled flag - see 0027. */
   async listAll(): Promise<ManagedUser[]> {
     return settle(async () => {
       const { data, error } = await supabase

@@ -1,5 +1,5 @@
 /* =========================================================================
-   KEZMOTO — Verification checklist
+   KEZMOTO - Verification checklist
    One row per transaction, admin-only end to end. Saving stamps who
    reviewed it and when; if every check is true, the transaction itself
    advances to 'verified' so the buyer/seller see it without ever seeing the

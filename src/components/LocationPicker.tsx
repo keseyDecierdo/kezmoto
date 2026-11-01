@@ -4,7 +4,7 @@ import type { PhBarangay, PhCity, PhProvince } from '../services/phLocationsServ
 import './LocationPicker.css';
 
 interface LocationPickerProps {
-  /** The saved location text — shown as "Currently: …" until the user picks anew. */
+  /** The saved location text - shown as "Currently: …" until the user picks anew. */
   value?: string;
   /** Called with "Barangay, City, Province" (or "City, Province"), or '' while incomplete. */
   onChange: (location: string) => void;

@@ -6,7 +6,7 @@ import './ChatThreadPage.css';
 
 /**
  * Full-screen conversation (mobile) and the deep-link target for any thread.
- * `?prefill=` seeds the composer — that is how the default
+ * `?prefill=` seeds the composer - that is how the default
  * "Is this unit still available?" enquiry reaches the chat.
  */
 const ChatThreadPage: React.FC = () => {

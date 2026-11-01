@@ -1,5 +1,5 @@
 /* =========================================================================
-   KEZMOTO — Transactions
+   KEZMOTO - Transactions
    A transaction is created exactly once per chat, at the moment either side
    requests a middleman (there is no bare "inquiry" row before that in this
    phase). From there an admin claims it, drives it through the status
@@ -73,7 +73,7 @@ export const transactionsApi = {
     });
   },
 
-  /** Every deal the signed-in user is buying or selling — newest first. */
+  /** Every deal the signed-in user is buying or selling - newest first. */
   async listMine(): Promise<Transaction[]> {
     return settle(async () => {
       const userId = await currentUserId();
@@ -275,7 +275,7 @@ export const transactionsApi = {
       .maybeSingle();
     if (txError) throw new Error(`Could not join this transaction. (${txError.message})`);
     // RLS silently drops the row instead of erroring once someone else has
-    // already claimed it — `.select()` above is what lets this tell the two
+    // already claimed it - `.select()` above is what lets this tell the two
     // apart from a real success.
     if (!claimedTx) throw new Error('Someone else already claimed this request.');
 
@@ -319,7 +319,7 @@ export const transactionsApi = {
 
   /**
    * Admin move (Step 5): set a meetup date/time + place and advance the
-   * status. commission_status/payment_reference are never touched here —
+   * status. commission_status/payment_reference are never touched here -
    * the app never exposes a way to set them directly; only
    * `sync_commission_status` does, triggered by an admin confirming or
    * rejecting a submission in `payments` (see paymentsApi.confirmPayment).
@@ -334,12 +334,12 @@ export const transactionsApi = {
   },
 
   /**
-   * Live updates for one transaction — mainly so an admin's commission
+   * Live updates for one transaction - mainly so an admin's commission
    * confirm/reject (which flips commission_status, and sometimes status)
    * appears without a manual refresh. Re-fetches the joined row on every
    * change since the realtime payload only carries the bare updated columns.
    */
-  /* The topic carries a random suffix so each call gets its own channel —
+  /* The topic carries a random suffix so each call gets its own channel -
      see subscribeToNotifications's comment in notificationsService.ts for
      why a stable, reused topic crashes under React's dev-mode double-invoke. */
   subscribeToTransaction(transactionId: string, onChange: (transaction: Transaction) => void): () => void {

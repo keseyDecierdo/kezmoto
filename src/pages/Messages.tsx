@@ -85,7 +85,7 @@ const Messages: React.FC = () => {
                 {thread.assignedAdmin && (
                   <span
                     className="kez-chip kez-chip--warning messages__middleman-chip"
-                    title="A KEZMOTO admin has joined this conversation as middleman — messages here aren't only between the two of you."
+                    title="A KEZMOTO admin has joined this conversation as middleman - messages here aren't only between the two of you."
                   >
                     Middleman
                   </span>

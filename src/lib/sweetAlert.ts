@@ -1,13 +1,13 @@
 /* =========================================================================
-   KEZMOTO — Sweet Alert (vanilla, no library)
+   KEZMOTO - Sweet Alert (vanilla, no library)
 
    A from-scratch replacement for the old sweetalert2 wrapper. Same public
-   API as before — confirmAction() / errorAlert() — so every call site
+   API as before - confirmAction() / errorAlert() - so every call site
    (SideMenu, Auth, FraudReview, ChatPanel, MyUnits, TransactionDetail)
    keeps working unmodified. Underneath, both are thin wrappers around the
    general-purpose showAlert() engine defined here.
 
-   This file builds and animates plain DOM nodes (no JSX, no dependency) —
+   This file builds and animates plain DOM nodes (no JSX, no dependency) -
    it's appended straight to <body>, same mount point sweetalert2 used.
    ========================================================================= */
 import { DUR_EXIT } from './motion';
@@ -29,7 +29,7 @@ export interface ShowAlertOptions {
   autoClose?: number;
 }
 
-/* Small draw-in icon per type — a stroke-outlined circle plus a mark, both
+/* Small draw-in icon per type - a stroke-outlined circle plus a mark, both
    animated via stroke-dasharray/stroke-dashoffset (the classic "drawing"
    technique: start fully offset, transition the offset to 0 on mount). */
 const ICON_PATHS: Record<AlertType, { mark: string[]; viewBox: string }> = {
@@ -47,7 +47,7 @@ let activeCleanup: (() => void) | null = null;
  * backdrop click.
  */
 export function showAlert(opts: ShowAlertOptions): Promise<boolean> {
-  // Only one alert at a time — if something is already open, tear it down
+  // Only one alert at a time - if something is already open, tear it down
   // first rather than stacking (nothing in the app fires these concurrently).
   activeCleanup?.();
 

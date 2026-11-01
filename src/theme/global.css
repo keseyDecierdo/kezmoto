@@ -1,5 +1,5 @@
 /* =========================================================================
-   KEZMOTO — Global styles & layout primitives
+   KEZMOTO - Global styles & layout primitives
    Breakpoints: mobile <=599px · tablet 600-1023px · desktop >=1024px
    ========================================================================= */
 
@@ -19,14 +19,14 @@ ion-content {
    Light body, dark chrome. Scoped to the two content wrappers of the
    authenticated app (AppPage.tsx's ion-content, and ChatThreadPage's
    full-screen mobile chat) rather than :root, so the sidebar (SideMenu),
-   header (the ion-toolbar inside AppPage), and the tab bar — which all set
-   their own --background to --kez-bg-alt outside these elements — are
+   header (the ion-toolbar inside AppPage), and the tab bar - which all set
+   their own --background to --kez-bg-alt outside these elements - are
    completely unaffected. Every component consistently reads the --kez-*
    tokens (no hardcoded colors anywhere in src/), so redefining the token
-   *values* here is enough for the whole content tree to relight itself —
+   *values* here is enough for the whole content tree to relight itself -
    no per-component edits needed. Landing/Auth/Onboarding/Splash render
    outside AppPage entirely and keep their own dark treatment.
-   Accent/success/warning/danger/shadow tokens are untouched on purpose —
+   Accent/success/warning/danger/shadow tokens are untouched on purpose -
    same palette, just readable on white instead of on --kez-bg.
    ------------------------------------------------------------------------- */
 .app-page__content,
@@ -276,7 +276,7 @@ ion-button.kez-cta {
 
 /* ---------- Visibility helpers ---------- */
 /* These helpers only ever hide. They never set or reset `display`
-   elsewhere, so an element's own flex/grid display survives — a
+   elsewhere, so an element's own flex/grid display survives - a
    `display: revert` here used to fall back to `block` and quietly break
    flex containers such as the gallery thumbnail strip. */
 @media (max-width: 599.98px) {

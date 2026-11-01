@@ -23,7 +23,7 @@ interface RemoveListingModalProps {
   onRemoved: () => void;
 }
 
-/** Admin removes a listing with a required reason — the seller is notified
+/** Admin removes a listing with a required reason - the seller is notified
     and can appeal it (see MyUnits.tsx / ListingAppeals.tsx). */
 const RemoveListingModal: React.FC<RemoveListingModalProps> = ({ isOpen, onClose, listing, onRemoved }) => {
   const [present] = useIonToast();

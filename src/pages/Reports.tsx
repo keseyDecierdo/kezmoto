@@ -14,10 +14,10 @@ import './Reports.css';
 type StatusFilter = 'all' | TransactionStatus;
 
 /**
- * Admin report — every deal on the platform, filterable by status and date,
+ * Admin report - every deal on the platform, filterable by status and date,
  * plus the sales/commission summary Phase 4 adds on top: total units sold,
  * total sale value, and commission actually collected (admin-confirmed GCash
- * payments only — a `pending` or `failed` submission earns KEZMOTO nothing).
+ * payments only - a `pending` or `failed` submission earns KEZMOTO nothing).
  */
 /** Pure so it can sit in a dependency array without upsetting exhaustive-deps. */
 const inDateRange = (iso: string, from: string, to: string): boolean => {
@@ -38,7 +38,7 @@ const Reports: React.FC = () => {
 
   // A deal still stuck pre-payment (inquiry, negotiating, verifying,
   // inspecting...) hasn't earned KEZMOTO anything yet, so it isn't a
-  // reportable transaction here — this table starts from the point the
+  // reportable transaction here - this table starts from the point the
   // seller actually paid (or was waived) the commission.
   const paidTransactions = useMemo(
     () => (data ?? []).filter((tx) => tx.commissionStatus === 'paid' || tx.commissionStatus === 'waived'),
@@ -94,7 +94,7 @@ const Reports: React.FC = () => {
       </div>
       <p className="kez-muted reports__summary-note">
         Sales value counts completed deals only; commission counts admin-confirmed payments only
-        — a pending or rejected submission is not revenue yet. Both respect the date filter below.
+        - a pending or rejected submission is not revenue yet. Both respect the date filter below.
       </p>
 
       <div className="kez-tile reports__filters">
@@ -161,14 +161,14 @@ const Reports: React.FC = () => {
                   key={tx.id}
                   onClick={() => router.push(`/admin/transactions/${tx.id}`, 'forward')}
                 >
-                  <td>{tx.listingTitle ?? '—'}</td>
-                  <td>{tx.buyer?.name ?? '—'}</td>
-                  <td>{tx.seller?.name ?? '—'}</td>
-                  <td>{tx.agreedPrice != null ? formatPrice(tx.agreedPrice) : '—'}</td>
+                  <td>{tx.listingTitle ?? '-'}</td>
+                  <td>{tx.buyer?.name ?? '-'}</td>
+                  <td>{tx.seller?.name ?? '-'}</td>
+                  <td>{tx.agreedPrice != null ? formatPrice(tx.agreedPrice) : '-'}</td>
                   <td>
                     {tx.agreedPrice != null
                       ? `${formatPrice(commissionAmountFor(tx.agreedPrice))} (${tx.commissionStatus})`
-                      : '—'}
+                      : '-'}
                   </td>
                   <td>
                     <span className="kez-chip">{TRANSACTION_STATUS_LABEL[tx.status]}</span>

@@ -1,5 +1,5 @@
 /* =========================================================================
-   KEZMOTO — Row ⇄ domain mapping
+   KEZMOTO - Row ⇄ domain mapping
    The screens keep the Phase 1 types; this module is the only place that
    knows about column names, so the two vocabularies never leak into each
    other.
@@ -86,7 +86,7 @@ export const mapProfile = (row: ProfileRow, email = ''): User => ({
   ...(row.profile_photo_url ? { avatarUrl: row.profile_photo_url } : {}),
   facebook: row.facebook_url ?? '',
   // Deliberately mapped here (same as every other column) rather than
-  // filtered by caller — usersApi.getById is the "view someone else" path
+  // filtered by caller - usersApi.getById is the "view someone else" path
   // and the public profile page simply never reads this field, the same
   // way it never reads `email` off a User it fetched for someone else.
   idType: row.id_type ?? '',
@@ -128,7 +128,7 @@ const mapDocuments = (row: ListingRow, joins: ListingJoins): UnitDocument[] => {
 
   stored.forEach((value, index) => {
     const url = joins.documentUrls?.get(value);
-    if (!url) return; // no signed URL (signed-out visitor) — omit rather than render a dead image
+    if (!url) return; // no signed URL (signed-out visitor) - omit rather than render a dead image
     const meta = joins.redactions?.get(value);
     documents.push({
       id: meta?.document_redaction_id ?? `${row.listing_id}-doc-${index}`,

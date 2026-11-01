@@ -23,7 +23,7 @@ interface AppealListingModalProps {
   onFiled: () => void;
 }
 
-/** Seller appeals a removed listing — goes to the admin's Listing Appeals queue. */
+/** Seller appeals a removed listing - goes to the admin's Listing Appeals queue. */
 const AppealListingModal: React.FC<AppealListingModalProps> = ({ isOpen, onClose, listing, onFiled }) => {
   const [present] = useIonToast();
   const [message, setMessage] = useState('');
@@ -77,7 +77,7 @@ const AppealListingModal: React.FC<AppealListingModalProps> = ({ isOpen, onClose
       <div className="kez-modal__body">
         <form onSubmit={submit} noValidate className="appeal-listing-modal__form">
           <p className="kez-muted">
-            A KEZMOTO admin removed this listing. Explain why it should go back up — if approved, it
+            A KEZMOTO admin removed this listing. Explain why it should go back up - if approved, it
             becomes available again right away.
           </p>
 

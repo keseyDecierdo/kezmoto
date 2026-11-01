@@ -53,7 +53,7 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({ photos, alt }) => {
         <div className="gallery__track" ref={trackRef}>
           {photos.map((photo, i) => (
             <div className="gallery__slide" key={photo + i}>
-              <img src={photo} alt={`${alt} — photo ${i + 1} of ${photos.length}`} />
+              <img src={photo} alt={`${alt} - photo ${i + 1} of ${photos.length}`} />
             </div>
           ))}
         </div>

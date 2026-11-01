@@ -4,7 +4,7 @@
 
 # KEZMOTO
 
-**Buy. Sell. Ride.** — a second-hand motorcycle marketplace for the Philippines,
+**Buy. Sell. Ride.** - a second-hand motorcycle marketplace for the Philippines,
 with an optional admin middleman for your deal.
 
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
@@ -69,11 +69,11 @@ Buyers never pay. Sellers choose:
 | | **Free** | **Pro · Monthly** | **Pro · Yearly** | **Boost** |
 |---|---|---|---|---|
 | Price | ₱0 | ₱149 / 30 days | ₱1,490 / year (save ₱298) | ₱49 / listing |
-| Buy, chat, offers, Wanted, middleman, AI assistant | ✓ | ✓ | ✓ | — |
-| Active listings | 3 | Unlimited | Unlimited | — |
-| Commission when a unit sells | 5% | 3% | 3% | — |
-| Featured at the top of Home | — | 2 free boosts | 24 free boosts | 7 days |
-| PRO badge | — | ✓ | ✓ | — |
+| Buy, chat, offers, Wanted, middleman, AI assistant | ✓ | ✓ | ✓ | - |
+| Active listings | 3 | Unlimited | Unlimited | - |
+| Commission when a unit sells | 5% | 3% | 3% | - |
+| Featured at the top of Home | - | 2 free boosts | 24 free boosts | 7 days |
+| PRO badge | - | ✓ | ✓ | - |
 
 Payments go to KEZMOTO's GCash number; the seller uploads the receipt and an
 admin approves it on **Plan Payments**. No payment gateway is required.
@@ -102,7 +102,7 @@ cp .env.example .env.local   # VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY
 npm run dev                  # http://localhost:5173
 ```
 
-Set up the Supabase project first — create it, run the migrations in
+Set up the Supabase project first - create it, run the migrations in
 `supabase/migrations/` in order, configure Brevo SMTP and the email templates:
 see **[supabase/README.md](supabase/README.md)**.
 

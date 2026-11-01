@@ -59,7 +59,7 @@ const Profile: React.FC = () => {
   const [idType, setIdType] = useState<IdType>('national_id');
   const [faceModalOpen, setFaceModalOpen] = useState(false);
   const [checkingFace, setCheckingFace] = useState(false);
-  /* The AI check *failing* (Gemini busy, network blip — nothing written to
+  /* The AI check *failing* (Gemini busy, network blip - nothing written to
      the profile) is a different situation from it succeeding and reporting a
      genuine mismatch, which persists its own note. Only the former can be
      usefully re-run against the same photo, so it needs its own state. */
@@ -158,13 +158,13 @@ const Profile: React.FC = () => {
   };
 
   const ID_COPY = {
-    ok: 'Step 1 done — the name matches your profile. Now scan your face to finish.',
+    ok: 'Step 1 done - the name matches your profile. Now scan your face to finish.',
     mismatch: "The name on that ID doesn't match your profile name. See the note below.",
     failed: 'Could not verify that ID.',
   };
 
   const FACE_COPY = {
-    ok: "Face match confirmed — you're fully ID verified and can now post motorcycles.",
+    ok: "Face match confirmed - you're fully ID verified and can now post motorcycles.",
     mismatch: "That selfie didn't match the face on your ID. See the note below.",
     failed: 'Could not check that selfie.',
   };
@@ -300,10 +300,10 @@ const Profile: React.FC = () => {
               </p>
               <ul>
                 <li className={user.idNameMatched ? 'is-done' : ''}>
-                  Step 1 · Upload a valid ID {user.idNameMatched ? '— done' : ''}
+                  Step 1 · Upload a valid ID {user.idNameMatched ? '- done' : ''}
                 </li>
                 <li className={user.faceVerified ? 'is-done' : ''}>
-                  Step 2 · Scan your face {user.faceVerified ? '— done' : ''}
+                  Step 2 · Scan your face {user.faceVerified ? '- done' : ''}
                 </li>
               </ul>
             </div>
@@ -468,7 +468,7 @@ const Profile: React.FC = () => {
         <section className="kez-tile profile__id">
             <h2 className="kez-display">Identity verification</h2>
             <p className="kez-muted">
-              Upload an ID, then scan your face. Others only see the "Verified" badge — never
+              Upload an ID, then scan your face. Others only see the "Verified" badge - never
               your ID or selfie.
             </p>
 
@@ -491,7 +491,7 @@ const Profile: React.FC = () => {
               </label>
             )}
 
-            {/* ---------------------- Step 1 — valid ID ---------------------- */}
+            {/* ---------------------- Step 1 - valid ID ---------------------- */}
             <p className="profile__step-label">
               <span className={`profile__step-num${user.idNameMatched ? ' is-done' : ''}`}>1</span>
               Upload a valid ID
@@ -556,7 +556,7 @@ const Profile: React.FC = () => {
             )}
 
             {/* The check itself failed, so the photo is uploaded but unjudged
-                — re-run it without making them pick the file again. */}
+                - re-run it without making them pick the file again. */}
             {!checkingId && idError && user.idDocumentUrl && (
               <div className="profile__id-retry">
                 <p className="profile__id-note">
@@ -577,7 +577,7 @@ const Profile: React.FC = () => {
               </p>
             )}
 
-            {/* --------------------- Step 2 — face match --------------------- */}
+            {/* --------------------- Step 2 - face match --------------------- */}
             <p className="profile__step-label">
               <span className={`profile__step-num${user.faceVerified ? ' is-done' : ''}`}>2</span>
               Scan your face
@@ -586,7 +586,7 @@ const Profile: React.FC = () => {
             {!user.idNameMatched ? (
               <p className="profile__step-locked">
                 <IonIcon icon={lockClosedOutline} />
-                Finish step 1 first — your selfie is compared against the ID photo you upload there.
+                Finish step 1 first - your selfie is compared against the ID photo you upload there.
               </p>
             ) : checkingFace ? (
               <div className="profile__id-status">
@@ -603,7 +603,7 @@ const Profile: React.FC = () => {
                 >
                   <IonIcon icon={user.faceVerified ? shieldCheckmarkOutline : cameraOutline} />
                   {user.faceVerified
-                    ? '✓ Face verified — scan again'
+                    ? '✓ Face verified - scan again'
                     : user.faceVerificationNote
                       ? 'Try again'
                       : 'Open camera and scan my face'}

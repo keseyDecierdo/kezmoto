@@ -1,7 +1,7 @@
 /* =========================================================================
-   KEZMOTO — Perceptual image hashing
+   KEZMOTO - Perceptual image hashing
    A cheap, dependency-free 8×8 average-hash (aHash), used only for the
-   advisory duplicate-photo fraud check (Phase 5) — not exact matching, and
+   advisory duplicate-photo fraud check (Phase 5) - not exact matching, and
    nothing here ever blocks a listing on its own; a match only ever writes a
    `fraud_flags` row for an admin to look at.
    ========================================================================= */

@@ -1,11 +1,11 @@
 /* =========================================================================
-   KEZMOTO — Design tokens
+   KEZMOTO - Design tokens
    Single source of truth for color, spacing and typography.
    Never restyle these values per screen; consume the variables instead.
    ========================================================================= */
 
 :root {
-  /* ---------- Brand palette — orange / black / white ---------- */
+  /* ---------- Brand palette - orange / black / white ---------- */
   --kez-bg: #0a0a0a;
   --kez-bg-alt: #0a0a0a;
   --kez-surface: #1a1a1a;
@@ -94,7 +94,7 @@
   --kez-header-height: 50px;
   --kez-tabbar-height: 52px;
   /* Clears the chat composer's Send button when the AI assistant bubble is
-     raised on Messages/chat screens — measured live: the composer renders
+     raised on Messages/chat screens - measured live: the composer renders
      ~98.4px tall (12px padding + a 73.6px IonTextarea + 12px padding + a
      hairline border), rounded up to 100px, plus a --kez-space-3 (12px)
      breathing gap above it. */
@@ -112,7 +112,7 @@
   --kez-modal-gutter: clamp(12px, 3vw, 32px);
 
   /* =====================================================================
-     Ionic variable mapping — the app is dark-only by design.
+     Ionic variable mapping - the app is dark-only by design.
      ===================================================================== */
   --ion-font-family: var(--kez-font-body);
 

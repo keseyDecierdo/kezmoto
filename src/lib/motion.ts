@@ -1,9 +1,9 @@
 /* =========================================================================
-   KEZMOTO — one motion language for every overlay
+   KEZMOTO - one motion language for every overlay
    IonModal (via setupIonicReact) and the SweetAlert dialogs share these
    timings: a fluid, slightly springy entrance and a quick exit. The CSS
    side reads the same values from the --kez-ease-* / --kez-dur-* tokens in
-   theme/variables.css — keep the two in sync.
+   theme/variables.css - keep the two in sync.
    ========================================================================= */
 
 import { createAnimation } from '@ionic/react';

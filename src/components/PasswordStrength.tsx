@@ -9,7 +9,7 @@ const LEVELS = [
   { label: 'Strong', tone: 'strong' },
 ] as const;
 
-/** 0–4. Under 6 characters is always 0 — the form's own minimum. */
+/** 0–4. Under 6 characters is always 0 - the form's own minimum. */
 const passwordScore =(password: string): number => {
   if (password.length < 6) return 0;
   let score = 1;
@@ -21,7 +21,7 @@ const passwordScore =(password: string): number => {
 };
 
 /**
- * Four-segment strength meter under a password field. Advisory only — the
+ * Four-segment strength meter under a password field. Advisory only - the
  * form still enforces just its 6-character minimum.
  */
 const PasswordStrength: React.FC<{ password: string }> = ({ password }) => {

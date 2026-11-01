@@ -12,7 +12,7 @@ import { formatDate } from '../utils/format';
 import './Sellers.css';
 
 /** Every customer who has posted at least one unit, with View Units for
-    everyone and an extra general-outreach Message button for admins —
+    everyone and an extra general-outreach Message button for admins -
     a separate page from Manage Users, which keeps its own Disable/Enable
     focus untouched. */
 const Sellers: React.FC = () => {

@@ -21,7 +21,7 @@ import './FraudReview.css';
 /**
  * Admin-only queue of pending fraud flags, grouped by listing. Neither the
  * flag type/detail nor the fact that a listing was flagged at all ever
- * reaches a buyer or the seller — this screen, gated by RLS (0013), is the
+ * reaches a buyer or the seller - this screen, gated by RLS (0013), is the
  * only place any of it is visible.
  */
 const FraudReview: React.FC = () => {
@@ -47,7 +47,7 @@ const FraudReview: React.FC = () => {
       await fraudApi.review(flag.id, outcome, outcome === 'reviewed_removed' ? notes[flag.id] : undefined);
       reload();
       await present({
-        message: outcome === 'reviewed_removed' ? 'Flag confirmed — the listing was removed.' : 'Flag dismissed.',
+        message: outcome === 'reviewed_removed' ? 'Flag confirmed - the listing was removed.' : 'Flag dismissed.',
         duration: 2000,
         color: outcome === 'reviewed_removed' ? 'danger' : 'success',
         position: 'top',

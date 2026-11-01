@@ -19,7 +19,7 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
-/* KEZMOTO is dark-only by design — the dark palette is always on, never a toggle. */
+/* KEZMOTO is dark-only by design - the dark palette is always on, never a toggle. */
 import '@ionic/react/css/palettes/dark.always.css';
 
 /* Theme (tokens first, then global rules that consume them) */
@@ -83,10 +83,10 @@ const Shell: React.FC = () => {
   const { pathname } = useLocation();
   const showChrome = isAuthenticated && !PUBLIC_ROUTES.includes(pathname);
   // Gives the AI Assistant listing context when it's mounted while the
-  // buyer is looking at that specific unit — see the global mount below.
+  // buyer is looking at that specific unit - see the global mount below.
   const listingIdFromPath = pathname.match(/^\/listing\/([^/]+)/)?.[1];
   // The chat composer's own Send button sits in the exact same bottom-right
-  // corner as the AI assistant bubble whenever a conversation is open — the
+  // corner as the AI assistant bubble whenever a conversation is open - the
   // full thread route always has one, and Messages only shows its split
   // view (with an embedded composer) from tablet width up; on phone width
   // it's list-only, nothing to clear. See the global mount below.
@@ -225,7 +225,7 @@ const Shell: React.FC = () => {
           }
         />
 
-        {/* AI Assistant is the floating chatbot mounted globally below, once per session — no standalone route. */}
+        {/* AI Assistant is the floating chatbot mounted globally below, once per session - no standalone route. */}
 
         {/* ------- Out of Phase 1 scope: routes only, no logic ------- */}
         <Route
@@ -318,7 +318,7 @@ const Shell: React.FC = () => {
     </IonRouterOutlet>
     </IonSplitPane>
 
-    {/* Global, persists across navigation instead of remounting per-page —
+    {/* Global, persists across navigation instead of remounting per-page -
         listingIdFromPath keeps the listing-aware context on that one route. */}
     {/* Hidden while messaging a person on a phone: two chat boxes on one
         small screen confuse more than they help. */}

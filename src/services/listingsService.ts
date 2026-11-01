@@ -1,5 +1,5 @@
 /* =========================================================================
-   KEZMOTO — Listings
+   KEZMOTO - Listings
    Photos and documents are stored as bucket paths; the seller's name comes
    from an embedded profiles row; labels and redaction boxes live in
    document_redactions, one row per document.
@@ -65,10 +65,10 @@ const mapRows = async (rows: ListingRowWithSeller[]): Promise<Listing[]> => {
 
 /**
  * Best-effort perceptual hash of each freshly picked photo (Phase 5 fraud
- * detection — see supabase/migrations/0012). Must run before `persistAssets`
+ * detection - see supabase/migrations/0012). Must run before `persistAssets`
  * uploads them, since that consumes the pending File via `takePendingFile`;
  * `peekPendingFile` reads without consuming. Already-stored photos (editing
- * an existing listing, sample artwork) are skipped — duplicate detection
+ * an existing listing, sample artwork) are skipped - duplicate detection
  * only matters for genuinely new uploads.
  */
 const hashNewPhotos = async (urls: string[]): Promise<string[]> => {
@@ -160,7 +160,7 @@ export const listingsApi = {
     }, []);
   },
 
-  /** Landing page preview — a handful of active units, nothing more. */
+  /** Landing page preview - a handful of active units, nothing more. */
   async listPreview(limit = 6): Promise<Listing[]> {
     return settle(async () => {
       const { data, error } = await supabase
@@ -202,10 +202,10 @@ export const listingsApi = {
   },
 
   /**
-   * The seller's own removed units — excluded from listBySeller above (and
+   * The seller's own removed units - excluded from listBySeller above (and
    * from everywhere else) on purpose. Only used to let a seller see and
    * appeal a removal (see MyUnits.tsx); note the mapped `status` on these
-   * rows reads as 'draft' (mapListingStatus has no 'removed' case) — callers
+   * rows reads as 'draft' (mapListingStatus has no 'removed' case) - callers
    * here already know every row is removed and shouldn't trust that field.
    */
   async listRemovedBySeller(sellerId: string): Promise<Listing[]> {
@@ -223,7 +223,7 @@ export const listingsApi = {
 
   /**
    * Every distinct seller_id with at least one unit still "on the system"
-   * (same bar as listBySeller — anything but removed). Used by the Sellers
+   * (same bar as listBySeller - anything but removed). Used by the Sellers
    * page to only list customers who have actually posted something.
    */
   async listSellerIdsWithUnits(): Promise<string[]> {

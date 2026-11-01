@@ -39,8 +39,8 @@ const awaitingScores = (listing: Listing): boolean =>
   Date.now() - new Date(listing.createdAt).getTime() < SCORING_WINDOW_MS;
 
 /**
- * The portal both roles land on after login. Admin sees the same card grid —
- * there is no separate dashboard — plus a middleman banner.
+ * The portal both roles land on after login. Admin sees the same card grid -
+ * there is no separate dashboard - plus a middleman banner.
  */
 const Home: React.FC = () => {
   const router = useIonRouter();
@@ -50,7 +50,7 @@ const Home: React.FC = () => {
   const { data, loading, error, reload } = useAsync<Listing[]>(() => listingsApi.list(), [revision]);
 
   // Ionic keeps Home mounted while the user is on a unit's detail page, so
-  // coming back would otherwise show the rows as they were first fetched —
+  // coming back would otherwise show the rows as they were first fetched -
   // before the AI scores landed. Refresh quietly on every return (the first
   // enter is skipped; useAsync already loads on mount) and re-arm the poll.
   const [pollKey, setPollKey] = useState(0);
@@ -72,7 +72,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     let attempts = 0;
-    const maxAttempts = 18; // ~90s at 5s each — matches ListingDetail's budget
+    const maxAttempts = 18; // ~90s at 5s each - matches ListingDetail's budget
     const timer = window.setInterval(() => {
       attempts += 1;
       const current = listingsRef.current;
@@ -165,7 +165,7 @@ const Home: React.FC = () => {
             </h1>
             <p className="kez-muted">
               {isAdmin
-                ? 'The same portal your customers see — plus the middleman tools in the menu.'
+                ? 'The same portal your customers see - plus the middleman tools in the menu.'
                 : 'Every unit here is posted by the person who owns it.'}
             </p>
           </div>

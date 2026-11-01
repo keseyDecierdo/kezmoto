@@ -16,7 +16,7 @@ import './FaceCaptureModal.css';
 interface FaceCaptureModalProps {
   isOpen: boolean;
   onCancel: () => void;
-  /** Hands back the captured frame as a File — this component never
+  /** Hands back the captured frame as a File - this component never
       touches storage/AI itself, same as PhotoGallery/RedactionCanvas
       staying pure UI while the page does the actual upload. */
   onCapture: (file: File) => void;
@@ -106,7 +106,7 @@ const FaceCaptureModal: React.FC<FaceCaptureModalProps> = ({ isOpen, onCancel, o
         if (!blob) return;
         const file = new File([blob], 'selfie.jpg', { type: 'image/jpeg' });
         capturedFileRef.current = file;
-        stopStream(); // freeze the frame — don't keep the camera running during review
+        stopStream(); // freeze the frame - don't keep the camera running during review
         setPreviewUrl(URL.createObjectURL(file));
       },
       'image/jpeg',

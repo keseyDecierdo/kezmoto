@@ -6,7 +6,7 @@ interface AvatarProps {
   name: string;
   color?: string;
   size?: 'sm' | 'md' | 'lg';
-  /** Uploaded photo, if any — replaces the initials when set. */
+  /** Uploaded photo, if any - replaces the initials when set. */
   imageUrl?: string;
   /** Small cyan dot for verified accounts. */
   verified?: boolean;

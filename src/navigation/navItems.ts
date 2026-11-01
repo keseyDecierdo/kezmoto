@@ -41,7 +41,7 @@ export const PRIMARY_NAV: NavItem[] = [
 /**
  * Secondary destinations: menu drawer on mobile, lower sidebar on desktop.
  * The AI Assistant (Phase 5) is a floating chatbot on Home/Listing Detail,
- * not a page of its own — no nav entry for it.
+ * not a page of its own - no nav entry for it.
  */
 export const SECONDARY_NAV: NavItem[] = [
   { id: 'my-units', label: 'My Units', href: '/units', icon: bookmarkOutline },
@@ -64,7 +64,7 @@ export const PROFILE_NAV: NavItem = {
  * Admin-only tools. Middleman Requests and Reports are wired up (Phase 3).
  * Verification is reached per-deal from a transaction (Middleman Requests →
  * a transaction's Verification tab), not its own list screen, so there's no
- * sidebar entry for it — the old /admin/verification placeholder route is
+ * sidebar entry for it - the old /admin/verification placeholder route is
  * left in App.tsx in case anything still links to it directly.
  */
 export const ADMIN_NAV: NavItem[] = [

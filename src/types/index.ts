@@ -1,5 +1,5 @@
 /* =========================================================================
-   KEZMOTO — Domain models
+   KEZMOTO - Domain models
    These shapes mirror the eventual Supabase tables so swapping the mock
    service layer for real queries does not change component props.
    ========================================================================= */
@@ -23,13 +23,13 @@ export interface User {
   role: UserRole;
   /** Accent used for the generated avatar when no photo is set. */
   avatarColor: string;
-  /** Uploaded profile photo, if any — falls back to the initials avatar. */
+  /** Uploaded profile photo, if any - falls back to the initials avatar. */
   avatarUrl?: string;
   memberSince: string;
   bio: string;
   /** True only once BOTH verification steps pass: the ID's printed name
       matches `name` (`idNameMatched`) AND a live face scan matches the ID
-      photo (`faceVerified`) — see the `verify-id` and `face-match` Edge
+      photo (`faceVerified`) - see the `verify-id` and `face-match` Edge
       Functions, which are the only things that ever write this. */
   verified: boolean;
   facebook: string;
@@ -39,11 +39,11 @@ export interface User {
   /** Step 1 result: true once the uploaded ID's printed name has been
       AI-matched against `name`, independent of step 2. */
   idNameMatched: boolean;
-  /** Set only when a valid-ID upload's name didn't match `name`. Owner-only —
+  /** Set only when a valid-ID upload's name didn't match `name`. Owner-only -
       never populated on a profile fetched for someone else (see mapProfile). */
   idVerificationNote: string;
   /** Storage path of the last uploaded valid ID, set on match or mismatch.
-      Owner-only, same as idVerificationNote — only Profile.tsx ever signs
+      Owner-only, same as idVerificationNote - only Profile.tsx ever signs
       and opens it; PublicProfile.tsx never reads this field. */
   idDocumentUrl: string;
   /** Step 2 result: true once a live selfie has been AI-matched against the
@@ -131,7 +131,7 @@ export interface Listing {
   mileageKm: number;
   location: string;
   photos: string[];
-  /** Average-hash of each newly uploaded photo, best-effort — not aligned by
+  /** Average-hash of each newly uploaded photo, best-effort - not aligned by
       index to `photos` (edited/sample photos are skipped). See imageHash.ts. */
   photoHashes: string[];
   documents: UnitDocument[];
@@ -142,10 +142,10 @@ export interface Listing {
   createdAt: string;
   /** Seller opted into an admin-assisted (middleman) transaction. */
   adminAssisted: boolean;
-  /** Phase 5 — set only by score-listing-quality; never client-writable (see 0012). */
+  /** Phase 5 - set only by score-listing-quality; never client-writable (see 0012). */
   listingQualityScore: number | null;
   listingQualityBreakdown: QualityCheck[] | null;
-  /** Phase 5 — set only by score-condition. */
+  /** Phase 5 - set only by score-condition. */
   conditionScore: number | null;
   conditionScoreExplanation: string | null;
   /** Featured (pinned first) until this ISO time; '' = not boosted. */
@@ -188,7 +188,7 @@ export interface ChatMessage {
   /** Absent for system messages. Drives the "Admin" badge on a bubble. */
   senderRole?: UserRole;
   body: string;
-  /** Attached photo, if any — a message can carry an image with or without body text. */
+  /** Attached photo, if any - a message can carry an image with or without body text. */
   imageUrl?: string;
   sentAt: string;
   /** System notices (e.g. middleman requested) render as a centred pill. */
@@ -208,18 +208,18 @@ export interface ChatThread {
   listingId: string | null;
   listingTitle: string | null;
   listingPhoto: string | null;
-  /** Current status of the linked listing — null when there is none. */
+  /** Current status of the linked listing - null when there is none. */
   listingStatus: ListingStatus | null;
   /** True when the signed-in viewer is the linked listing's seller. */
   isOwnListing: boolean;
-  /** False for an admin-initiated outreach thread (no buyer side at all) —
+  /** False for an admin-initiated outreach thread (no buyer side at all) -
    *  used to hide actions (like Request Middleman) that assume one exists. */
   hasBuyer: boolean;
   participant: ChatParticipant;
-  /** The admin who joined this thread as middleman, if any — distinct from
+  /** The admin who joined this thread as middleman, if any - distinct from
    *  `participant` when a third party joins a buyer↔seller thread. */
   assignedAdmin?: { id: string; name: string };
-  /** Every party in this thread — buyer, seller, and the admin once one has
+  /** Every party in this thread - buyer, seller, and the admin once one has
    *  joined. `participant` only ever names "the other side of the deal",
    *  which breaks down once a middleman makes it a three-way conversation,
    *  so this is what labels each message bubble by its actual sender. */
@@ -231,7 +231,7 @@ export interface ChatThread {
 }
 
 /* =========================================================================
-   Phase 3 — transaction lifecycle & admin middleman tooling
+   Phase 3 - transaction lifecycle & admin middleman tooling
    ========================================================================= */
 
 export type TransactionStatus =
@@ -289,12 +289,12 @@ export interface Transaction {
   adminId: string | null;
   adminName: string | null;
   proposedPrice: number | null;
-  /** Who made the pending offer — only the other party may accept it. */
+  /** Who made the pending offer - only the other party may accept it. */
   proposedBy: string | null;
   agreedPrice: number | null;
   status: TransactionStatus;
   /**
-   * Phase 4 — Option B: KEZMOTO never holds the sale itself, only a
+   * Phase 4 - Option B: KEZMOTO never holds the sale itself, only a
    * commission from the seller. The owed amount is always derived from
    * `agreedPrice` (see `commissionAmountFor` in paymentsService.ts) rather
    * than cached here, so it can never drift out of sync with the price;
@@ -331,7 +331,7 @@ export interface Review {
 }
 
 /* =========================================================================
-   Phase 4 — payment & commission (Option B: facilitated payment)
+   Phase 4 - payment & commission (Option B: facilitated payment)
    ========================================================================= */
 
 export type PaymentType = 'commission' | 'full_sale_facilitated';
@@ -349,7 +349,7 @@ export interface Payment {
   /** Storage path in the private payment-proofs bucket. */
   proofUrl: string | null;
   status: PaymentStatus;
-  /** The admin who reviewed it — null while still pending. */
+  /** The admin who reviewed it - null while still pending. */
   confirmedBy: string | null;
   confirmedAt: string | null;
   createdAt: string;
@@ -357,7 +357,7 @@ export interface Payment {
 }
 
 /* =========================================================================
-   Phase 5 — AI chatbot, listing quality, condition score, fraud detection
+   Phase 5 - AI chatbot, listing quality, condition score, fraud detection
    ========================================================================= */
 
 export type FraudFlagType =
@@ -381,7 +381,7 @@ export const FRAUD_FLAG_LABEL: Record<FraudFlagType, string> = {
   admin_removed: 'Removed by an admin',
 };
 
-/** Admin-only — a seller never sees whether or why their listing was flagged. */
+/** Admin-only - a seller never sees whether or why their listing was flagged. */
 export interface FraudFlag {
   id: string;
   listingId: string;
@@ -390,7 +390,7 @@ export interface FraudFlag {
   sellerName: string | null;
   flagType: FraudFlagType;
   detail: string;
-  /** The admin's own note — e.g. the reason typed when removing the listing. */
+  /** The admin's own note - e.g. the reason typed when removing the listing. */
   adminNote: string | null;
   aiConfidence: number | null;
   status: FraudFlagStatus;
@@ -398,7 +398,7 @@ export interface FraudFlag {
 }
 
 /* =========================================================================
-   Listing appeals — a seller appeals a removed listing; admins approve
+   Listing appeals - a seller appeals a removed listing; admins approve
    (reinstates it) or deny.
    ========================================================================= */
 
@@ -420,7 +420,7 @@ export interface ListingAppeal {
 }
 
 /* =========================================================================
-   User reports — a customer reports the other side of a chat; admins review
+   User reports - a customer reports the other side of a chat; admins review
    ========================================================================= */
 
 export type ReportReason =
@@ -448,7 +448,7 @@ export interface ReportEvidenceLine {
   at: string;
 }
 
-/** Admin-only — the reported user is never told who reported them. */
+/** Admin-only - the reported user is never told who reported them. */
 export interface UserReport {
   id: string;
   reporterId: string;

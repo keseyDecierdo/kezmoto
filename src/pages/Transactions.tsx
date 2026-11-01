@@ -15,7 +15,7 @@ import './Transactions.css';
 type StatusFilter = 'all' | TransactionStatus;
 
 /**
- * "My Transactions" / transaction history for a signed-in customer — every
+ * "My Transactions" / transaction history for a signed-in customer - every
  * deal where they are the buyer or the seller. Doubles as the customer
  * report the Phase 3 brief describes: same data, no admin-only fields, just
  * scoped to this account by the RLS-backed `listMine()` query itself.

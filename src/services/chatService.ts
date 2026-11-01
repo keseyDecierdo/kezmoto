@@ -1,5 +1,5 @@
 /* =========================================================================
-   KEZMOTO — Chats and messages
+   KEZMOTO - Chats and messages
    A thread is a `chats` row plus its `messages`. The participant a screen
    shows is always the other side of the deal, so every read needs to know who
    is looking.
@@ -86,7 +86,7 @@ const mapThread = (row: ChatRowWithJoins, viewerId: string): ChatThread => {
   const hasBuyer = row.buyer_id != null;
   const viewerIsBuyer = row.buyer_id === viewerId;
   // A buyer-less thread is an admin reaching out to a seller directly (see
-  // openAdminThreadWithSeller) — neither side is "the buyer", so the normal
+  // openAdminThreadWithSeller) - neither side is "the buyer", so the normal
   // buyer/seller swap doesn't apply. Every row that DOES have a buyer keeps
   // today's exact behavior; this branch only ever changes what was
   // previously the wrong fallback (`row.buyer` being null anyway).
@@ -191,7 +191,7 @@ export const chatsApi = {
     if (existing) return chatsApi.getThread(existing.chat_id);
 
     if (listing.sellerId === viewerId) {
-      throw new Error('This is your own unit — buyers will start the thread with you.');
+      throw new Error('This is your own unit - buyers will start the thread with you.');
     }
 
     const { data, error } = await supabase
@@ -210,8 +210,8 @@ export const chatsApi = {
   },
 
   /**
-   * Admin-only: reaches out to a seller directly — about one specific
-   * listing, or in general when `listingId` is omitted — without inserting
+   * Admin-only: reaches out to a seller directly - about one specific
+   * listing, or in general when `listingId` is omitted - without inserting
    * the admin as a fake buyer (see openThreadForListing). Returns the
    * existing outreach thread for that seller/listing pair if one is
    * already open.
@@ -249,7 +249,7 @@ export const chatsApi = {
   /**
    * Returns the existing thread for reaching out about a Wanted post,
    * creating one if needed. No listing is involved, so `listing_id` stays
-   * null — the post's author is the schema's "buyer" (the one looking to
+   * null - the post's author is the schema's "buyer" (the one looking to
    * buy) regardless of which side reaches out first, same convention a
    * listing thread uses.
    */
@@ -257,7 +257,7 @@ export const chatsApi = {
     const viewerId = await requireUserId();
 
     if (post.authorId === viewerId) {
-      throw new Error('This is your own post — interested buyers will start the thread with you.');
+      throw new Error('This is your own post - interested buyers will start the thread with you.');
     }
 
     const { data: existing } = await supabase
@@ -309,7 +309,7 @@ export const chatsApi = {
     return mapMessage(data as MessageRow);
   },
 
-  /** Drops a centred system notice into the thread — used for middleman
+  /** Drops a centred system notice into the thread - used for middleman
    *  requests and any other side-effect-of-an-action notice. */
   async postSystemMessage(threadId: string, text: string): Promise<void> {
     const viewerId = await requireUserId();
@@ -405,7 +405,7 @@ export const chatsApi = {
    * Live thread. Realtime respects RLS, so only participants ever receive a
    * row. Returns the unsubscribe function.
    */
-  /* The topic carries a random suffix so each call gets its own channel —
+  /* The topic carries a random suffix so each call gets its own channel -
      see subscribeToNotifications's comment in notificationsService.ts for
      why a stable, reused topic crashes under React's dev-mode double-invoke. */
   subscribeToMessages(threadId: string, onMessage: (message: ChatMessage) => void): () => void {

@@ -44,7 +44,7 @@ const ListingAppeals: React.FC = () => {
       await listingAppealsApi.review(appeal.id, status, notes[appeal.id] ?? '');
       reload();
       await toast(
-        status === 'approved' ? 'Appeal approved — the listing is active again.' : 'Appeal denied.',
+        status === 'approved' ? 'Appeal approved - the listing is active again.' : 'Appeal denied.',
         'success'
       );
     } catch (err) {
@@ -101,7 +101,7 @@ const ListingAppeals: React.FC = () => {
               <header className="listing-appeals__head">
                 <div>
                   <strong>{appeal.listingTitle ?? 'Removed listing'}</strong>
-                  <span className="kez-muted"> — {appeal.sellerName ?? 'Unknown seller'}</span>
+                  <span className="kez-muted"> - {appeal.sellerName ?? 'Unknown seller'}</span>
                 </div>
               </header>
 

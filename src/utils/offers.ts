@@ -5,7 +5,7 @@ import type { Transaction } from '../types';
  * - none     no offer yet (or the last one was declined)
  * - mine     the viewer's offer is waiting for the other party
  * - theirs   the other party's offer is waiting for the viewer
- * - locked   a middleman is running the deal, or it's closed —
+ * - locked   a middleman is running the deal, or it's closed -
  *            buyers and sellers can no longer negotiate here
  * `agreedPrice` rides alongside any of these once an offer was accepted.
  */

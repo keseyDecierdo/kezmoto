@@ -3,7 +3,7 @@ import type { Database } from './database.types';
 
 /**
  * The one Supabase client for the whole app. Every service imports this
- * instance — creating a second one would mean a second auth listener and a
+ * instance - creating a second one would mean a second auth listener and a
  * second realtime socket.
  */
 

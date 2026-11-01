@@ -29,7 +29,7 @@ interface AppPageProps {
   footer?: React.ReactNode;
   /** Hide the bottom tab bar (auth screens, chat thread on mobile). */
   hideTabs?: boolean;
-  /** Skip the max-width container — used by edge-to-edge layouts. */
+  /** Skip the max-width container - used by edge-to-edge layouts. */
   bleed?: boolean;
   /** Removes content padding entirely (split panes manage their own). */
   flush?: boolean;

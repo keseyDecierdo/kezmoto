@@ -1,5 +1,5 @@
 /* =========================================================================
-   KEZMOTO — Authentication and profiles
+   KEZMOTO - Authentication and profiles
    Supabase Auth owns credentials; `profiles` owns everything the app shows
    about a person. A database trigger creates the profile row on signup, so
    there is never a session without a profile behind it.
@@ -44,7 +44,7 @@ const deleteErrorMessage = (message: string): string =>
   message.includes('KEZ_OPEN_DEAL')
     ? 'Finish or cancel your open deals first, then delete your account.'
     : /could not find the function|does not exist/i.test(message)
-      ? 'Account deletion is not available yet — the site is being updated. Please contact KEZMOTO.'
+      ? 'Account deletion is not available yet - the site is being updated. Please contact KEZMOTO.'
       : message;
 
 /** "Juan Santos Dela Cruz": the form the ID name check compares against. */
@@ -180,7 +180,7 @@ export const authApi = {
     if (error) {
       throw new Error(
         /could not find the function|does not exist/i.test(error.message)
-          ? 'Consent could not be saved yet — the site is being updated. Please try again later or contact KEZMOTO.'
+          ? 'Consent could not be saved yet - the site is being updated. Please try again later or contact KEZMOTO.'
           : `Could not save your consent. (${error.message})`
       );
     }
@@ -220,7 +220,7 @@ export const authApi = {
 
   /**
    * Emails a password-reset link. Supabase sends it through the project's
-   * custom SMTP (Brevo — see supabase/README.md); the link lands on
+   * custom SMTP (Brevo - see supabase/README.md); the link lands on
    * /reset-password. Callers show the same message whether or not the
    * email exists, so this never reveals who has an account.
    */
@@ -280,7 +280,7 @@ export const authApi = {
   /**
    * Step 2 of 2. Uploads a live-selfie capture and has the face-match Edge
    * Function compare it against the ID photo already on file. Requires
-   * step 1 (idNameMatched) to already be true — the function itself also
+   * step 1 (idNameMatched) to already be true - the function itself also
    * checks this server-side, so a stale client state can't bypass it.
    * Always returns the freshly-reloaded profile.
    */
@@ -295,7 +295,7 @@ export const authApi = {
   },
 
   /**
-   * Re-runs step 1's AI check against the ID photo already in storage —
+   * Re-runs step 1's AI check against the ID photo already in storage -
    * for when the check itself failed (Gemini busy, network blip) rather
    * than the name genuinely not matching. Re-checking the same path leaves
    * any passed step 2 intact; only a *different* photo resets it (see
@@ -311,7 +311,7 @@ export const authApi = {
     return { user: updated, ...result };
   },
 
-  /** Same, for step 2 — recompares the selfie already in storage. */
+  /** Same, for step 2 - recompares the selfie already in storage. */
   async retryFaceCapture(
     user: User
   ): Promise<{ user: User; matched: boolean; confidence: number }> {

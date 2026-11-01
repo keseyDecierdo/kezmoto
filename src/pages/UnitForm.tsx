@@ -162,7 +162,7 @@ const UnitForm: React.FC = () => {
     setDraft((prev) => ({ ...prev, documents: update(prev.documents) }));
 
   /* Splices at the current cursor position when the native textarea is
-     reachable, otherwise appends at the end — either way the cursor lands
+     reachable, otherwise appends at the end - either way the cursor lands
      just past the inserted emoji so a seller can keep typing. */
   const insertEmoji = async (emoji: string) => {
     const textarea = await descriptionRef.current?.getInputElement().catch(() => undefined);
@@ -288,7 +288,7 @@ const UnitForm: React.FC = () => {
         : await listingsApi.create(draft, user);
 
       if (!isEdit) {
-        // Fire and forget — the listing is already live; scores/fraud checks
+        // Fire and forget - the listing is already live; scores/fraud checks
         // fill in over the next few seconds and the badges show "Scoring…"
         // until they land (see ScoreBadges.tsx). Nothing here should ever
         // block posting the unit or navigating away. All of KEZMOTO's AI
@@ -458,7 +458,7 @@ const UnitForm: React.FC = () => {
                 <p className="kez-eyebrow">Step 2 of 5</p>
                 <h2 className="kez-display">Documents</h2>
                 <p className="kez-muted">
-                  At least {MIN_DOCUMENTS} documents — usually the OR and CR. Drag across the image to
+                  At least {MIN_DOCUMENTS} documents - usually the OR and CR. Drag across the image to
                   black out plate numbers, names, addresses and engine numbers before posting.
                 </p>
               </header>
@@ -683,7 +683,7 @@ const UnitForm: React.FC = () => {
                 <p className="kez-eyebrow">Step 5 of 5</p>
                 <h2 className="kez-display">Location</h2>
                 <p className="kez-muted">
-                  Where can buyers view the unit? City level is enough — exact meet-ups are arranged in
+                  Where can buyers view the unit? City level is enough - exact meet-ups are arranged in
                   chat.
                 </p>
               </header>
@@ -745,7 +745,7 @@ const UnitForm: React.FC = () => {
           </div>
         </div>
 
-        {/* Progress summary beside the form — wide desktops only. */}
+        {/* Progress summary beside the form - wide desktops only. */}
         <aside className="kez-tile kez-tile--soft unit-form__progress-tile" aria-label="Progress">
           <p className="kez-stat__label">Progress</p>
           <p className="kez-stat__value">

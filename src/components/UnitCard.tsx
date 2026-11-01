@@ -23,11 +23,11 @@ interface UnitCardProps {
   onMessage?: (listing: Listing) => void;
   onToggleFavorite?: (listing: Listing) => void;
   isFavorite?: boolean;
-  /** True when the signed-in viewer posted this listing themselves —
+  /** True when the signed-in viewer posted this listing themselves -
       hides Send Message (you can't message yourself), leaving just View
       Details. */
   isOwnListing?: boolean;
-  /** Admin-only — adds a third, danger-styled "Remove" action. Omitted
+  /** Admin-only - adds a third, danger-styled "Remove" action. Omitted
       everywhere a non-admin can see this card. */
   onRemove?: (listing: Listing) => void;
   /** Compact drops the action row (used inside dense side panels). */
@@ -43,7 +43,7 @@ const STATUS_LABEL: Record<Listing['status'], string> = {
 
 /**
  * The single unit card used by Home, the landing preview and Favorites.
- * Nothing else should render a unit tile — extend this instead.
+ * Nothing else should render a unit tile - extend this instead.
  */
 const UnitCard: React.FC<UnitCardProps> = ({
   listing,

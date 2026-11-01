@@ -36,7 +36,7 @@ const Lines: React.FC<{ widths: string[] }> = ({ widths }) => (
 /**
  * Skeletons shaped like the real bento layouts, so the page doesn't jump
  * when data arrives. Modals, the sidebar and the AI assistant never use
- * these — only page content.
+ * these - only page content.
  */
 export const LoadingState: React.FC<LoadingStateProps> = ({ cards, variant, label = 'Loading' }) => {
   const kind: LoadingVariant = cards ? 'cards' : (variant ?? 'page');

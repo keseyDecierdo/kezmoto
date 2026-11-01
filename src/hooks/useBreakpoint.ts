@@ -33,7 +33,7 @@ export function useBreakpoint(): Breakpoint {
   return breakpoint;
 }
 
-/** True from tablet width up — the point where split layouts kick in. */
+/** True from tablet width up - the point where split layouts kick in. */
 export function useIsWide(): boolean {
   return useBreakpoint() !== 'mobile';
 }

@@ -84,7 +84,7 @@ const AdminPlans: React.FC = () => {
       await plansApi.review(purchase, outcome, notes[purchase.id] ?? '');
       reload({ silent: true });
       void present({
-        message: outcome === 'approved' ? `Approved — ${what} is active.` : 'Payment rejected.',
+        message: outcome === 'approved' ? `Approved - ${what} is active.` : 'Payment rejected.',
         duration: 2200,
         color: 'success',
         position: 'top',

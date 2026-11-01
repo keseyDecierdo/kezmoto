@@ -30,8 +30,8 @@ const toBox = (draft: DraftRect): Omit<RedactionBox, 'id'> => ({
 
 /**
  * Click-and-drag redaction tool. Boxes are stored as normalised (0–1)
- * rectangles so they survive any render size, and — once documents live in
- * storage — can be burned into the image server-side without recalculation.
+ * rectangles so they survive any render size, and - once documents live in
+ * storage - can be burned into the image server-side without recalculation.
  */
 const RedactionCanvas: React.FC<RedactionCanvasProps> = ({
   imageUrl,
@@ -58,7 +58,7 @@ const RedactionCanvas: React.FC<RedactionCanvasProps> = ({
     try {
       (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
     } catch {
-      /* capture unavailable — drawing still tracks pointermove */
+      /* capture unavailable - drawing still tracks pointermove */
     }
     const { x, y } = pointFrom(event);
     setDraft({ x0: x, y0: y, x1: x, y1: y });
@@ -89,7 +89,7 @@ const RedactionCanvas: React.FC<RedactionCanvasProps> = ({
     <div className="redact">
       <div className="redact__toolbar">
         <span className="redact__hint">
-          Drag across anything private — plate, name, address — to black it out.
+          Drag across anything private - plate, name, address - to black it out.
         </span>
         <div className="redact__tools">
           <IonButton

@@ -1,5 +1,5 @@
 /* ---------------- Stepper ---------------- */
-/* A connected progress rail, not five separate pill buttons — the ::before
+/* A connected progress rail, not five separate pill buttons - the ::before
    track line reads as one continuous stepper rather than a row of
    equal-weight chips, which is the generic "wizard tab" default. */
 .stepper {

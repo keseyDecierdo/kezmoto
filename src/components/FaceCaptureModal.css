@@ -39,7 +39,7 @@
   border-radius: var(--kez-radius-md);
 }
 
-/* Static guide — centered oval, no coordinate math needed since it never
+/* Static guide - centered oval, no coordinate math needed since it never
    moves, unlike RedactionCanvas's user-drawn boxes. */
 .face-capture__guide {
   position: absolute;

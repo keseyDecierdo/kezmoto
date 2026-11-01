@@ -1,9 +1,9 @@
 /* =========================================================================
-   KEZMOTO — Seller Pro and Boost purchases
+   KEZMOTO - Seller Pro and Boost purchases
 
    Paid like the commission: the seller sends GCash to KEZMOTO, uploads the
    screenshot, and an admin approves. Approval is what grants Pro / the
-   boost — a database trigger does it (0036_seller_pro_boosts.sql), so the
+   boost - a database trigger does it (0036_seller_pro_boosts.sql), so the
    client can never grant itself either.
    ========================================================================= */
 

@@ -6,10 +6,10 @@ import type { ChatMessageTurn } from '../types';
 import './AiChatbot.css';
 
 interface AiChatbotProps {
-  /** Present only on Listing Detail — enables the price question and gives the AI context. */
+  /** Present only on Listing Detail - enables the price question and gives the AI context. */
   listingId?: string;
   /** True on Messages/chat screens, where a conversation's own composer
-   *  would otherwise sit right under the bubble — nudges it up to clear
+   *  would otherwise sit right under the bubble - nudges it up to clear
    *  the Send button. */
   raised?: boolean;
 }
@@ -26,7 +26,7 @@ let turnId = 0;
 const nextId = () => `turn-${(turnId += 1)}`;
 
 /**
- * Floating chatbot, session-scoped — the conversation resets on reload, per
+ * Floating chatbot, session-scoped - the conversation resets on reload, per
  * the brief ("doesn't need to persist across app restarts"). The backing
  * Q&A is still durably logged server-side in `ai_chatbot_logs` either way.
  */
@@ -95,7 +95,7 @@ const AiChatbot: React.FC<AiChatbotProps> = ({ listingId, raised }) => {
           <div className="ai-chatbot__scroller" ref={scrollerRef}>
             {turns.length === 0 && (
               <p className="ai-chatbot__intro kez-muted">
-                Ask about anything to check before buying, documents, or negotiating — I'll answer with
+                Ask about anything to check before buying, documents, or negotiating - I'll answer with
                 practical, safety-focused advice for buying a second-hand motorcycle in the Philippines.
               </p>
             )}

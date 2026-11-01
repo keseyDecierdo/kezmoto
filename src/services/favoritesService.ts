@@ -1,5 +1,5 @@
 /* =========================================================================
-   KEZMOTO — Favorites
+   KEZMOTO - Favorites
    One row per (profile, listing). RLS keeps the table private to its owner,
    so every query here is implicitly scoped to the signed-in user.
    ========================================================================= */

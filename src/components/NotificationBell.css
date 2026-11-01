@@ -35,7 +35,7 @@
 }
 
 .notification-bell__panel {
-  /* top/right are set inline, computed from the trigger's own rect — see
+  /* top/right are set inline, computed from the trigger's own rect - see
      NotificationBell.tsx's toggle(). This panel is portalled to <body>,
      so it can't be positioned relative to its React parent via CSS. */
   position: fixed;

@@ -1,7 +1,7 @@
 /* =========================================================================
-   KEZMOTO — Notifications
+   KEZMOTO - Notifications
    One row per event a user should see a bell badge for. Realtime respects
-   RLS, so a subscriber only ever receives their own rows — same shape as
+   RLS, so a subscriber only ever receives their own rows - same shape as
    chatService.ts's subscribeToMessages.
    ========================================================================= */
 
@@ -76,7 +76,7 @@ export const notificationsApi = {
         link: input.link ?? null,
       });
     } catch {
-      // Best-effort — the primary action already succeeded.
+      // Best-effort - the primary action already succeeded.
     }
   },
 
@@ -86,7 +86,7 @@ export const notificationsApi = {
    *  supabase-js reuses an existing channel by topic name until its (async,
    *  network-round-trip) teardown finishes, and React's development-mode
    *  double-invoke of effects calls this twice back-to-back with no await in
-   *  between — reusing a topic there hands back an already-`subscribe()`d
+   *  between - reusing a topic there hands back an already-`subscribe()`d
    *  channel, and adding another `.on()` to it throws. Confirmed live. */
   subscribeToNotifications(viewerId: string, onInsert: (notification: AppNotification) => void): () => void {
     const channel = supabase

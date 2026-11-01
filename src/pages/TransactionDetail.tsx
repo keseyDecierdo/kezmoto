@@ -212,7 +212,7 @@ const OverviewTab: React.FC<{
         <div className="tx-detail__row">
           <p className="kez-muted">Pending offer</p>
           <p className="tx-detail__price">
-            {transaction.proposedPrice != null ? formatPrice(transaction.proposedPrice) : '—'}
+            {transaction.proposedPrice != null ? formatPrice(transaction.proposedPrice) : '-'}
           </p>
         </div>
         <div className="tx-detail__row">
@@ -298,8 +298,8 @@ const OverviewTab: React.FC<{
 
 /* -------------------------------------------------------- Commission --
    Manual GCash review: the seller's submitted reference number + proof
-   screenshot, with Confirm/Reject. This — not anything editable on the
-   Overview form above — is what actually moves commission_status; see
+   screenshot, with Confirm/Reject. This - not anything editable on the
+   Overview form above - is what actually moves commission_status; see
    sync_commission_status in 0009_payments_schema.sql. */
 const CommissionPanel: React.FC<{ transaction: Transaction; onChanged: () => void }> = ({
   transaction,
@@ -336,7 +336,7 @@ const CommissionPanel: React.FC<{ transaction: Transaction; onChanged: () => voi
       title: outcome === 'succeeded' ? 'Confirm this payment?' : 'Reject this payment?',
       text:
         outcome === 'succeeded'
-          ? 'This marks the commission as paid — make sure the reference number and screenshot check out.'
+          ? 'This marks the commission as paid - make sure the reference number and screenshot check out.'
           : 'The seller will need to resubmit proof of payment.',
       confirmText: outcome === 'succeeded' ? 'Confirm payment' : 'Reject',
       danger: outcome === 'failed',
@@ -369,7 +369,7 @@ const CommissionPanel: React.FC<{ transaction: Transaction; onChanged: () => voi
 
   return (
     <div className="kez-tile kez-tile--soft tx-detail__commission">
-      <p className="kez-eyebrow">Commission — seller pays via GCash</p>
+      <p className="kez-eyebrow">Commission - seller pays via GCash</p>
       <div className="tx-detail__row">
         <p className="kez-muted">Amount owed</p>
         {/* The submitted amount already reflects the seller's rate (3% Pro, 5% Free). */}
@@ -396,7 +396,7 @@ const CommissionPanel: React.FC<{ transaction: Transaction; onChanged: () => voi
 
           <div className="tx-detail__row">
             <p className="kez-muted">Reference number</p>
-            <p>{latest.referenceNumber || '—'}</p>
+            <p>{latest.referenceNumber || '-'}</p>
           </div>
           <div className="tx-detail__row">
             <p className="kez-muted">Amount submitted</p>

@@ -1,5 +1,5 @@
 /* =========================================================================
-   KEZMOTO — Storage
+   KEZMOTO - Storage
    Photos live in a public bucket and are stored as paths; documents live in a
    private bucket and are only ever handed out as short-lived signed URLs.
    Every object is written under `{profile_id}/…`, which is what the storage
@@ -31,7 +31,7 @@ export const takePendingFile = (localUrl: string): File | undefined => {
   return file;
 };
 
-/** Non-destructive read — for the Phase 5 photo-hash pass, which needs the
+/** Non-destructive read - for the Phase 5 photo-hash pass, which needs the
     File without consuming it ahead of the actual upload. */
 export const peekPendingFile = (localUrl: string): File | undefined => {
   return pendingFiles.get(localUrl);
@@ -44,7 +44,7 @@ const isPlainUrl = (value: string): boolean =>
 /* -------------------------------------------------------------------------
    Resolved URL → stored value
 
-   A screen holds the URL it was given to render — a public link, or a signed
+   A screen holds the URL it was given to render - a public link, or a signed
    one that expires within the hour. When that same value comes back on save
    (editing a unit, say), it has to become the bucket path again, or the row
    would end up holding a URL that stops working.
@@ -98,7 +98,7 @@ export const persistAsset = async (
   if (alreadyStored) return alreadyStored;
   if (!isPendingUpload(url)) return url;
   const file = takePendingFile(url);
-  if (!file) return null; // pick was revoked before save — better dropped than stored dead
+  if (!file) return null; // pick was revoked before save - better dropped than stored dead
   return kind === 'photo' ? uploadPhoto(ownerId, file) : uploadDocument(ownerId, file);
 };
 
@@ -172,7 +172,7 @@ export const signProofUrl = async (storedValue: string | null): Promise<string |
 /** One signed URL for a valid-ID photo. Storage RLS only allows the owner
     or an admin to read it, so this only ever resolves for the document's
     own owner viewing their own Profile page. Null if there is none, or
-    signing fails (including a non-owner caller — RLS rejects the sign). */
+    signing fails (including a non-owner caller - RLS rejects the sign). */
 export const signIdDocumentUrl = async (storedValue: string | null): Promise<string | null> => {
   if (!storedValue) return null;
   if (isPlainUrl(storedValue)) return storedValue;

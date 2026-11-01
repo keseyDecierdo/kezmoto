@@ -13,8 +13,8 @@ const container = document.getElementById('root');
 const root = createRoot(container!);
 
 /**
- * App is imported dynamically so a missing Supabase config — the one setup
- * step that happens outside the code — reports itself on screen instead of
+ * App is imported dynamically so a missing Supabase config - the one setup
+ * step that happens outside the code - reports itself on screen instead of
  * leaving a blank page and a console message nobody opens.
  */
 import('./App')

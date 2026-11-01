@@ -14,12 +14,12 @@ import './PublicProfile.css';
 import ProBadge from '../components/ProBadge';
 
 /**
- * Read-only "who am I dealing with" card — reached from a seller's name on
+ * Read-only "who am I dealing with" card - reached from a seller's name on
  * a listing, a chat counterparty, or an assigned middleman. Deliberately
  * shows only what builds trust without exposing anything sensitive: name,
  * role, the ID-verified badge, member-since, bio and an optional Facebook
  * link. It never shows the raw ID photo or `idVerificationNote` (that note
- * can name the *other* person on a mismatched ID and is owner-only —
+ * can name the *other* person on a mismatched ID and is owner-only -
  * Profile.tsx is the only screen that renders it).
  */
 const PublicProfile: React.FC = () => {

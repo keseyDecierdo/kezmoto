@@ -34,7 +34,7 @@ export function useGatedNav() {
             return;
           }
         } catch {
-          // Transient load error — don't block navigation over it.
+          // Transient load error - don't block navigation over it.
         }
       }
     }

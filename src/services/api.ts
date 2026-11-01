@@ -1,5 +1,5 @@
 /* =========================================================================
-   KEZMOTO — Data service layer
+   KEZMOTO - Data service layer
    (Phase 2: Supabase; Phase 3: transactions; Phase 4: payments; Phase 5: AI)
 
    Every screen still imports from this module and nothing else. The mock
@@ -17,9 +17,9 @@
      transactionsApi  → transactionsService.ts  (Phase 3)
      verificationApi  → verificationService.ts  (Phase 3)
      reviewsApi       → reviewsService.ts       (Phase 3)
-     paymentsApi      → paymentsService.ts      (Phase 4 — manual GCash confirm, no gateway)
-     aiApi            → aiService.ts            (Phase 5 — calls Edge Functions only)
-     fraudApi         → fraudService.ts          (Phase 5 — admin fraud flag review)
+     paymentsApi      → paymentsService.ts      (Phase 4 - manual GCash confirm, no gateway)
+     aiApi            → aiService.ts            (Phase 5 - calls Edge Functions only)
+     fraudApi         → fraudService.ts          (Phase 5 - admin fraud flag review)
      userReportsApi   → userReportsService.ts    (customer reports + admin review)
      notificationsApi → notificationsService.ts  (bell feed, realtime)
      listingAppealsApi → listingAppealsService.ts (seller appeals a removed listing)
