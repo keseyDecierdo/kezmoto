@@ -9,7 +9,7 @@
 
 import { supabase } from '../lib/supabaseClient';
 import type { PlanKind, PlanPurchaseRow, PlanPurchaseStatus } from '../lib/database.types';
-import { PLAN_PRICES } from '../utils/plans';
+import { PLAN_DETAILS, PLAN_PRICES, isProKind } from '../utils/plans';
 import { notificationsApi } from './notificationsService';
 import { signProofUrl, uploadProof } from './storageService';
 
@@ -124,7 +124,7 @@ export const plansApi = {
     if (error) throw new Error(`Could not submit your payment. (${error.message})`);
 
     void notifyAdmins(
-      input.kind === 'pro' ? 'New KEZMOTO Pro payment' : 'New Boost payment',
+      isProKind(input.kind) ? `New KEZMOTO ${PLAN_DETAILS[input.kind].label} payment` : 'New Boost payment',
       `₱${PLAN_PRICES[input.kind]} via GCash, ref. ${input.referenceNumber.trim()}. Check the screenshot and approve.`
     );
     return mapPurchase(data as PlanPurchaseRow);
@@ -172,18 +172,18 @@ export const plansApi = {
       .eq('status', 'pending');
     if (error) throw new Error(`Could not save the review. (${error.message})`);
 
-    const what = purchase.kind === 'pro' ? 'KEZMOTO Pro' : 'Boost';
+    const what = isProKind(purchase.kind) ? 'KEZMOTO Pro' : 'Boost';
     void notificationsApi.create({
       recipientId: purchase.buyerId,
       type: 'plan_purchase',
       title: outcome === 'approved' ? `${what} is now active` : `${what} payment was not approved`,
       body:
         outcome === 'approved'
-          ? purchase.kind === 'pro'
-            ? 'Unlimited listings, 3% commission and 2 free boosts are ready.'
+          ? isProKind(purchase.kind)
+            ? `Unlimited listings, 3% commission and ${PLAN_DETAILS[purchase.kind].boosts} free boosts are ready.`
             : `${purchase.listingTitle || 'Your listing'} is now Featured for 7 days.`
           : note.trim() || 'We could not match your GCash payment. Check the reference number and try again.',
-      link: purchase.kind === 'pro' ? '/plans' : '/my-units',
+      link: isProKind(purchase.kind) ? '/plans' : '/units',
     });
   },
 

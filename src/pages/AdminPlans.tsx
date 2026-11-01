@@ -18,6 +18,7 @@ import type { PlanPurchaseStatus } from '../lib/database.types';
 import { plansApi } from '../services/api';
 import type { PlanPurchase } from '../services/plansService';
 import { formatPrice, formatRelative } from '../utils/format';
+import { PLAN_DETAILS, isProKind } from '../utils/plans';
 import './ListingAppeals.css';
 import './AdminPlans.css';
 
@@ -64,7 +65,9 @@ const AdminPlans: React.FC = () => {
   };
 
   const review = async (purchase: PlanPurchase, outcome: 'approved' | 'rejected') => {
-    const what = purchase.kind === 'pro' ? 'KEZMOTO Pro' : `a Boost for ${purchase.listingTitle || 'this listing'}`;
+    const what = isProKind(purchase.kind)
+      ? `KEZMOTO ${PLAN_DETAILS[purchase.kind].label}`
+      : `a Boost for ${purchase.listingTitle || 'this listing'}`;
     const confirmed = await confirmAction({
       title: outcome === 'approved' ? 'Approve this payment?' : 'Reject this payment?',
       text:
@@ -140,9 +143,9 @@ const AdminPlans: React.FC = () => {
           {shown.map((purchase) => (
             <article className="kez-tile listing-appeals__card" key={purchase.id}>
               <header className="admin-plans__head">
-                <span className={`admin-plans__kind admin-plans__kind--${purchase.kind}`}>
-                  <IonIcon icon={purchase.kind === 'pro' ? diamondOutline : flashOutline} aria-hidden="true" />
-                  {purchase.kind === 'pro' ? 'Pro · 30 days' : 'Boost · 7 days'}
+                <span className={`admin-plans__kind admin-plans__kind--${isProKind(purchase.kind) ? 'pro' : 'boost'}`}>
+                  <IonIcon icon={isProKind(purchase.kind) ? diamondOutline : flashOutline} aria-hidden="true" />
+                  {PLAN_DETAILS[purchase.kind].label}
                 </span>
                 <strong className="admin-plans__amount">{formatPrice(purchase.amount)}</strong>
               </header>

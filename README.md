@@ -65,14 +65,14 @@ more buyers.
 
 Buyers never pay. Sellers choose:
 
-| | **Free** | **KEZMOTO Pro** | **Boost** |
-|---|---|---|---|
-| Price | ₱0 | ₱149 / 30 days | ₱49 / listing |
-| Buy, chat, offers, Wanted, middleman, AI assistant | ✓ | ✓ | — |
-| Active listings | 3 | Unlimited | — |
-| Commission when a unit sells | 5% | 3% | — |
-| Featured at the top of Home | — | 2 free boosts per purchase | 7 days |
-| PRO badge | — | ✓ | — |
+| | **Free** | **Pro · Monthly** | **Pro · Yearly** | **Boost** |
+|---|---|---|---|---|
+| Price | ₱0 | ₱149 / 30 days | ₱1,490 / year (save ₱298) | ₱49 / listing |
+| Buy, chat, offers, Wanted, middleman, AI assistant | ✓ | ✓ | ✓ | — |
+| Active listings | 3 | Unlimited | Unlimited | — |
+| Commission when a unit sells | 5% | 3% | 3% | — |
+| Featured at the top of Home | — | 2 free boosts | 24 free boosts | 7 days |
+| PRO badge | — | ✓ | ✓ | — |
 
 Payments go to KEZMOTO's GCash number; the seller uploads the receipt and an
 admin approves it on **Plan Payments**. No payment gateway is required.

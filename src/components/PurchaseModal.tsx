@@ -14,7 +14,7 @@ import { closeOutline, hourglassOutline, imageOutline } from 'ionicons/icons';
 import { KEZMOTO_GCASH_NAME, KEZMOTO_GCASH_NUMBER } from '../lib/gcash';
 import type { PlanKind } from '../lib/database.types';
 import { plansApi } from '../services/api';
-import { BOOST_DAYS, PLAN_PRICES, PRO_BOOSTS, PRO_DAYS } from '../utils/plans';
+import { BOOST_DAYS, PLAN_DETAILS, PLAN_PRICES, isProKind } from '../utils/plans';
 import { formatPrice } from '../utils/format';
 import './PurchaseModal.css';
 
@@ -58,7 +58,7 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
   }, [isOpen]);
 
   const price = PLAN_PRICES[kind];
-  const title = kind === 'pro' ? 'Get KEZMOTO Pro' : 'Boost this listing';
+  const title = kind === 'pro_year' ? 'Get KEZMOTO Pro · 1 year' : kind === 'pro' ? 'Get KEZMOTO Pro' : 'Boost this listing';
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -103,7 +103,7 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
             <h3 className="kez-display">Payment sent for review</h3>
             <p className="kez-muted">
               A KEZMOTO admin will check your GCash receipt, usually within the day. You&apos;ll get a
-              notification once {kind === 'pro' ? 'Pro is active' : 'your listing is Featured'}.
+              notification once {isProKind(kind) ? 'Pro is active' : 'your listing is Featured'}.
             </p>
             <IonButton expand="block" className="kez-cta" onClick={onClose}>
               Done
@@ -113,8 +113,8 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
           <form onSubmit={submit} noValidate className="purchase-modal__form">
             <div className="purchase-modal__summary">
               <span>
-                {kind === 'pro'
-                  ? `Pro for ${PRO_DAYS} days · unlimited listings, 3% commission, ${PRO_BOOSTS} free boosts`
+                {isProKind(kind)
+                  ? `Pro for ${kind === 'pro_year' ? '1 year' : `${PLAN_DETAILS[kind].days} days`} · unlimited listings, 3% commission, ${PLAN_DETAILS[kind].boosts} free boosts`
                   : `Featured at the top for ${BOOST_DAYS} days${listingTitle ? ` · ${listingTitle}` : ''}`}
               </span>
               <strong>{formatPrice(price)}</strong>

@@ -17,11 +17,12 @@ import type { PlanPurchase } from '../services/plansService';
 import {
   BOOST_DAYS,
   FREE_LISTING_LIMIT,
+  PLAN_DETAILS,
   PLAN_PRICES,
-  PRO_BOOSTS,
-  PRO_DAYS,
   daysLeft,
   isPro,
+  isProKind,
+  yearlySavings,
 } from '../utils/plans';
 import { formatDate, formatPrice } from '../utils/format';
 import './Plans.css';
@@ -39,7 +40,6 @@ const PRO_FEATURES = [
   'Unlimited active listings',
   'Lower 3% commission when you sell',
   'PRO badge on your profile and units',
-  `${PRO_BOOSTS} free Boosts with every purchase`,
 ];
 
 const STATUS_ICON = { pending: hourglassOutline, approved: checkmarkCircleOutline, rejected: closeCircleOutline };
@@ -50,6 +50,8 @@ const Plans: React.FC = () => {
   const router = useIonRouter();
   const { user, refreshUser } = useAuth();
   const [buying, setBuying] = useState(false);
+  const [billing, setBilling] = useState<'pro' | 'pro_year'>('pro');
+  const plan = PLAN_DETAILS[billing];
 
   const purchases = useAsync<PlanPurchase[]>(() => plansApi.listMine(), [user?.id]);
   const listings = useAsync(
@@ -65,7 +67,7 @@ const Plans: React.FC = () => {
 
   const pro = isPro(user);
   const open = (listings.data ?? []).filter((l) => l.status === 'active' || l.status === 'pending').length;
-  const pending = (purchases.data ?? []).some((p) => p.status === 'pending' && p.kind === 'pro');
+  const pending = (purchases.data ?? []).some((p) => p.status === 'pending' && isProKind(p.kind));
 
   return (
     <AppPage title="KEZMOTO Pro" eyebrow="Plans">
@@ -90,12 +92,36 @@ const Plans: React.FC = () => {
           <p className="kez-eyebrow">
             <IonIcon icon={diamond} aria-hidden="true" /> KEZMOTO Pro
           </p>
+          <div className="plans__billing" role="radiogroup" aria-label="Billing">
+            {(
+              [
+                ['pro', 'Monthly'],
+                ['pro_year', 'Yearly'],
+              ] as const
+            ).map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                role="radio"
+                aria-checked={billing === value}
+                className={billing === value ? 'is-selected' : ''}
+                onClick={() => setBilling(value)}
+              >
+                {label}
+                {value === 'pro_year' && <small>Save {formatPrice(yearlySavings())}</small>}
+              </button>
+            ))}
+          </div>
           <p className="plans__price">
-            {formatPrice(PLAN_PRICES.pro)} <small>/ {PRO_DAYS} days</small>
+            {formatPrice(PLAN_PRICES[billing])} <small>/ {billing === 'pro_year' ? 'year' : `${plan.days} days`}</small>
           </p>
-          <p>For sellers with more than a few units.</p>
+          <p>
+            {billing === 'pro_year'
+              ? `About ${formatPrice(Math.round(PLAN_PRICES.pro_year / 12))} a month, paid once.`
+              : 'For sellers with more than a few units.'}
+          </p>
           <ul className="plans__features">
-            {PRO_FEATURES.map((f) => (
+            {[...PRO_FEATURES, `${plan.boosts} free Boosts ${billing === 'pro_year' ? 'for the year' : 'with every purchase'}`].map((f) => (
               <li key={f}>
                 <IonIcon icon={checkmarkCircle} aria-hidden="true" />
                 {f}
@@ -103,7 +129,9 @@ const Plans: React.FC = () => {
             ))}
           </ul>
           <IonButton expand="block" className="plans__buy" onClick={() => setBuying(true)} disabled={pending}>
-            {pending ? 'Payment under review' : pro ? 'Extend Pro 30 days' : `Get Pro · ${formatPrice(PLAN_PRICES.pro)}`}
+            {pending
+              ? 'Payment under review'
+              : `${pro ? 'Extend' : 'Get'} Pro ${billing === 'pro_year' ? '1 year' : '30 days'} · ${formatPrice(PLAN_PRICES[billing])}`}
           </IonButton>
         </section>
 
@@ -140,7 +168,10 @@ const Plans: React.FC = () => {
                 <li key={p.id} className={`is-${p.status}`}>
                   <IonIcon icon={STATUS_ICON[p.status]} aria-hidden="true" />
                   <span>
-                    {p.kind === 'pro' ? 'Pro' : `Boost${p.listingTitle ? ` · ${p.listingTitle}` : ''}`} ·{' '}
+                    {isProKind(p.kind)
+                      ? PLAN_DETAILS[p.kind].label
+                      : `Boost${p.listingTitle ? ` · ${p.listingTitle}` : ''}`}{' '}
+                    ·{' '}
                     {formatPrice(p.amount)} · {formatDate(p.createdAt)}
                   </span>
                   <strong>{STATUS_LABEL[p.status]}</strong>
@@ -153,7 +184,7 @@ const Plans: React.FC = () => {
 
       <PurchaseModal
         isOpen={buying}
-        kind="pro"
+        kind={billing}
         onClose={() => setBuying(false)}
         onSubmitted={purchases.reload}
       />

@@ -48,6 +48,7 @@ SQL Editor → New query → paste each file, in order, and run:
 | `migrations/0028_require_verified_to_post.sql` | `is_verified_or_admin()` helper + restrictive insert policy on `listings`: only ID-and-face-verified customers (or admins) can post a unit |
 | `migrations/0035_profile_personal_details.sql` | Separate `first_name` / `middle_name` / `last_name`, `sex`, `birthdate` and address parts (`region` → `barangay`, `street`) on `profiles`; `handle_new_user()` fills them from Create account. **Apply before testing sign-up.** Safe to re-run. |
 | `migrations/0036_seller_pro_boosts.sql` | KEZMOTO Pro and Boosts: `profiles.pro_until` / `boost_credits`, `listings.boosted_until`, the `plan_purchases` table (GCash proof + admin approval), the 3-active-listing limit for free sellers, approval trigger and `use_boost_credit()`. **Apply before opening /plans or /admin/plans.** Safe to re-run. |
+| `migrations/0037_pro_yearly.sql` | Yearly Pro: `plan_purchases.kind` accepts `'pro_year'` (₱1,490 → 365 days + 24 boost credits on approval). **Run after 0036.** Safe to re-run. |
 
 If `0004` errors on the `storage.objects` policies (some projects lock that
 table down), create the two buckets by hand in Storage — `listing-photos`
@@ -421,12 +422,12 @@ this as real:
 
 ### KEZMOTO Pro and Boosts (0036)
 
-| | Free | Pro (₱149 / 30 days) | Boost (₱49) |
+| | Free | Pro (₱149 / 30 days, or ₱1,490 / year) | Boost (₱49) |
 |---|---|---|---|
 | Buy, chat, offers, Wanted, middleman, AI | ✓ | ✓ | — |
 | Active listings | 3 | Unlimited | — |
 | Commission when you sell | 5% | 3% | — |
-| Featured at the top of Home / Landing | — | 2 free boosts per purchase | 7 days |
+| Featured at the top of Home / Landing | — | 2 free boosts (24 on yearly) | 7 days |
 
 Payment works like the commission: the seller sends GCash to KEZMOTO and
 submits the reference number plus a receipt screenshot (stored in the

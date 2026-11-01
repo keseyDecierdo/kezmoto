@@ -46,3 +46,14 @@ describe('plans', () => {
     expect(featuredFirst(items, NOW).map((i) => i.id)).toEqual(['b', 'd', 'a', 'c']);
   });
 });
+
+describe('yearly Pro', () => {
+  it('costs less than 12 months and gives 24 boosts', async () => {
+    const { PLAN_PRICES, PLAN_DETAILS, yearlySavings, isProKind } = await import('./plans');
+    expect(PLAN_PRICES.pro_year).toBeLessThan(PLAN_PRICES.pro * 12);
+    expect(yearlySavings()).toBe(298);
+    expect(PLAN_DETAILS.pro_year).toMatchObject({ days: 365, boosts: 24 });
+    expect(isProKind('pro_year')).toBe(true);
+    expect(isProKind('boost')).toBe(false);
+  });
+});

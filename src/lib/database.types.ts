@@ -77,7 +77,7 @@ export type ProfileRow = {
   created_at: string;
 }
 
-export type PlanKind = 'pro' | 'boost';
+export type PlanKind = 'pro' | 'pro_year' | 'boost';
 export type PlanPurchaseStatus = 'pending' | 'approved' | 'rejected';
 
 export type PlanPurchaseRow = {

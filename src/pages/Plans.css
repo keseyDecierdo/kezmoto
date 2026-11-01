@@ -130,3 +130,38 @@
 .plans__history .is-approved strong { color: var(--kez-success); }
 .plans__history .is-rejected ion-icon,
 .plans__history .is-rejected strong { color: var(--kez-danger); }
+
+/* Monthly | Yearly switch on the orange Pro tile. */
+.plans__billing {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--kez-radius-sm);
+  background: rgba(10, 10, 10, 0.14);
+}
+
+.plans__billing button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  min-height: 40px;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: calc(var(--kez-radius-sm) - 2px);
+  background: transparent;
+  color: #0a0a0a;
+  font-family: var(--kez-font-body);
+  font-size: var(--kez-text-sm);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.plans__billing button small { font-size: 10px; font-weight: 700; opacity: 0.75; }
+
+.plans__billing button.is-selected {
+  background: #0a0a0a;
+  color: var(--kez-accent);
+}
