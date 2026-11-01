@@ -75,6 +75,10 @@ export interface User {
   barangay: string;
   /** Zone / purok / street / house no. */
   street: string;
+  /** Seller Pro is active until this ISO time; '' = never bought. */
+  proUntil: string;
+  /** Free boosts left (2 come with each Pro purchase). */
+  boostCredits: number;
 }
 
 export type Sex = 'male' | 'female';
@@ -141,6 +145,8 @@ export interface Listing {
   /** Phase 5 — set only by score-condition. */
   conditionScore: number | null;
   conditionScoreExplanation: string | null;
+  /** Featured (pinned first) until this ISO time; '' = not boosted. */
+  boostedUntil: string;
 }
 
 /** Draft shape produced by the multi-step Add Unit form. */

@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
 import { IonButton, IonIcon, useIonRouter, useIonToast } from '@ionic/react';
-import { addCircleOutline, arrowUndoOutline, createOutline, eyeOutline, trashOutline } from 'ionicons/icons';
+import {
+  addCircleOutline,
+  arrowUndoOutline,
+  createOutline,
+  diamondOutline,
+  eyeOutline,
+  flashOutline,
+  trashOutline,
+} from 'ionicons/icons';
 import AppealListingModal from '../components/AppealListingModal';
 import AppPage from '../components/AppPage';
+import PurchaseModal from '../components/PurchaseModal';
 import { EmptyState, ErrorState, LoadingRows } from '../components/StateViews';
 import { useAsync } from '../hooks/useAsync';
 import { useAuth } from '../context/AuthContext';
 import { useMarketplace } from '../context/MarketplaceContext';
 import { confirmAction } from '../lib/sweetAlert';
-import { listingsApi } from '../services/api';
+import { listingsApi, plansApi } from '../services/api';
+import { BOOST_DAYS, FREE_LISTING_LIMIT, daysLeft, isBoosted, isPro } from '../utils/plans';
 import type { Listing } from '../types';
 import { formatDate, formatPrice } from '../utils/format';
 import './MyUnits.css';
@@ -16,10 +26,11 @@ import './MyUnits.css';
 /** "Manage" half of the Add/Manage flow — the units this account has posted. */
 const MyUnits: React.FC = () => {
   const router = useIonRouter();
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const { revision, invalidate } = useMarketplace();
   const [present] = useIonToast();
   const [appealing, setAppealing] = useState<Listing | null>(null);
+  const [boostPaying, setBoostPaying] = useState<Listing | null>(null);
 
   const { data, loading, error, reload } = useAsync<Listing[]>(
     () => (user ? listingsApi.listBySeller(user.id) : Promise.resolve([])),
@@ -48,6 +59,39 @@ const MyUnits: React.FC = () => {
         void present({ message: 'Unit removed.', duration: 1800, position: 'top' });
       });
     });
+
+  const listed = data ?? [];
+  const openCount = listed.filter((l) => l.status === 'active' || l.status === 'pending').length;
+  const unlimited = isPro(user) || user?.role === 'admin';
+
+  /** A free credit if there is one (one tap), otherwise pay ₱49 by GCash. */
+  const boost = async (listing: Listing) => {
+    const title = `${listing.brand} ${listing.model}`;
+    if (!user || user.boostCredits < 1) {
+      setBoostPaying(listing);
+      return;
+    }
+    const confirmed = await confirmAction({
+      title: 'Use a free boost?',
+      text: `${title} will be Featured at the top of Home for ${BOOST_DAYS} days. You have ${user.boostCredits} free boost${user.boostCredits === 1 ? '' : 's'}.`,
+      confirmText: 'Boost it',
+    });
+    if (!confirmed) return;
+    try {
+      await plansApi.useBoostCredit(listing.id);
+      await refreshUser();
+      invalidate();
+      reload();
+      void present({ message: `${title} is now Featured.`, duration: 2000, position: 'top', color: 'success' });
+    } catch (err) {
+      void present({
+        message: err instanceof Error ? err.message : 'Could not boost the unit.',
+        duration: 2600,
+        position: 'top',
+        color: 'danger',
+      });
+    }
+  };
 
   return (
     <AppPage
@@ -87,6 +131,20 @@ const MyUnits: React.FC = () => {
               </div>
             ))}
           </div>
+          {!unlimited && (
+            <div className="kez-tile my-units__quota">
+              <IonIcon icon={diamondOutline} aria-hidden="true" />
+              <span>
+                <strong>
+                  {Math.min(openCount, FREE_LISTING_LIMIT)} of {FREE_LISTING_LIMIT}
+                </strong>{' '}
+                free listings used. Need more? KEZMOTO Pro gives unlimited listings and a 3% commission.
+              </span>
+              <IonButton size="small" className="kez-cta" onClick={() => router.push('/plans', 'forward')}>
+                Go Pro
+              </IonButton>
+            </div>
+          )}
           <div className="kez-bento kez-bento--cards my-units">
             {(data ?? []).map((listing) => (
               <article className="kez-tile kez-tile--flush my-units__row" key={listing.id}>
@@ -108,6 +166,11 @@ const MyUnits: React.FC = () => {
                           : 'Sold'}
                     </span>
                     {listing.adminAssisted && <span className="kez-chip kez-chip--accent">Assisted</span>}
+                    {isBoosted(listing) && (
+                      <span className="kez-chip kez-chip--accent">
+                        Featured · {daysLeft(listing.boostedUntil)} day{daysLeft(listing.boostedUntil) === 1 ? '' : 's'} left
+                      </span>
+                    )}
                     <span className="kez-chip">{listing.photos.length} photos</span>
                   </div>
                 </div>
@@ -133,6 +196,12 @@ const MyUnits: React.FC = () => {
                     <IonIcon slot="start" icon={createOutline} />
                     Edit
                   </IonButton>
+                  {listing.status === 'active' && (
+                    <IonButton size="small" fill="clear" color="primary" onClick={() => void boost(listing)}>
+                      <IonIcon slot="start" icon={flashOutline} />
+                      {isBoosted(listing) ? 'Extend boost' : 'Boost'}
+                    </IonButton>
+                  )}
                   <IonButton size="small" fill="clear" color="danger" onClick={() => remove(listing)}>
                     <IonIcon slot="start" icon={trashOutline} />
                     Remove
@@ -174,6 +243,16 @@ const MyUnits: React.FC = () => {
             ))}
           </div>
         </>
+      )}
+
+      {boostPaying && (
+        <PurchaseModal
+          isOpen
+          kind="boost"
+          listingId={boostPaying.id}
+          listingTitle={`${boostPaying.brand} ${boostPaying.model} ${boostPaying.year}`}
+          onClose={() => setBoostPaying(null)}
+        />
       )}
 
       {appealing && (

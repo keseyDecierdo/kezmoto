@@ -372,7 +372,10 @@ const CommissionPanel: React.FC<{ transaction: Transaction; onChanged: () => voi
       <p className="kez-eyebrow">Commission — seller pays via GCash</p>
       <div className="tx-detail__row">
         <p className="kez-muted">Amount owed</p>
-        <p className="tx-detail__price">{formatPrice(commissionAmountFor(transaction.agreedPrice ?? 0))}</p>
+        {/* The submitted amount already reflects the seller's rate (3% Pro, 5% Free). */}
+        <p className="tx-detail__price">
+          {formatPrice(latest ? latest.amount : commissionAmountFor(transaction.agreedPrice ?? 0))}
+        </p>
       </div>
 
       {!latest && <p className="kez-muted">No submission yet.</p>}

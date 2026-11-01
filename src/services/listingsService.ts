@@ -5,6 +5,7 @@
    document_redactions, one row per document.
    ========================================================================= */
 
+import { featuredFirst } from '../utils/plans';
 import { supabase } from '../lib/supabaseClient';
 import type { DocumentRedactionRow, ListingRow } from '../lib/database.types';
 import type { Listing, ListingDraft, UnitDocument, User } from '../types';
@@ -139,6 +140,10 @@ const draftColumns = (draft: Partial<Listing> | ListingDraft) => ({
     : {}),
 });
 
+/** Shown when a free seller already has 3 open listings (0036 trigger). */
+export const LISTING_LIMIT_MESSAGE =
+  'Free accounts can have 3 active listings. Mark one as sold, or get KEZMOTO Pro for unlimited listings.';
+
 /* ------------------------------------------------------------------ api */
 export const listingsApi = {
   /** Everything the viewer is allowed to see, newest first. */
@@ -150,7 +155,8 @@ export const listingsApi = {
         .neq('status', 'removed')
         .order('created_at', { ascending: false });
       if (error) throw new Error(`Could not load units. (${error.message})`);
-      return mapRows((data ?? []) as unknown as ListingRowWithSeller[]);
+      // Boosted (Featured) units first; an expired boost is just a normal unit.
+      return featuredFirst(await mapRows((data ?? []) as unknown as ListingRowWithSeller[]));
     }, []);
   },
 
@@ -255,7 +261,9 @@ export const listingsApi = {
       throw new Error(
         error.code === '42501'
           ? 'Verify your identity in Profile & Settings before posting a unit.'
-          : `Could not post the unit. (${error.message})`
+          : error.message.includes('KEZ_LISTING_LIMIT')
+            ? LISTING_LIMIT_MESSAGE
+            : `Could not post the unit. (${error.message})`
       );
     }
     await writeDocumentMeta(data.listing_id, documentPairs);
@@ -300,7 +308,11 @@ export const listingsApi = {
     if (patch.status) columns.status = toDbListingStatus(patch.status);
 
     const { error } = await supabase.from('listings').update(columns).eq('listing_id', id);
-    if (error) throw new Error(`Could not save the unit. (${error.message})`);
+    if (error) {
+      throw new Error(
+        error.message.includes('KEZ_LISTING_LIMIT') ? LISTING_LIMIT_MESSAGE : `Could not save the unit. (${error.message})`
+      );
+    }
 
     if (documentPairs) await writeDocumentMeta(id, documentPairs);
     return listingsApi.getById(id);

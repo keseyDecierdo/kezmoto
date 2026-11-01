@@ -71,6 +71,27 @@ export type ProfileRow = {
   city: string | null;
   barangay: string | null;
   street: string | null;
+  /** Seller Pro active until then (0036). */
+  pro_until: string | null;
+  boost_credits: number | null;
+  created_at: string;
+}
+
+export type PlanKind = 'pro' | 'boost';
+export type PlanPurchaseStatus = 'pending' | 'approved' | 'rejected';
+
+export type PlanPurchaseRow = {
+  purchase_id: string;
+  buyer_id: string;
+  kind: PlanKind;
+  listing_id: string | null;
+  amount: number;
+  reference_number: string;
+  proof_url: string;
+  status: PlanPurchaseStatus;
+  review_note: string | null;
+  reviewed_by: string | null;
+  reviewed_at: string | null;
   created_at: string;
 }
 
@@ -99,6 +120,8 @@ export type ListingRow = {
   condition_score: number | null;
   condition_score_explanation: string | null;
   status: DbListingStatus;
+  /** Pinned to the top of Home / Landing until then (0036). */
+  boosted_until: string | null;
   created_at: string;
 }
 
@@ -319,9 +342,12 @@ export type Database = {
       listing_appeals: Table<ListingAppealRow>;
       user_reports: Table<UserReportRow>;
       notifications: Table<NotificationRow>;
+      plan_purchases: Table<PlanPurchaseRow>;
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: {
+      use_boost_credit: { Args: { p_listing: string }; Returns: string };
+    };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
   };

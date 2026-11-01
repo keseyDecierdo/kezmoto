@@ -12,6 +12,7 @@ import {
   receiptOutline,
   shieldCheckmarkOutline,
   shieldOutline,
+  diamondOutline,
   statsChartOutline,
   storefrontOutline,
 } from 'ionicons/icons';
@@ -46,6 +47,7 @@ export const SECONDARY_NAV: NavItem[] = [
   { id: 'my-units', label: 'My Units', href: '/units', icon: bookmarkOutline },
   { id: 'sellers', label: 'Sellers', href: '/sellers', icon: storefrontOutline },
   { id: 'transactions', label: 'Transactions', href: '/transactions', icon: receiptOutline },
+  { id: 'plans', label: 'KEZMOTO Pro', href: '/plans', icon: diamondOutline },
 ];
 
 /** Pinned to the sidebar footer, just above Logout. */
@@ -90,6 +92,13 @@ export const ADMIN_NAV: NavItem[] = [
     label: 'Manage Users',
     href: '/admin/users',
     icon: peopleOutline,
+    role: 'admin',
+  },
+  {
+    id: 'plan-payments',
+    label: 'Plan Payments',
+    href: '/admin/plans',
+    icon: diamondOutline,
     role: 'admin',
   },
   {

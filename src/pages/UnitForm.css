@@ -461,3 +461,23 @@ ol.stepper { flex-direction: row; }
   margin: 0;
   min-width: 120px;
 }
+
+/* Free plan limit reached. */
+.unit-form__limit {
+  align-items: center;
+  gap: var(--kez-space-3);
+  padding-block: var(--kez-space-7);
+  text-align: center;
+}
+
+.unit-form__limit > ion-icon { font-size: 40px; color: var(--kez-accent); }
+.unit-form__limit h2, .unit-form__limit p { margin: 0; max-width: 52ch; }
+
+.unit-form__limit-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--kez-space-3);
+}
+
+.unit-form__limit-actions ion-button { margin: 0; }

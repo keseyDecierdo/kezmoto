@@ -44,7 +44,9 @@ import Favorites from './pages/Favorites';
 import FraudReview from './pages/FraudReview';
 import Home from './pages/Home';
 import Landing from './pages/Landing';
+import AdminPlans from './pages/AdminPlans';
 import ListingAppeals from './pages/ListingAppeals';
+import Plans from './pages/Plans';
 import ListingDetail from './pages/ListingDetail';
 import Messages from './pages/Messages';
 import Middleman from './pages/Middleman';
@@ -221,6 +223,22 @@ const Shell: React.FC = () => {
         {/* AI Assistant is the floating chatbot mounted globally below, once per session — no standalone route. */}
 
         {/* ------- Out of Phase 1 scope: routes only, no logic ------- */}
+        <Route
+          path="/admin/plans"
+          element={
+            <RequireAuth admin>
+              <AdminPlans />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/plans"
+          element={
+            <RequireAuth>
+              <Plans />
+            </RequireAuth>
+          }
+        />
         <Route
           path="/admin/middleman"
           element={

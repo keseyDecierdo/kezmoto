@@ -12,6 +12,8 @@ import {
   timeOutline,
 } from 'ionicons/icons';
 import { useAuth } from '../context/AuthContext';
+import { KEZMOTO_GCASH_NAME, KEZMOTO_GCASH_NUMBER } from '../lib/gcash';
+import { commissionRateFor, isPro } from '../utils/plans';
 import { commissionAmountFor, paymentsApi, reviewsApi } from '../services/api';
 import type { Payment, Transaction } from '../types';
 import { TRANSACTION_STATUS_LABEL, TRANSACTION_STATUS_SEQUENCE } from '../types';
@@ -19,8 +21,6 @@ import { formatPrice } from '../utils/format';
 import './TransactionTracker.css';
 
 /** Where the seller sends the commission. One constant — update here if it ever changes. */
-const KEZMOTO_GCASH_NUMBER = '09558071389';
-const KEZMOTO_GCASH_NAME = 'Kesey Decierdo';
 
 const COMMISSION_STATUS_LABEL: Record<string, string> = {
   pending: 'Pending',
@@ -42,6 +42,8 @@ interface TransactionTrackerProps {
  */
 const TransactionTracker: React.FC<TransactionTrackerProps> = ({ transaction, onReviewed }) => {
   const { user } = useAuth();
+  // The seller pays; KEZMOTO Pro sellers get the lower rate.
+  const commissionRate = commissionRateFor(user?.id === transaction.seller?.id && isPro(user));
   const [present] = useIonToast();
   // Collapsed by default — this sits above the message scroller inside
   // ChatPanel, and left open it was tall enough to push the conversation
@@ -131,6 +133,7 @@ const TransactionTracker: React.FC<TransactionTrackerProps> = ({ transaction, on
         agreedPrice: transaction.agreedPrice,
         referenceNumber,
         proofFile,
+        rate: commissionRate,
       });
       setMyPayment(payment);
       setReferenceNumber('');
@@ -242,8 +245,8 @@ const TransactionTracker: React.FC<TransactionTrackerProps> = ({ transaction, on
           {!cancelled && transaction.agreedPrice != null && (
             <div className="tx-tracker__commission">
               <span>
-                <small>KEZMOTO commission (seller)</small>
-                <strong>{formatPrice(commissionAmountFor(transaction.agreedPrice))}</strong>
+                <small>KEZMOTO commission (seller · {Math.round(commissionRate * 100)}%{commissionRate < 0.05 ? ' Pro' : ''})</small>
+                <strong>{formatPrice(commissionAmountFor(transaction.agreedPrice, commissionRate))}</strong>
               </span>
               <span
                 className={`kez-chip ${transaction.commissionStatus === 'paid'
@@ -274,7 +277,7 @@ const TransactionTracker: React.FC<TransactionTrackerProps> = ({ transaction, on
                     </p>
                   )}
                   <p className="kez-muted tx-tracker__gcash-note">
-                    Send {formatPrice(commissionAmountFor(transaction.agreedPrice))} via GCash to{' '}
+                    Send {formatPrice(commissionAmountFor(transaction.agreedPrice, commissionRate))} via GCash to{' '}
                     <strong>{KEZMOTO_GCASH_NUMBER}</strong> ({KEZMOTO_GCASH_NAME}), then submit the
                     reference number and a screenshot below.
                   </p>

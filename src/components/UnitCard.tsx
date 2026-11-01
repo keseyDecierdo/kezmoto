@@ -2,6 +2,7 @@ import React from 'react';
 import { IonButton, IonIcon } from '@ionic/react';
 import {
   chatbubbleEllipsesOutline,
+  flashOutline,
   heart,
   heartOutline,
   locationOutline,
@@ -11,6 +12,7 @@ import {
 } from 'ionicons/icons';
 import type { Listing } from '../types';
 import ScoreBadges from './ScoreBadges';
+import { isBoosted } from '../utils/plans';
 import { formatMileage, formatPrice } from '../utils/format';
 import './UnitCard.css';
 
@@ -71,6 +73,12 @@ const UnitCard: React.FC<UnitCardProps> = ({
           <span className="unit-card__assist" title="Seller accepts admin-assisted deals">
             <IonIcon icon={shieldCheckmarkOutline} />
             Assisted
+          </span>
+        )}
+        {isBoosted(listing) && (
+          <span className="kez-featured" title="Boosted listing">
+            <IonIcon icon={flashOutline} aria-hidden="true" />
+            Featured
           </span>
         )}
       </button>

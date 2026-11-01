@@ -20,8 +20,9 @@ import { settle } from './simulate';
     change later — not per-deal configurable in this phase. */
 export const COMMISSION_RATE = 0.05;
 
-export const commissionAmountFor = (agreedPrice: number): number =>
-  Math.round(agreedPrice * COMMISSION_RATE * 100) / 100;
+/** KEZMOTO Pro sellers pass their lower rate (see utils/plans.ts). */
+export const commissionAmountFor = (agreedPrice: number, rate: number = COMMISSION_RATE): number =>
+  Math.round(agreedPrice * rate * 100) / 100;
 
 const currentUserId = async (): Promise<string | null> =>
   (await supabase.auth.getSession()).data.session?.user.id ?? null;
@@ -67,6 +68,8 @@ export const paymentsApi = {
     agreedPrice: number;
     referenceNumber: string;
     proofFile: File;
+    /** 0.05 by default; 0.03 while the seller has KEZMOTO Pro. */
+    rate?: number;
   }): Promise<Payment> {
     const payerId = await currentUserId();
     if (!payerId) throw new Error('Sign in to submit a payment.');
@@ -79,7 +82,7 @@ export const paymentsApi = {
         transaction_id: input.transactionId,
         payer_id: payerId,
         payment_type: 'commission',
-        amount: commissionAmountFor(input.agreedPrice),
+        amount: commissionAmountFor(input.agreedPrice, input.rate),
         currency: 'PHP',
         reference_number: input.referenceNumber.trim(),
         proof_url: proofPath,

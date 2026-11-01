@@ -697,3 +697,39 @@ ion-modal.kez-modal ion-toolbar {
     padding-bottom: 2px;
   }
 }
+
+/* ---------- KEZMOTO Pro / Boosts ---------- */
+/* Orange chip on a boosted listing's photo (UnitCard, MarketCard). */
+.kez-featured {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: var(--kez-radius-pill);
+  background: var(--kez-accent);
+  color: #0a0a0a;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: var(--kez-tracking-wide);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+/* "PRO" next to a seller's name. */
+.kez-pro-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 6px;
+  padding: 1px 7px;
+  border-radius: var(--kez-radius-pill);
+  background: #0a0a0a;
+  border: 1px solid var(--kez-accent);
+  color: var(--kez-accent);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  vertical-align: middle;
+}

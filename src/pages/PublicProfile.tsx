@@ -11,6 +11,7 @@ import { usersApi } from '../services/api';
 import type { User } from '../types';
 import { formatDate } from '../utils/format';
 import './PublicProfile.css';
+import ProBadge from '../components/ProBadge';
 
 /**
  * Read-only "who am I dealing with" card — reached from a seller's name on
@@ -56,7 +57,10 @@ const PublicProfile: React.FC = () => {
               size="lg"
               verified={profile.verified}
             />
-            <h1 className="kez-display">{profile.name}</h1>
+            <h1 className="kez-display">
+              {profile.name}
+              <ProBadge proUntil={profile.proUntil} />
+            </h1>
 
             <div className="public-profile__chips">
               <span className={`kez-chip ${profile.role === 'admin' ? 'kez-chip--warning' : 'kez-chip--accent'}`}>

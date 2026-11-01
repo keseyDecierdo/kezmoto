@@ -1,9 +1,10 @@
 import React from 'react';
 import { IonIcon } from '@ionic/react';
-import { heart, heartOutline, shieldCheckmarkOutline } from 'ionicons/icons';
+import { flashOutline, heart, heartOutline, shieldCheckmarkOutline } from 'ionicons/icons';
 import type { Listing } from '../types';
 import Avatar from './Avatar';
 import { avatarColorFor } from '../services/mappers';
+import { isBoosted } from '../utils/plans';
 import { formatMileage, formatPrice, formatRelative } from '../utils/format';
 import './MarketCard.css';
 
@@ -43,6 +44,12 @@ const MarketCard: React.FC<MarketCardProps> = ({ listing, onView, onToggleFavori
           <span className="market-card__badge">
             <IonIcon icon={shieldCheckmarkOutline} aria-hidden="true" />
             Assisted
+          </span>
+        )}
+        {isBoosted(listing) && (
+          <span className="kez-featured" title="Boosted listing">
+            <IonIcon icon={flashOutline} aria-hidden="true" />
+            Featured
           </span>
         )}
       </button>

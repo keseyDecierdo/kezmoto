@@ -108,6 +108,8 @@ export const mapProfile = (row: ProfileRow, email = ''): User => ({
   city: row.city ?? '',
   barangay: row.barangay ?? '',
   street: row.street ?? '',
+  proUntil: row.pro_until ?? '',
+  boostCredits: row.boost_credits ?? 0,
 });
 
 /* ------------------------------------------------------------ listings */
@@ -166,6 +168,7 @@ export const mapListing = (row: ListingRow, joins: ListingJoins = {}): Listing =
   listingQualityBreakdown: row.listing_quality_breakdown,
   conditionScore: row.condition_score,
   conditionScoreExplanation: row.condition_score_explanation,
+  boostedUntil: row.boosted_until ?? '',
 });
 
 /* -------------------------------------------------------- wanted posts */

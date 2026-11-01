@@ -15,6 +15,8 @@ interface AuthContextValue {
   /** Finishes sign-up with the code from the verification email. */
   verifySignup: (email: string, code: string) => Promise<User>;
   logout: () => void;
+  /** Re-reads the signed-in profile (e.g. after a Pro purchase is approved). */
+  refreshUser: () => Promise<void>;
   updateProfile: (patch: Partial<User>) => Promise<User>;
   submitIdVerification: (file: File, idType: IdType) => Promise<{ matched: boolean; extractedName: string }>;
   submitFaceCapture: (file: File) => Promise<{ matched: boolean; confidence: number }>;
@@ -86,6 +88,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     void authApi.logout();
   }, []);
 
+  const refreshUser = useCallback(async () => {
+    try {
+      const next = await authApi.currentUser();
+      if (next) setUser(next);
+    } catch {
+      // Keep the current profile; the next auth event will retry.
+    }
+  }, []);
+
   const updateProfile = useCallback(
     async (patch: Partial<User>) => {
       if (!user) throw new Error('You need to be signed in to update your profile.');
@@ -143,6 +154,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       register,
       verifySignup,
       logout,
+      refreshUser,
       updateProfile,
       submitIdVerification,
       submitFaceCapture,
@@ -156,6 +168,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       register,
       verifySignup,
       logout,
+      refreshUser,
       updateProfile,
       submitIdVerification,
       submitFaceCapture,

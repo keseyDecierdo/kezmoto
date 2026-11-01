@@ -47,6 +47,7 @@ SQL Editor → New query → paste each file, in order, and run:
 | `migrations/0027_user_reports_rls.sql` | RLS for `user_reports`; admins can update any profile; trigger locking `role` / disabled columns for non-admins; restrictive policies so disabled accounts can't post. **Apply 0026 and 0027 (SQL Editor) before using Report user / Manage Users.** |
 | `migrations/0028_require_verified_to_post.sql` | `is_verified_or_admin()` helper + restrictive insert policy on `listings`: only ID-and-face-verified customers (or admins) can post a unit |
 | `migrations/0035_profile_personal_details.sql` | Separate `first_name` / `middle_name` / `last_name`, `sex`, `birthdate` and address parts (`region` → `barangay`, `street`) on `profiles`; `handle_new_user()` fills them from Create account. **Apply before testing sign-up.** Safe to re-run. |
+| `migrations/0036_seller_pro_boosts.sql` | KEZMOTO Pro and Boosts: `profiles.pro_until` / `boost_credits`, `listings.boosted_until`, the `plan_purchases` table (GCash proof + admin approval), the 3-active-listing limit for free sellers, approval trigger and `use_boost_credit()`. **Apply before opening /plans or /admin/plans.** Safe to re-run. |
 
 If `0004` errors on the `storage.objects` policies (some projects lock that
 table down), create the two buckets by hand in Storage — `listing-photos`
@@ -417,3 +418,21 @@ this as real:
 - The AI chatbot's conversation is session-only by design (component state,
   not persisted) — only the brief's `ai_chatbot_logs` audit trail survives a
   reload, not the visible thread itself.
+
+### KEZMOTO Pro and Boosts (0036)
+
+| | Free | Pro (₱149 / 30 days) | Boost (₱49) |
+|---|---|---|---|
+| Buy, chat, offers, Wanted, middleman, AI | ✓ | ✓ | — |
+| Active listings | 3 | Unlimited | — |
+| Commission when you sell | 5% | 3% | — |
+| Featured at the top of Home / Landing | — | 2 free boosts per purchase | 7 days |
+
+Payment works like the commission: the seller sends GCash to KEZMOTO and
+submits the reference number plus a receipt screenshot (stored in the
+private `payment-proofs` bucket). An admin approves it on **Plan Payments**
+(`/admin/plans`); the `plan_purchases_apply` trigger then extends
+`pro_until` by 30 days and adds 2 boost credits, or extends the listing's
+`boosted_until` by 7 days. Sellers cannot write those columns themselves
+(`enforce_plan_columns`), and `enforce_free_listing_limit` stops a fourth
+open listing for free accounts with `KEZ_LISTING_LIMIT`.

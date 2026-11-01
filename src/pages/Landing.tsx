@@ -23,6 +23,7 @@ import { useAuth } from '../context/AuthContext';
 import { useMarketplace } from '../context/MarketplaceContext';
 import type { Listing } from '../types';
 import { searchListings } from '../utils/budgetSearch';
+import { featuredFirst } from '../utils/plans';
 import { formatPrice } from '../utils/format';
 import './Landing.css';
 
@@ -140,7 +141,8 @@ const Landing: React.FC = () => {
     const list = [...searched.listings];
     if (sort === 'price-asc') list.sort((a, b) => a.price - b.price);
     if (sort === 'price-desc') list.sort((a, b) => b.price - a.price);
-    return { results: list, budget: searched.budget };
+    // Boosted (Featured) units stay on top whichever way the list is sorted.
+    return { results: featuredFirst(list), budget: searched.budget };
   }, [active, brand, priceBand, assistedOnly, query, sort]);
 
   const filtersActive = query !== '' || brand !== 'all' || priceBand !== 'any' || assistedOnly;

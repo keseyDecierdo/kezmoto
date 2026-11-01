@@ -16,6 +16,7 @@ import {
   chevronBackOutline,
   chevronForwardOutline,
   cloudUploadOutline,
+  diamondOutline,
   trashOutline,
 } from 'ionicons/icons';
 import AppPage from '../components/AppPage';
@@ -28,6 +29,7 @@ import LocationPicker from '../components/LocationPicker';
 import { rememberFile } from '../services/storageService';
 import type { ListingDraft, RedactionBox, UnitDocument } from '../types';
 import { EMOJIS } from '../utils/emojis';
+import { FREE_LISTING_LIMIT, freeSlotsLeft, isPro } from '../utils/plans';
 import './UnitForm.css';
 
 const MIN_PHOTOS = 5;
@@ -75,6 +77,28 @@ const UnitForm: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [loading, setLoading] = useState(isEdit);
+  // Free sellers can have FREE_LISTING_LIMIT open listings (the database
+  // enforces it too); checked up front so nobody fills the form for nothing.
+  const [atLimit, setAtLimit] = useState(false);
+  const unlimited = isPro(user) || user?.role === 'admin';
+
+  useEffect(() => {
+    if (isEdit || !user || unlimited) {
+      setAtLimit(false);
+      return;
+    }
+    let ignore = false;
+    void listingsApi
+      .listBySeller(user.id)
+      .then((mine) => {
+        const open = mine.filter((l) => l.status === 'active' || l.status === 'pending').length;
+        if (!ignore) setAtLimit(freeSlotsLeft(open, false) === 0);
+      })
+      .catch(() => undefined);
+    return () => {
+      ignore = true;
+    };
+  }, [isEdit, user, unlimited]);
 
   const photoInputRef = useRef<HTMLInputElement>(null);
   const docInputRef = useRef<HTMLInputElement>(null);
@@ -310,6 +334,31 @@ const UnitForm: React.FC = () => {
     return (
       <AppPage title="Manage unit" backHref="/units">
         <ErrorState message={loadError} onRetry={() => router.push('/units', 'back')} />
+      </AppPage>
+    );
+  }
+
+  if (atLimit) {
+    return (
+      <AppPage title="List a unit" backHref="/units">
+        <div className="kez-bento">
+          <section className="kez-tile kez-tile--full unit-form__limit">
+            <IonIcon icon={diamondOutline} aria-hidden="true" />
+            <h2 className="kez-display">You have {FREE_LISTING_LIMIT} active listings</h2>
+            <p className="kez-muted">
+              Free accounts can keep {FREE_LISTING_LIMIT} units up at a time. Mark one as sold to post another,
+              or get KEZMOTO Pro for unlimited listings, a 3% commission and 2 free Boosts.
+            </p>
+            <div className="unit-form__limit-actions">
+              <IonButton fill="outline" onClick={() => router.push('/units', 'back')}>
+                Manage my units
+              </IonButton>
+              <IonButton className="kez-cta" onClick={() => router.push('/plans', 'forward')}>
+                See KEZMOTO Pro
+              </IonButton>
+            </div>
+          </section>
+        </div>
       </AppPage>
     );
   }

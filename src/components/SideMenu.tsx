@@ -10,6 +10,7 @@ import { ADMIN_NAV, PRIMARY_NAV, PROFILE_NAV, SECONDARY_NAV, activeNavId, type N
 import Avatar from './Avatar';
 import BrandMark from './BrandMark';
 import './SideMenu.css';
+import ProBadge from './ProBadge';
 
 const SAVED_NAV = PRIMARY_NAV.find((item) => item.id === 'favorites');
 
@@ -91,7 +92,10 @@ const SideMenu: React.FC<{ disabled?: boolean }> = ({ disabled = false }) => {
           <button type="button" className="side-menu__user" onClick={() => go('/profile')}>
             <Avatar name={user.name} color={user.avatarColor} imageUrl={user.avatarUrl} verified={user.verified} />
             <span className="side-menu__user-text">
-              <strong>{user.name}</strong>
+              <strong>
+                {user.name}
+                <ProBadge proUntil={user.proUntil} />
+              </strong>
               <span>{isAdmin ? 'Admin · Middleman' : 'Customer'}</span>
             </span>
           </button>

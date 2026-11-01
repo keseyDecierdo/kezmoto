@@ -86,3 +86,18 @@
   filter: grayscale(0.6);
   opacity: 0.8;
 }
+
+/* Free plan: "2 of 3 free listings used · Go Pro". */
+.my-units__quota {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--kez-space-3);
+  margin-bottom: var(--kez-gap);
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text-soft);
+}
+
+.my-units__quota > ion-icon { flex: 0 0 auto; font-size: 20px; color: var(--kez-accent); }
+.my-units__quota span { flex: 1 1 auto; }
+.my-units__quota strong { color: var(--kez-text); }
+.my-units__quota ion-button { flex: 0 0 auto; margin: 0; }

@@ -1,0 +1,27 @@
+.admin-plans__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--kez-space-2);
+}
+
+.admin-plans__kind {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: var(--kez-radius-pill);
+  font-size: var(--kez-text-xs);
+  font-weight: 700;
+}
+
+.admin-plans__kind--pro { background: #0a0a0a; color: var(--kez-accent); border: 1px solid var(--kez-accent); }
+.admin-plans__kind--boost { background: var(--kez-accent); color: #0a0a0a; }
+
+.admin-plans__amount {
+  font-family: var(--kez-font-display);
+  font-size: var(--kez-text-xl);
+  color: var(--kez-text);
+}
+
+.admin-plans .kez-field { margin-bottom: 0; }

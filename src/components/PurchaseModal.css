@@ -1,0 +1,78 @@
+ion-modal.purchase-modal {
+  --width: min(460px, calc(100vw - 2 * var(--kez-modal-gutter)));
+}
+
+.purchase-modal__form,
+.purchase-modal__done {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.4vh, 12px);
+}
+
+.purchase-modal__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--kez-space-3);
+  padding: var(--kez-space-3);
+  border: 1px solid var(--kez-accent-line);
+  border-radius: var(--kez-radius-sm);
+  background: var(--kez-accent-soft);
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text-soft);
+}
+
+.purchase-modal__summary strong {
+  flex: 0 0 auto;
+  color: var(--kez-accent);
+  font-family: var(--kez-font-display);
+  font-size: var(--kez-text-xl);
+}
+
+.purchase-modal__steps {
+  margin: 0;
+  padding-left: 1.2em;
+  font-size: var(--kez-text-sm);
+  line-height: 1.55;
+  color: var(--kez-text-soft);
+}
+
+.purchase-modal__steps strong { color: var(--kez-text); }
+
+.purchase-modal .kez-field { margin-bottom: 0; }
+
+.purchase-modal__file {
+  display: flex;
+  align-items: center;
+  gap: var(--kez-space-2);
+  min-height: 48px;
+  padding: 0 var(--kez-space-4);
+  border: 1px dashed var(--kez-border);
+  border-radius: var(--kez-radius-sm);
+  background: var(--kez-surface);
+  color: var(--kez-text-soft);
+  font-family: var(--kez-font-body);
+  font-size: var(--kez-text-sm);
+  text-align: left;
+  cursor: pointer;
+}
+
+.purchase-modal__file:hover { border-color: var(--kez-accent); color: var(--kez-text); }
+
+.purchase-modal__file span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.purchase-modal__file ion-icon { flex: 0 0 auto; color: var(--kez-accent); font-size: 18px; }
+
+.purchase-modal__done { align-items: center; text-align: center; }
+
+.purchase-modal__done > ion-icon { font-size: 40px; color: var(--kez-accent); }
+
+.purchase-modal__done h3 { margin: 0; }
+
+.purchase-modal__done .kez-muted { margin: 0; }
+
+.purchase-modal__done ion-button { align-self: stretch; }
