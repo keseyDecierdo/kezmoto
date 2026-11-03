@@ -2,7 +2,9 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { IonButton, IonIcon, IonTextarea, useIonToast, useIonRouter } from '@ionic/react';
 import {
   addOutline,
+  archiveOutline,
   arrowBackOutline,
+  arrowUndoOutline,
   checkmarkDoneOutline,
   closeCircle,
   flagOutline,
@@ -16,6 +18,7 @@ import {
 import Avatar from './Avatar';
 import OfferBar from './OfferBar';
 import OfferModal from './OfferModal';
+import SoldModal from './SoldModal';
 import ReportUserModal from './ReportUserModal';
 import TransactionTracker from './TransactionTracker';
 import { ErrorState, LoadingChat } from './StateViews';
@@ -28,6 +31,7 @@ import type { ChatThread, Transaction } from '../types';
 import { EMOJIS } from '../utils/emojis';
 import { formatPrice, formatTime } from '../utils/format';
 import { offerStateFor } from '../utils/offers';
+import { isArchivedThread } from '../utils/archive';
 import './ChatPanel.css';
 
 interface ChatPanelProps {
@@ -70,6 +74,21 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ threadId, prefill, onBack }) => {
   const [offerBusy, setOfferBusy] = useState(false);
   const [listedPrice, setListedPrice] = useState<number | null>(null);
   const [reportOpen, setReportOpen] = useState(false);
+  const [soldOpen, setSoldOpen] = useState(false);
+  // The viewer's own archive state for this chat (0039).
+  const [archivedAt, setArchivedAt] = useState<string | null>(null);
+  const [archiving, setArchiving] = useState(false);
+
+  useEffect(() => {
+    let ignore = false;
+    setArchivedAt(null);
+    void chatsApi.archivedAt(threadId).then((at) => {
+      if (!ignore) setArchivedAt(at);
+    });
+    return () => {
+      ignore = true;
+    };
+  }, [threadId]);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const composerRef = useRef<HTMLIonTextareaElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
@@ -228,7 +247,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ threadId, prefill, onBack }) => {
    * Seller closes the sale at the final price (from "Sold for how much?",
    * prefilled with the agreed offer). Rejects so the modal can show errors.
    */
-  const markAsSold = async (price: number) => {
+  const markAsSold = async (price: number, meetup?: { location: string; at: string | null }) => {
     if (!thread?.listingId || !user) return;
     setMarkingSold(true);
     try {
@@ -242,23 +261,42 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ threadId, prefill, onBack }) => {
           buyerId: thread.participant.id,
           sellerId: user.id,
           agreedPrice: price,
+          meetupLocation: meetup?.location,
+          meetupAt: meetup?.at ?? null,
         })
         .catch((err: unknown) => {
           console.error('Could not record the direct-sale transaction.', err);
           return null;
         });
       if (closed) setTransaction(closed);
-      await chatsApi.postSystemMessage(thread.id, `Marked as sold for ${formatPrice(price)}.`);
+      // The database refuses the meetup place until migration 0040 is applied;
+      // say so instead of silently dropping it.
+      const meetupMissing = Boolean(meetup && closed && !closed.meetupLocation);
+      await chatsApi.postSystemMessage(
+        thread.id,
+        `Marked as sold for ${formatPrice(price)}.${meetup ? ` Meetup: ${meetup.location}.` : ''}`
+      );
       invalidate();
       void notificationsApi.create({
         recipientId: thread.participant.id,
         type: 'listing_sold',
         title: 'Listing marked sold',
-        body: `${thread.listingTitle ?? 'A unit'} was sold for ${formatPrice(price)}.`,
+        body: `${thread.listingTitle ?? 'A unit'} was sold for ${formatPrice(price)}.${
+          meetup ? ` Meetup: ${meetup.location}.` : ''
+        }`,
         link: `/listing/${thread.listingId}`,
       });
       setThread(await chatsApi.getThread(thread.id));
-      void present({ message: 'Marked as sold.', duration: 1800, color: 'success', position: 'top' });
+      void present(
+        meetupMissing
+          ? {
+              message: 'Marked as sold, but the meetup place could not be saved yet. Please tell KEZMOTO support.',
+              duration: 4200,
+              color: 'warning',
+              position: 'top',
+            }
+          : { message: 'Marked as sold.', duration: 1800, color: 'success', position: 'top' }
+      );
     } finally {
       setMarkingSold(false);
     }
@@ -407,6 +445,39 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ threadId, prefill, onBack }) => {
   // middleman makes this a three-way conversation.
   const partyFor = (senderId: string) => thread.parties.find((party) => party.id === senderId);
 
+  const hasMiddleman = Boolean(thread.middlemanRequested || transaction?.adminId);
+
+  // Same rule as the Messages tabs: a newer message un-archives the chat.
+  const isArchived = isArchivedThread(thread, archivedAt);
+
+  const toggleArchive = async () => {
+    setArchiving(true);
+    try {
+      if (isArchived) {
+        await chatsApi.unarchive(threadId);
+        setArchivedAt(null);
+      } else {
+        await chatsApi.archive(threadId);
+        setArchivedAt(new Date().toISOString());
+      }
+      invalidate();
+      void present({
+        message: isArchived ? 'Moved back to Active.' : 'Moved to Archived. A new message brings it back.',
+        duration: 2200,
+        position: 'top',
+      });
+    } catch (err) {
+      void present({
+        message: err instanceof Error ? err.message : 'Something went wrong.',
+        duration: 2600,
+        color: 'danger',
+        position: 'top',
+      });
+    } finally {
+      setArchiving(false);
+    }
+  };
+
   return (
     <div className="chat">
       <header className="chat__header">
@@ -452,6 +523,18 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ threadId, prefill, onBack }) => {
             {thread.middlemanRequested ? 'Middleman requested' : 'Request Middleman'}
           </IonButton>
         )}
+        <IonButton
+          size="small"
+          fill="outline"
+          className="chat__archive"
+          disabled={archiving}
+          onClick={() => void toggleArchive()}
+          aria-label={isArchived ? 'Unarchive this chat' : 'Archive this chat'}
+          title={isArchived ? 'Move back to Active' : 'Move to Archived'}
+        >
+          <IonIcon slot="start" icon={isArchived ? arrowUndoOutline : archiveOutline} />
+          <span className="kez-hide-mobile">{isArchived ? 'Unarchive' : 'Archive'}</span>
+        </IonButton>
         {!isAdmin && thread.participant.role !== 'admin' && (
           <IonButton
             size="small"
@@ -488,7 +571,8 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ threadId, prefill, onBack }) => {
               color="success"
               className="chat__mark-sold"
               disabled={markingSold}
-              onClick={() => setOfferModal('sold')}
+              // No middleman: ask for the agreed meetup place too.
+              onClick={() => (thread.middlemanRequested ? setOfferModal('sold') : setSoldOpen(true))}
             >
               <IonIcon slot="start" icon={checkmarkDoneOutline} />
               Mark as Sold
@@ -511,6 +595,16 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ threadId, prefill, onBack }) => {
           onWithdraw={() => void clearOffer(true)}
         />
       )}
+
+      <SoldModal
+        isOpen={soldOpen}
+        onClose={() => setSoldOpen(false)}
+        buyerName={thread.participant.name}
+        listedPrice={listedPrice}
+        initialPrice={transaction?.agreedPrice ?? transaction?.proposedPrice ?? listedPrice}
+        initialLocation={transaction?.meetupLocation}
+        onSubmit={(d) => markAsSold(d.price, { location: d.meetupLocation, at: d.meetupAt })}
+      />
 
       <OfferModal
         isOpen={offerModal !== null}
@@ -578,10 +672,13 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ threadId, prefill, onBack }) => {
         </button>
       )}
 
-      {transaction && !isAdmin && (
+      {/* Deal status only once a middleman is involved. A direct deal shows
+          just the review box after it is sold (no commission). */}
+      {transaction && !isAdmin && (hasMiddleman || transaction.status === 'completed') && (
         <div className="chat__tracker">
           <TransactionTracker
             transaction={transaction}
+            variant={hasMiddleman ? 'full' : 'sale'}
             onReviewed={() => void transactionsApi.getByChatId(threadId).then(setTransaction)}
           />
         </div>

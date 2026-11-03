@@ -3,6 +3,8 @@ import { IonIcon, IonMenuToggle } from '@ionic/react';
 import { menuOutline } from 'ionicons/icons';
 import { useLocation } from 'react-router-dom';
 import { useGatedNav } from '../hooks/useGatedNav';
+import { useUnreadCount } from '../context/UnreadContext';
+import { unreadLabel } from '../utils/format';
 import { PRIMARY_NAV, activeNavId } from '../navigation/navItems';
 import './AppTabBar.css';
 
@@ -18,6 +20,7 @@ const TAB_ITEMS = PRIMARY_NAV.filter((item) => item.id !== 'favorites');
 const AppTabBar: React.FC = () => {
   const handleNavClick = useGatedNav();
   const { pathname } = useLocation();
+  const unread = useUnreadCount();
   const active = activeNavId(pathname);
   const inMenu = active !== null && !TAB_ITEMS.some((item) => item.id === active);
 
@@ -35,7 +38,14 @@ const AppTabBar: React.FC = () => {
             aria-current={isActive ? 'page' : undefined}
             onClick={() => void handleNavClick(item)}
           >
-            <IonIcon icon={item.icon} aria-hidden="true" />
+            <span className="kez-tabbar__icon">
+              <IonIcon icon={item.icon} aria-hidden="true" />
+              {item.id === 'messages' && unread > 0 && (
+                <span className="kez-tabbar__count" aria-label={`${unread} unread`}>
+                  {unreadLabel(unread)}
+                </span>
+              )}
+            </span>
             <span>{item.label}</span>
           </button>
         );

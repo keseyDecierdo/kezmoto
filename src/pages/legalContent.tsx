@@ -247,8 +247,9 @@ export const TERMS: LegalDoc = {
         <ul>
           <li>Browsing, buying, chatting, offers and Wanted posts are free.</li>
           <li>
-            When a unit sells through KEZMOTO, the seller pays a commission of <strong>5%</strong> of the final
-            agreed price (<strong>3%</strong> with KEZMOTO Pro), by GCash.
+            Deals made directly between buyer and seller are free. When a KEZMOTO admin acts as middleman for a
+            sale, the seller pays a commission of <strong>5%</strong> of the final agreed price
+            (<strong>3%</strong> with KEZMOTO Pro), by GCash.
           </li>
           <li>
             Optional: KEZMOTO Pro at ₱{PLAN_PRICES.pro} for 30 days or ₱{PLAN_PRICES.pro_year.toLocaleString()} for

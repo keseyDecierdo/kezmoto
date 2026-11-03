@@ -50,6 +50,10 @@ SQL Editor → New query → paste each file, in order, and run:
 | `migrations/0036_seller_pro_boosts.sql` | KEZMOTO Pro and Boosts: `profiles.pro_until` / `boost_credits`, `listings.boosted_until`, the `plan_purchases` table (GCash proof + admin approval), the 3-active-listing limit for free sellers, approval trigger and `use_boost_credit()`. **Apply before opening /plans or /admin/plans.** Safe to re-run. |
 | `migrations/0037_pro_yearly.sql` | Yearly Pro: `plan_purchases.kind` accepts `'pro_year'` (₱1,490 → 365 days + 24 boost credits on approval). **Run after 0036.** Safe to re-run. |
 | `migrations/0038_consents_and_account_deletion.sql` | Data Privacy Act: `terms_accepted_at` / `terms_version` (sign-up checkbox), `biometric_consent_at` (asked before the ID and face scan), `record_biometric_consent()` and `delete_my_account()` (removes the user's data, keeps payment rows anonymised). **Run before deploying this version: until it exists, nobody can start ID verification.** Safe to re-run. |
+| `migrations/0039_chat_archives.sql` | Messages **Archived** tab: `chat_archives` (one row per chat and person, so archiving is personal). A new message brings an archived chat back to Active. Until it's run, the Archived tab stays empty and Archive shows a friendly error. Safe to re-run. |
+| `migrations/0040_direct_sale_meetup.sql` | Direct sales (no middleman): the seller's **Mark as sold** saves the agreed meetup place and time with the price. Re-creates `enforce_transaction_update` from 0038 with that single exception. Run after 0038. Safe to re-run. |
+| `migrations/0041_deal_parties_view_listing.sql` | Buyer, seller and middleman of a chat or deal can always read that unit (photo and details), even after it is sold or removed. Fixes the buyer's Transactions > View details having no photo. Public visibility unchanged. Safe to re-run. |
+| `migrations/0042_free_limit_counts_all_posts.sql` | Free plan = **3 unit posts in total**, whatever their status (sold and removed count). Replaces the 0036 limit that only counted units still for sale. Pro and admins unlimited. Run after 0036. Safe to re-run. |
 
 If `0004` errors on the `storage.objects` policies (some projects lock that
 table down), create the two buckets by hand in Storage — `listing-photos`
@@ -426,7 +430,7 @@ this as real:
 | | Free | Pro (₱149 / 30 days, or ₱1,490 / year) | Boost (₱49) |
 |---|---|---|---|
 | Buy, chat, offers, Wanted, middleman, AI | ✓ | ✓ | — |
-| Active listings | 3 | Unlimited | — |
+| Unit posts | 3 in total (sold ones count) | Unlimited | — |
 | Commission when you sell | 5% | 3% | — |
 | Featured at the top of Home / Landing | — | 2 free boosts (24 on yearly) | 7 days |
 

@@ -160,3 +160,60 @@
     padding-right: calc(var(--kez-gap) + 72px);
   }
 }
+
+/* Active | Archived, at the top of the conversation list. */
+.messages__tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: var(--kez-space-1);
+  border-radius: var(--kez-radius-sm);
+  background: var(--kez-surface-2);
+}
+
+.messages__tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: calc(var(--kez-radius-sm) - 2px);
+  background: transparent;
+  color: var(--kez-text-muted);
+  font-family: var(--kez-font-body);
+  font-size: var(--kez-text-sm);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.messages__tab.is-active {
+  background: var(--kez-accent);
+  color: #0a0a0a;
+}
+
+.messages__tab-count {
+  min-width: 20px;
+  padding: 0 6px;
+  border-radius: var(--kez-radius-pill);
+  background: rgba(10, 10, 10, 0.12);
+  font-size: 11px;
+  line-height: 18px;
+}
+
+.messages__tab-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--kez-danger);
+}
+
+.messages__tab-empty {
+  margin: var(--kez-space-3) var(--kez-space-2);
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text-muted);
+  text-align: center;
+}

@@ -34,6 +34,7 @@ import SideMenu from './components/SideMenu';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { MarketplaceProvider } from './context/MarketplaceContext';
 import { SidebarProvider } from './context/SidebarContext';
+import { UnreadProvider } from './context/UnreadContext';
 import { useBreakpoint } from './hooks/useBreakpoint';
 
 import RequireVerified from './components/RequireVerified';
@@ -344,7 +345,9 @@ const App: React.FC = () => (
       <MarketplaceProvider>
         <SidebarProvider>
           <IonReactRouter>
-            <Shell />
+            <UnreadProvider>
+              <Shell />
+            </UnreadProvider>
           </IonReactRouter>
         </SidebarProvider>
       </MarketplaceProvider>

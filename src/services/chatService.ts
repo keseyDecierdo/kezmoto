@@ -6,7 +6,7 @@
    ========================================================================= */
 
 import { supabase } from '../lib/supabaseClient';
-import type { ChatRow, DbRole, ListingRow, MessageRow, ProfileRow } from '../lib/database.types';
+import type { ChatArchiveRow, ChatRow, DbRole, ListingRow, MessageRow, ProfileRow } from '../lib/database.types';
 import type { ChatMessage, ChatParticipant, ChatThread, Listing, UserRole, WantedPost } from '../types';
 import { avatarColorFor, mapListingStatus, mapMessage } from './mappers';
 import { photoUrl, uploadPhoto } from './storageService';
@@ -378,6 +378,62 @@ export const chatsApi = {
     return chatsApi.getThread(threadId);
   },
 
+  /**
+   * The viewer's archived chats: chat id → when it was archived. Archiving
+   * is personal (0039). An empty map if the table isn't there yet, so the
+   * inbox still works before the migration is run.
+   */
+  async listArchived(): Promise<Map<string, string>> {
+    const viewerId = await currentUserId();
+    if (!viewerId) return new Map();
+    const { data, error } = await supabase
+      .from('chat_archives')
+      .select('chat_id, archived_at')
+      .eq('profile_id', viewerId);
+    if (error) return new Map();
+    return new Map(((data ?? []) as ChatArchiveRow[]).map((row) => [row.chat_id, row.archived_at]));
+  },
+
+  /** When the viewer archived this chat, or null. */
+  async archivedAt(threadId: string): Promise<string | null> {
+    const viewerId = await currentUserId();
+    if (!viewerId) return null;
+    const { data, error } = await supabase
+      .from('chat_archives')
+      .select('archived_at')
+      .eq('chat_id', threadId)
+      .eq('profile_id', viewerId)
+      .maybeSingle();
+    if (error || !data) return null;
+    return (data as Pick<ChatArchiveRow, 'archived_at'>).archived_at;
+  },
+
+  /** Moves the chat to the viewer's Archived tab (nothing is deleted). */
+  async archive(threadId: string): Promise<void> {
+    const viewerId = await requireUserId();
+    const { error } = await supabase
+      .from('chat_archives')
+      .upsert({ chat_id: threadId, profile_id: viewerId, archived_at: new Date().toISOString() });
+    if (error) {
+      throw new Error(
+        /does not exist|schema cache/i.test(error.message)
+          ? 'Archiving is not available yet - the site is being updated.'
+          : `Could not archive this chat. (${error.message})`
+      );
+    }
+  },
+
+  /** Back to the viewer's Active tab. */
+  async unarchive(threadId: string): Promise<void> {
+    const viewerId = await requireUserId();
+    const { error } = await supabase
+      .from('chat_archives')
+      .delete()
+      .eq('chat_id', threadId)
+      .eq('profile_id', viewerId);
+    if (error) throw new Error(`Could not unarchive this chat. (${error.message})`);
+  },
+
   async markRead(threadId: string): Promise<void> {
     const viewerId = await currentUserId();
     if (!viewerId) return;
@@ -408,6 +464,18 @@ export const chatsApi = {
   /* The topic carries a random suffix so each call gets its own channel -
      see subscribeToNotifications's comment in notificationsService.ts for
      why a stable, reused topic crashes under React's dev-mode double-invoke. */
+  /** Any new message the viewer may see (RLS-filtered), for the menu's
+      unread badge. Returns the unsubscribe function. */
+  subscribeToAllMessages(onMessage: () => void): () => void {
+    const channel = supabase
+      .channel(`inbox-${crypto.randomUUID()}`)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, () => onMessage())
+      .subscribe();
+    return () => {
+      void supabase.removeChannel(channel);
+    };
+  },
+
   subscribeToMessages(threadId: string, onMessage: (message: ChatMessage) => void): () => void {
     const channel = supabase
       .channel(`chat-${threadId}-${crypto.randomUUID()}`)

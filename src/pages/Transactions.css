@@ -63,3 +63,72 @@
   color: var(--kez-text-muted);
   font-size: 1.1rem;
 }
+
+/* ---------- Data table (desktop) / stacked cards (phones) ---------- */
+.tx-table { overflow: hidden; }
+
+.tx-table__head,
+.tx-table__row {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 0.9fr) auto;
+  align-items: center;
+  gap: var(--kez-space-3);
+  padding: 10px var(--kez-space-4);
+}
+
+.tx-table__head {
+  background: var(--kez-surface-2);
+  font-size: var(--kez-text-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--kez-text-muted);
+}
+
+.tx-table__row { border-top: 1px solid var(--kez-border); font-size: var(--kez-text-sm); color: var(--kez-text-soft); }
+.tx-table__row:hover { background: var(--kez-surface-2); }
+
+.tx-table__unit { display: flex; align-items: center; gap: var(--kez-space-3); min-width: 0; }
+.tx-table__unit img { flex: 0 0 auto; width: 52px; height: 40px; border-radius: 6px; object-fit: cover; }
+.tx-table__unit strong { color: var(--kez-text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.tx-table__cell { min-width: 0; overflow-wrap: anywhere; }
+.tx-table__cell b { color: var(--kez-text); font-weight: 600; }
+
+.tx-table__price { display: flex; flex-direction: column; font-weight: 700; color: var(--kez-text); }
+.tx-table__price small { font-weight: 500; font-size: var(--kez-text-xs); color: var(--kez-text-muted); }
+
+.tx-table__meetup { color: var(--kez-text-soft); }
+
+.tx-table__actions { display: flex; align-items: center; justify-content: flex-end; gap: 6px; }
+.tx-table__actions ion-button { margin: 0; }
+.tx-table__actions-head { text-align: right; }
+
+.tx-table__empty { margin: 0; padding: var(--kez-space-4); color: var(--kez-text-muted); font-size: var(--kez-text-sm); }
+
+@media (max-width: 759.98px) {
+  .tx-table__head { display: none; }
+
+  .tx-table__row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 8px var(--kez-space-3);
+    padding: var(--kez-space-3);
+  }
+
+  .tx-table__unit,
+  .tx-table__actions { grid-column: 1 / -1; }
+
+  .tx-table__actions { justify-content: stretch; }
+  .tx-table__actions ion-button:first-child { flex: 1 1 auto; }
+
+  /* Field names come back as small labels on the card. */
+  .tx-table__cell::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--kez-text-muted);
+  }
+}

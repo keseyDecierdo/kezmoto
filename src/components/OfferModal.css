@@ -28,3 +28,24 @@ ion-modal.offer-modal {
 }
 
 .offer-modal__delta.is-above { color: var(--kez-text-soft); }
+
+/* Native date-time input dressed as a field (SoldModal). */
+.sold-modal__when {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px var(--kez-space-4) 6px;
+}
+
+.sold-modal__when span { font-size: var(--kez-text-xs); color: var(--kez-text-muted); }
+
+.sold-modal__when input {
+  width: 100%;
+  padding: 4px 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--kez-text);
+  font-family: var(--kez-font-body);
+  font-size: var(--kez-text-base);
+}

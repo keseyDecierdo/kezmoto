@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { IonIcon, useIonRouter } from '@ionic/react';
-import { chatbubblesOutline, chevronForwardOutline } from 'ionicons/icons';
+import { archiveOutline, chatbubblesOutline, chevronForwardOutline } from 'ionicons/icons';
 import AppPage from '../components/AppPage';
 import Avatar from '../components/Avatar';
 import ChatPanel from '../components/ChatPanel';
@@ -12,6 +12,7 @@ import { useMarketplace } from '../context/MarketplaceContext';
 import { chatsApi } from '../services/api';
 import type { ChatThread } from '../types';
 import { formatRelative } from '../utils/format';
+import { isArchivedThread } from '../utils/archive';
 import './Messages.css';
 
 /**
@@ -29,14 +30,27 @@ const Messages: React.FC = () => {
     () => chatsApi.listThreads(),
     [revision]
   );
+  // The viewer's own archive list; ChatPanel's Archive button calls
+  // invalidate(), which bumps `revision` and reloads both.
+  const { data: archived } = useAsync<Map<string, string>>(() => chatsApi.listArchived(), [revision]);
+  const [tab, setTab] = useState<'active' | 'archived'>('active');
 
-  const threads = useMemo(
+  const allThreads = useMemo(
     () =>
       [...(data ?? [])].sort(
         (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
       ),
     [data]
   );
+  const archivedThreads = useMemo(
+    () => allThreads.filter((t) => isArchivedThread(t, archived?.get(t.id))),
+    [allThreads, archived]
+  );
+  const activeThreads = useMemo(
+    () => allThreads.filter((t) => !isArchivedThread(t, archived?.get(t.id))),
+    [allThreads, archived]
+  );
+  const threads = tab === 'archived' ? archivedThreads : activeThreads;
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -64,8 +78,42 @@ const Messages: React.FC = () => {
     return `${prefix}${last.body || (last.imageUrl ? '📷 Photo' : '')}`;
   };
 
+  const unread = (list: ChatThread[]) => list.some((t) => t.unreadCount > 0);
+
+  const tabs = (
+    <div className="messages__tabs" role="tablist" aria-label="Conversations">
+      {(
+        [
+          ['active', 'Active', activeThreads],
+          ['archived', 'Archived', archivedThreads],
+        ] as const
+      ).map(([id, label, list]) => (
+        <button
+          key={id}
+          type="button"
+          role="tab"
+          aria-selected={tab === id}
+          className={`messages__tab${tab === id ? ' is-active' : ''}`}
+          onClick={() => setTab(id)}
+        >
+          {label}
+          <span className="messages__tab-count">{list.length}</span>
+          {unread(list) && <span className="messages__tab-dot" aria-label="has unread messages" />}
+        </button>
+      ))}
+    </div>
+  );
+
   const list = (
     <div className="messages__list">
+      {tabs}
+      {threads.length === 0 && (
+        <p className="messages__tab-empty">
+          {tab === 'archived'
+            ? 'No archived chats. Archive a conversation to tidy your inbox - it comes back here if a new message arrives.'
+            : 'No active chats. Archived conversations are in the Archived tab.'}
+        </p>
+      )}
       {threads.map((thread) => (
         <button
           key={thread.id}
@@ -108,7 +156,7 @@ const Messages: React.FC = () => {
       {loading && <LoadingRows rows={5} layout="list" />}
       {!loading && error && <ErrorState message={error} onRetry={reload} />}
 
-      {!loading && !error && threads.length === 0 && (
+      {!loading && !error && allThreads.length === 0 && (
         <EmptyState
           icon={chatbubblesOutline}
           title="No conversations yet"
@@ -118,7 +166,7 @@ const Messages: React.FC = () => {
         />
       )}
 
-      {!loading && !error && threads.length > 0 && (
+      {!loading && !error && allThreads.length > 0 && (
         <>
           {!isSplit && list}
 
@@ -130,9 +178,13 @@ const Messages: React.FC = () => {
                   <ChatPanel threadId={selectedId} />
                 ) : (
                   <EmptyState
-                    icon={chatbubblesOutline}
-                    title="Pick a conversation"
-                    message="Select a thread on the left to read it here."
+                    icon={tab === 'archived' ? archiveOutline : chatbubblesOutline}
+                    title={tab === 'archived' ? 'No archived chats' : 'Pick a conversation'}
+                    message={
+                      tab === 'archived'
+                        ? 'Chats you archive appear here.'
+                        : 'Select a thread on the left to read it here.'
+                    }
                   />
                 )}
               </section>

@@ -4,6 +4,8 @@ import { diamond, logOutOutline } from 'ionicons/icons';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useSidebar } from '../context/SidebarContext';
+import { useUnreadCount } from '../context/UnreadContext';
+import { unreadLabel } from '../utils/format';
 import { useGatedNav } from '../hooks/useGatedNav';
 import { confirmAction } from '../lib/sweetAlert';
 import { ADMIN_NAV, PRIMARY_NAV, PROFILE_NAV, SECONDARY_NAV, activeNavId, type NavItem } from '../navigation/navItems';
@@ -28,6 +30,7 @@ const SideMenu: React.FC<{ disabled?: boolean }> = ({ disabled = false }) => {
   const { collapsed } = useSidebar();
   const active = activeNavId(pathname);
   const handleNavClick = useGatedNav();
+  const unread = useUnreadCount();
 
   const go = (href: string) => router.push(href, 'none', 'replace');
 
@@ -38,9 +41,17 @@ const SideMenu: React.FC<{ disabled?: boolean }> = ({ disabled = false }) => {
         className={`side-menu__item${active === item.id ? ' is-active' : ''}`}
         onClick={() => void handleNavClick(item)}
       >
-        <IonIcon icon={item.icon} aria-hidden="true" />
+        <span className="side-menu__icon">
+          <IonIcon icon={item.icon} aria-hidden="true" />
+          {item.id === 'messages' && unread > 0 && <span className="side-menu__dot" aria-hidden="true" />}
+        </span>
         <span className="side-menu__label">{item.label}</span>
         {item.comingSoon && <span className="side-menu__soon">Soon</span>}
+        {item.id === 'messages' && unread > 0 && (
+          <span className="side-menu__count" aria-label={`${unread} unread`}>
+            {unreadLabel(unread)}
+          </span>
+        )}
       </button>
     </IonMenuToggle>
   );

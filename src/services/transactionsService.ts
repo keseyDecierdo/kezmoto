@@ -165,15 +165,27 @@ export const transactionsApi = {
     buyerId: string;
     sellerId: string;
     agreedPrice: number;
+    /** Direct deals: where (and optionally when) buyer and seller meet. */
+    meetupLocation?: string;
+    meetupAt?: string | null;
   }): Promise<Transaction | null> {
     const existing = await transactionsApi.getByChatId(input.chatId);
+    const meetup = input.meetupLocation?.trim()
+      ? { meetup_location: input.meetupLocation.trim(), meetup_at: input.meetupAt || null }
+      : {};
 
     if (existing) {
       if (existing.status !== 'inquiry' && existing.status !== 'negotiating') return existing;
-      const { error } = await supabase
+      const close = { status: 'completed' as const, agreed_price: input.agreedPrice };
+      let { error } = await supabase
         .from('transactions')
-        .update({ status: 'completed', agreed_price: input.agreedPrice })
+        .update({ ...close, ...meetup })
         .eq('transaction_id', existing.id);
+      // Before migration 0040 the deal guard rejects meetup fields from the
+      // seller; close the sale without them rather than fail.
+      if (error && 'meetup_location' in meetup) {
+        ({ error } = await supabase.from('transactions').update(close).eq('transaction_id', existing.id));
+      }
       if (error) {
         throw new Error(`Marked as sold, but the deal could not be closed. (${error.message})`);
       }
@@ -187,6 +199,7 @@ export const transactionsApi = {
       seller_id: input.sellerId,
       agreed_price: input.agreedPrice,
       status: 'completed',
+      ...meetup,
     });
     if (error) {
       throw new Error(`Marked as sold, but the transaction record could not be saved. (${error.message})`);

@@ -70,3 +70,24 @@
 .kez-tabbar__menu-toggle .kez-tabbar__btn {
   flex: 1;
 }
+
+/* Unread messages on the Messages tab. */
+.kez-tabbar__icon { position: relative; display: inline-flex; }
+
+.kez-tabbar__count {
+  position: absolute;
+  top: -6px;
+  left: calc(100% - 8px);
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 999px;
+  border: 2px solid var(--kez-bg-alt, #0a0a0a);
+  background: var(--kez-accent);
+  color: #0a0a0a;
+  font-family: var(--kez-font-body);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 13px;
+  text-align: center;
+}

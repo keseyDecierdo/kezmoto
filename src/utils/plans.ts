@@ -50,3 +50,7 @@ export const featuredFirst = <T extends { boostedUntil?: string }>(items: T[], n
   ...items.filter((item) => isBoosted(item, now)),
   ...items.filter((item) => !isBoosted(item, now)),
 ];
+
+/** KEZMOTO's commission applies only to deals a middleman (admin) handled.
+    Direct deals between buyer and seller are free. */
+export const commissionApplies = (tx: { adminId: string | null }): boolean => Boolean(tx.adminId);

@@ -142,7 +142,7 @@ const draftColumns = (draft: Partial<Listing> | ListingDraft) => ({
 
 /** Shown when a free seller already has 3 open listings (0036 trigger). */
 export const LISTING_LIMIT_MESSAGE =
-  'Free accounts can have 3 active listings. Mark one as sold, or get KEZMOTO Pro for unlimited listings.';
+  'Free accounts can post 3 units in total (sold ones count). Get KEZMOTO Pro for unlimited listings.';
 
 /* ------------------------------------------------------------------ api */
 export const listingsApi = {
@@ -186,6 +186,17 @@ export const listingsApi = {
       const [listing] = await mapRows([data as unknown as ListingRowWithSeller]);
       return listing;
     });
+  },
+
+  /** Every unit this seller has ever posted, any status - the free-plan
+      limit counts all of them (0042). */
+  async countPostedBySeller(sellerId: string): Promise<number> {
+    const { count, error } = await supabase
+      .from('listings')
+      .select('listing_id', { count: 'exact', head: true })
+      .eq('seller_id', sellerId);
+    if (error) throw new Error(`Could not count your units. (${error.message})`);
+    return count ?? 0;
   },
 
   async listBySeller(sellerId: string): Promise<Listing[]> {

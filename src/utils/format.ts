@@ -55,3 +55,6 @@ export const initialsOf = (name: string): string =>
 
 export const unitTitle = (unit: { brand: string; model: string; year: number }): string =>
   `${unit.brand} ${unit.model}`;
+
+/** Badge text for an unread count: "3", or "99+" for very large counts. */
+export const unreadLabel = (count: number): string => (count > 99 ? '99+' : String(count));

@@ -61,7 +61,8 @@ const MyUnits: React.FC = () => {
     });
 
   const listed = data ?? [];
-  const openCount = listed.filter((l) => l.status === 'active' || l.status === 'pending').length;
+  // The free plan counts every post, whatever happened to it (0042).
+  const postedCount = listed.length + removed.length;
   const unlimited = isPro(user) || user?.role === 'admin';
 
   /** A free credit if there is one (one tap), otherwise pay ₱49 by GCash. */
@@ -136,9 +137,9 @@ const MyUnits: React.FC = () => {
               <IonIcon icon={diamondOutline} aria-hidden="true" />
               <span>
                 <strong>
-                  {Math.min(openCount, FREE_LISTING_LIMIT)} of {FREE_LISTING_LIMIT}
+                  {Math.min(postedCount, FREE_LISTING_LIMIT)} of {FREE_LISTING_LIMIT}
                 </strong>{' '}
-                free listings used. Need more? KEZMOTO Pro gives unlimited listings and a 3% commission.
+                free posts used (sold units count). Need more? KEZMOTO Pro gives unlimited listings.
               </span>
               <IonButton size="small" className="kez-cta" onClick={() => router.push('/plans', 'forward')}>
                 Go Pro

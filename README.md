@@ -40,7 +40,7 @@ more buyers.
 | 🛡️ **Admin middleman** | Request an admin for a deal; verification checklist, inspection and meetup tracking |
 | 🪪 **Identity verification** | Valid-ID name check plus a live face scan before a seller can post |
 | 🤖 **AI features** | Buying assistant chatbot, listing-quality score, condition score, fraud detection (Gemini via Edge Functions) |
-| 💸 **GCash commission** | Seller pays 5% (3% on Pro) after a sale; admin confirms the receipt |
+| 💸 **GCash commission** | Only on middleman deals: seller pays 5% (3% on Pro); admin confirms the receipt. Direct deals are free |
 | 💎 **KEZMOTO Pro & Boosts** | Unlimited listings, lower commission, Featured placement |
 | 📈 **Admin earnings** | Commission, Pro and Boost revenue per payment, 12-month chart, CSV export |
 | 🔐 **Secure sign-up** | Email verification code (Brevo SMTP), password reset, +63 mobile, region → barangay address |
@@ -71,8 +71,8 @@ Buyers never pay. Sellers choose:
 |---|---|---|---|---|
 | Price | ₱0 | ₱149 / 30 days | ₱1,490 / year (save ₱298) | ₱49 / listing |
 | Buy, chat, offers, Wanted, middleman, AI assistant | ✓ | ✓ | ✓ | - |
-| Active listings | 3 | Unlimited | Unlimited | - |
-| Commission when a unit sells | 5% | 3% | 3% | - |
+| Unit posts | 3 in total (sold ones count) | Unlimited | Unlimited | - |
+| Commission (middleman deals only) | 5% | 3% | 3% | - |
 | Featured at the top of Home | - | 2 free boosts | 24 free boosts | 7 days |
 | PRO badge | - | ✓ | ✓ | - |
 

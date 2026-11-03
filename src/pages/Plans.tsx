@@ -31,14 +31,15 @@ const FREE_FEATURES = [
   'Browse, save and buy units',
   'Chat, price offers and Wanted posts',
   'Admin middleman and AI assistant',
-  `Up to ${FREE_LISTING_LIMIT} active listings`,
-  '5% commission when you sell',
+  `${FREE_LISTING_LIMIT} unit posts in total (sold ones count)`,
+  'Direct deals: no commission',
+  '5% commission only on middleman deals',
 ];
 
 const PRO_FEATURES = [
   'Everything in Free',
-  'Unlimited active listings',
-  'Lower 3% commission when you sell',
+  'Unlimited unit posts',
+  'Lower 3% commission on middleman deals',
   'PRO badge on your profile and units',
 ];
 
@@ -54,8 +55,8 @@ const Plans: React.FC = () => {
   const plan = PLAN_DETAILS[billing];
 
   const purchases = useAsync<PlanPurchase[]>(() => plansApi.listMine(), [user?.id]);
-  const listings = useAsync(
-    () => (user ? listingsApi.listBySeller(user.id) : Promise.resolve([])),
+  const posted = useAsync<number>(
+    () => (user ? listingsApi.countPostedBySeller(user.id) : Promise.resolve(0)),
     [user?.id]
   );
 
@@ -66,7 +67,6 @@ const Plans: React.FC = () => {
   });
 
   const pro = isPro(user);
-  const open = (listings.data ?? []).filter((l) => l.status === 'active' || l.status === 'pending').length;
   const pending = (purchases.data ?? []).some((p) => p.status === 'pending' && isProKind(p.kind));
 
   return (
@@ -143,7 +143,7 @@ const Plans: React.FC = () => {
             </p>
           ) : (
             <p className="plans__now">
-              <strong>Free</strong> · {Math.min(open, FREE_LISTING_LIMIT)} of {FREE_LISTING_LIMIT} listings used
+              <strong>Free</strong> · {Math.min(posted.data ?? 0, FREE_LISTING_LIMIT)} of {FREE_LISTING_LIMIT} posts used
             </p>
           )}
 

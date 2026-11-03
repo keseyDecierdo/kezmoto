@@ -84,6 +84,13 @@ export type ProfileRow = {
 export type PlanKind = 'pro' | 'pro_year' | 'boost';
 export type PlanPurchaseStatus = 'pending' | 'approved' | 'rejected';
 
+/** One person's archived chat (0039). */
+export type ChatArchiveRow = {
+  chat_id: string;
+  profile_id: string;
+  archived_at: string;
+}
+
 export type PlanPurchaseRow = {
   purchase_id: string;
   buyer_id: string;
@@ -347,6 +354,7 @@ export type Database = {
       user_reports: Table<UserReportRow>;
       notifications: Table<NotificationRow>;
       plan_purchases: Table<PlanPurchaseRow>;
+      chat_archives: Table<ChatArchiveRow>;
     };
     Views: Record<string, never>;
     Functions: {

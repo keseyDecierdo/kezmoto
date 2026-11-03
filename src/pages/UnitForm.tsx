@@ -89,10 +89,9 @@ const UnitForm: React.FC = () => {
     }
     let ignore = false;
     void listingsApi
-      .listBySeller(user.id)
-      .then((mine) => {
-        const open = mine.filter((l) => l.status === 'active' || l.status === 'pending').length;
-        if (!ignore) setAtLimit(freeSlotsLeft(open, false) === 0);
+      .countPostedBySeller(user.id)
+      .then((posted) => {
+        if (!ignore) setAtLimit(freeSlotsLeft(posted, false) === 0);
       })
       .catch(() => undefined);
     return () => {
@@ -344,9 +343,9 @@ const UnitForm: React.FC = () => {
         <div className="kez-bento">
           <section className="kez-tile kez-tile--full unit-form__limit">
             <IonIcon icon={diamondOutline} aria-hidden="true" />
-            <h2 className="kez-display">You have {FREE_LISTING_LIMIT} active listings</h2>
+            <h2 className="kez-display">You've used your {FREE_LISTING_LIMIT} free posts</h2>
             <p className="kez-muted">
-              Free accounts can keep {FREE_LISTING_LIMIT} units up at a time. Mark one as sold to post another,
+              Free accounts can post {FREE_LISTING_LIMIT} units in total, and sold units count too. To post more,
               or get KEZMOTO Pro for unlimited listings, a 3% commission and 2 free Boosts.
             </p>
             <div className="unit-form__limit-actions">
@@ -705,7 +704,8 @@ const UnitForm: React.FC = () => {
                   ))}
                 </ul>
                 <p className="unit-form__fee">
-                  Posting is free. When this unit sells, KEZMOTO charges a{' '}
+                  Posting and direct deals are free. Only if you use a KEZMOTO middleman for the sale,
+                  KEZMOTO charges a{' '}
                   <strong>{Math.round(commissionRateFor(isPro(user)) * 100)}% commission</strong> on the final
                   agreed price, paid by GCash. No other fees.{' '}
                   <a href="/terms" target="_blank" rel="noopener">

@@ -332,7 +332,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 62%;
+  /* Portrait photo: keep the rider's helmet and fairing in frame. */
+  object-position: center 22%;
 }
 
 @media (min-width: 768px) {

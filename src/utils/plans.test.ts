@@ -57,3 +57,11 @@ describe('yearly Pro', () => {
     expect(isProKind('boost')).toBe(false);
   });
 });
+
+describe('commissionApplies', () => {
+  it('charges commission only on middleman deals', async () => {
+    const { commissionApplies } = await import('./plans');
+    expect(commissionApplies({ adminId: 'admin-1' })).toBe(true);
+    expect(commissionApplies({ adminId: null })).toBe(false);
+  });
+});

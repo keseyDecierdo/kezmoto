@@ -14,7 +14,7 @@ import {
 } from 'ionicons/icons';
 import { useAuth } from '../context/AuthContext';
 import { KEZMOTO_GCASH_NAME, KEZMOTO_GCASH_NUMBER } from '../lib/gcash';
-import { commissionRateFor, isPro } from '../utils/plans';
+import { commissionApplies, commissionRateFor, isPro } from '../utils/plans';
 import { commissionAmountFor, paymentsApi, reviewsApi } from '../services/api';
 import type { Payment, Transaction, TransactionStatus } from '../types';
 import { TRANSACTION_STATUS_LABEL, TRANSACTION_STATUS_SEQUENCE } from '../types';
@@ -34,6 +34,9 @@ interface TransactionTrackerProps {
   transaction: Transaction;
   /** Refetches the transaction - passed so a submitted review can flip the prompt off. */
   onReviewed?: () => void;
+  /** "sale": a direct deal (no middleman) that is sold - no status steps,
+      only the review (no commission on direct deals). */
+  variant?: 'full' | 'sale';
 }
 
 /**
@@ -47,7 +50,8 @@ const STEP_SHORT_LABEL: Partial<Record<TransactionStatus, string>> = {
   meetup_scheduled: 'Meetup',
 };
 
-const TransactionTracker: React.FC<TransactionTrackerProps> = ({ transaction, onReviewed }) => {
+const TransactionTracker: React.FC<TransactionTrackerProps> = ({ transaction, onReviewed, variant = 'full' }) => {
+  const saleOnly = variant === 'sale';
   const { user } = useAuth();
   // The seller pays; KEZMOTO Pro sellers get the lower rate.
   const commissionRate = commissionRateFor(user?.id === transaction.seller?.id && isPro(user));
@@ -100,8 +104,11 @@ const TransactionTracker: React.FC<TransactionTrackerProps> = ({ transaction, on
       : transaction.buyer
     : null;
 
-  // Seller pays the commission in this build (see 0009_payments_schema.sql).
+  // Seller pays the commission in this build (see 0009_payments_schema.sql),
+  // and only on a middleman deal - direct deals are commission-free.
+  const chargesCommission = commissionApplies(transaction);
   const owesCommission =
+    chargesCommission &&
     user?.id === transaction.seller?.id &&
     transaction.commissionStatus !== 'paid' &&
     transaction.commissionStatus !== 'waived';
@@ -197,21 +204,25 @@ const TransactionTracker: React.FC<TransactionTrackerProps> = ({ transaction, on
 
   // The dropdown only holds the commission, payment and review parts.
   const hasDetails =
-    !cancelled && (transaction.agreedPrice != null || (completed && !justReviewed && Boolean(otherParty)));
-  const open = expanded && hasDetails;
+    !cancelled &&
+    ((chargesCommission && transaction.agreedPrice != null) || (completed && !justReviewed && Boolean(otherParty)));
+  // The sale-only box has nothing else to show, so it is always open.
+  const open = (expanded || saleOnly) && hasDetails;
+
+  if (saleOnly && !hasDetails) return null;
 
   return (
     <div className={`tx-tracker${open ? ' is-expanded' : ''}`}>
       <button
         type="button"
-        className={`tx-tracker__head${hasDetails ? '' : ' is-static'}`}
-        onClick={() => hasDetails && setExpanded((prev) => !prev)}
-        aria-expanded={hasDetails ? open : undefined}
+        className={`tx-tracker__head${hasDetails && !saleOnly ? '' : ' is-static'}`}
+        onClick={() => hasDetails && !saleOnly && setExpanded((prev) => !prev)}
+        aria-expanded={hasDetails && !saleOnly ? open : undefined}
       >
         <div>
-          <p className="kez-eyebrow">Transaction status</p>
+          <p className="kez-eyebrow">{saleOnly ? 'Sold · direct deal' : 'Transaction status'}</p>
           <h3 className="kez-display">
-            {cancelled ? 'Cancelled' : TRANSACTION_STATUS_LABEL[transaction.status]}
+            {saleOnly ? 'Leave a review' : cancelled ? 'Cancelled' : TRANSACTION_STATUS_LABEL[transaction.status]}
           </h3>
         </div>
         <div className="tx-tracker__head-right">
@@ -231,7 +242,7 @@ const TransactionTracker: React.FC<TransactionTrackerProps> = ({ transaction, on
               )}
             </div>
           )}
-          {hasDetails && (
+          {hasDetails && !saleOnly && (
             <IonIcon
               icon={open ? chevronUpOutline : chevronDownOutline}
               className="tx-tracker__chevron"
@@ -242,7 +253,7 @@ const TransactionTracker: React.FC<TransactionTrackerProps> = ({ transaction, on
       </button>
 
       {/* Progress is always visible; the dropdown below holds the details. */}
-      {cancelled ? (
+      {saleOnly ? null : cancelled ? (
         <p className="kez-muted tx-tracker__cancelled">
           <IonIcon icon={closeCircleOutline} />
           This deal was cancelled.
@@ -278,7 +289,7 @@ const TransactionTracker: React.FC<TransactionTrackerProps> = ({ transaction, on
       {open && (
         <div className="tx-tracker__body">
 
-          {!cancelled && transaction.agreedPrice != null && (
+          {!cancelled && chargesCommission && transaction.agreedPrice != null && (
             <div className="tx-tracker__commission">
               <span>
                 <small>KEZMOTO commission (seller · {Math.round(commissionRate * 100)}%{commissionRate < 0.05 ? ' Pro' : ''})</small>

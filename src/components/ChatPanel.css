@@ -90,7 +90,8 @@
 
 .chat__view-profile,
 .chat__middleman,
-.chat__report {
+.chat__report,
+.chat__archive {
   margin: 0;
   flex: 0 0 auto;
   font-size: var(--kez-text-xs);
@@ -99,6 +100,7 @@
 @media (max-width: 599px) {
   .chat__view-profile,
   .chat__middleman,
+  .chat__archive,
   .chat__report {
     --padding-start: 8px;
     --padding-end: 8px;
