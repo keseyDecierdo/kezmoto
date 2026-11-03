@@ -8,6 +8,7 @@ import {
   closeCircleOutline,
   cloudUploadOutline,
   ellipseOutline,
+  radioButtonOn,
   starOutline,
   timeOutline,
 } from 'ionicons/icons';
@@ -15,7 +16,7 @@ import { useAuth } from '../context/AuthContext';
 import { KEZMOTO_GCASH_NAME, KEZMOTO_GCASH_NUMBER } from '../lib/gcash';
 import { commissionRateFor, isPro } from '../utils/plans';
 import { commissionAmountFor, paymentsApi, reviewsApi } from '../services/api';
-import type { Payment, Transaction } from '../types';
+import type { Payment, Transaction, TransactionStatus } from '../types';
 import { TRANSACTION_STATUS_LABEL, TRANSACTION_STATUS_SEQUENCE } from '../types';
 import { formatPrice } from '../utils/format';
 import './TransactionTracker.css';
@@ -40,6 +41,12 @@ interface TransactionTrackerProps {
  * (verification notes) never reach this component - the
  * transaction row itself is all a customer's RLS session can see.
  */
+/** Shorter step names for the always-visible progress strip. */
+const STEP_SHORT_LABEL: Partial<Record<TransactionStatus, string>> = {
+  middleman_assigned: 'Middleman',
+  meetup_scheduled: 'Meetup',
+};
+
 const TransactionTracker: React.FC<TransactionTrackerProps> = ({ transaction, onReviewed }) => {
   const { user } = useAuth();
   // The seller pays; KEZMOTO Pro sellers get the lower rate.
@@ -77,7 +84,14 @@ const TransactionTracker: React.FC<TransactionTrackerProps> = ({ transaction, on
   }, [transaction.id, transaction.status]);
 
   const cancelled = transaction.status === 'cancelled';
-  const currentIndex = TRANSACTION_STATUS_SEQUENCE.indexOf(transaction.status);
+  // Inspection happens between "Verified" and "Payment"; those two statuses
+  // aren't steps of their own, so they keep "Verified" as the step in progress.
+  const stepStatus =
+    transaction.status === 'inspection_scheduled' || transaction.status === 'inspection_done'
+      ? 'verified'
+      : transaction.status;
+  const currentIndex = TRANSACTION_STATUS_SEQUENCE.indexOf(stepStatus);
+  const completed = transaction.status === 'completed';
 
   const isParticipant = user?.id === transaction.buyer?.id || user?.id === transaction.seller?.id;
   const otherParty = isParticipant
@@ -181,13 +195,18 @@ const TransactionTracker: React.FC<TransactionTrackerProps> = ({ transaction, on
     }
   };
 
+  // The dropdown only holds the commission, payment and review parts.
+  const hasDetails =
+    !cancelled && (transaction.agreedPrice != null || (completed && !justReviewed && Boolean(otherParty)));
+  const open = expanded && hasDetails;
+
   return (
-    <div className={`tx-tracker${expanded ? ' is-expanded' : ''}`}>
+    <div className={`tx-tracker${open ? ' is-expanded' : ''}`}>
       <button
         type="button"
-        className="tx-tracker__head"
-        onClick={() => setExpanded((prev) => !prev)}
-        aria-expanded={expanded}
+        className={`tx-tracker__head${hasDetails ? '' : ' is-static'}`}
+        onClick={() => hasDetails && setExpanded((prev) => !prev)}
+        aria-expanded={hasDetails ? open : undefined}
       >
         <div>
           <p className="kez-eyebrow">Transaction status</p>
@@ -212,35 +231,52 @@ const TransactionTracker: React.FC<TransactionTrackerProps> = ({ transaction, on
               )}
             </div>
           )}
-          <IonIcon
-            icon={expanded ? chevronUpOutline : chevronDownOutline}
-            className="tx-tracker__chevron"
-            aria-label={expanded ? 'Collapse transaction status' : 'Expand transaction status'}
-          />
+          {hasDetails && (
+            <IonIcon
+              icon={open ? chevronUpOutline : chevronDownOutline}
+              className="tx-tracker__chevron"
+              aria-label={open ? 'Hide deal details' : 'Show deal details'}
+            />
+          )}
         </div>
       </button>
 
-      {expanded && (
+      {/* Progress is always visible; the dropdown below holds the details. */}
+      {cancelled ? (
+        <p className="kez-muted tx-tracker__cancelled">
+          <IonIcon icon={closeCircleOutline} />
+          This deal was cancelled.
+        </p>
+      ) : (
+        <div className="tx-tracker__progress">
+          <ol className="tx-tracker__strip" aria-label="Transaction progress">
+            {TRANSACTION_STATUS_SEQUENCE.map((status, index) => {
+              // A completed deal has every step done, the last one included.
+              const state =
+                index < currentIndex || completed ? 'done' : index === currentIndex ? 'current' : 'upcoming';
+              return (
+                <li
+                  key={status}
+                  className={`tx-tracker__stop is-${state}`}
+                  aria-current={state === 'current' ? 'step' : undefined}
+                >
+                  <span className="tx-tracker__dot" aria-hidden="true">
+                    <IonIcon icon={state === 'done' ? checkmarkCircle : state === 'current' ? radioButtonOn : ellipseOutline} />
+                  </span>
+                  <span className="tx-tracker__stop-label">{STEP_SHORT_LABEL[status] ?? TRANSACTION_STATUS_LABEL[status]}</span>
+                </li>
+              );
+            })}
+          </ol>
+          <p className="tx-tracker__stepline">
+            Step {Math.min(currentIndex + 1, TRANSACTION_STATUS_SEQUENCE.length)} of {TRANSACTION_STATUS_SEQUENCE.length} ·{' '}
+            {TRANSACTION_STATUS_LABEL[transaction.status]}
+          </p>
+        </div>
+      )}
+
+      {open && (
         <div className="tx-tracker__body">
-          {cancelled ? (
-            <p className="kez-muted tx-tracker__cancelled">
-              <IonIcon icon={closeCircleOutline} />
-              This deal was cancelled.
-            </p>
-          ) : (
-            <ol className="tx-tracker__steps" aria-label="Transaction progress">
-              {TRANSACTION_STATUS_SEQUENCE.map((status, index) => {
-                const state =
-                  index < currentIndex ? 'done' : index === currentIndex ? 'current' : 'upcoming';
-                return (
-                  <li key={status} className={`tx-tracker__step is-${state}`}>
-                    <IonIcon icon={state === 'done' ? checkmarkCircle : ellipseOutline} />
-                    <span>{TRANSACTION_STATUS_LABEL[status]}</span>
-                  </li>
-                );
-              })}
-            </ol>
-          )}
 
           {!cancelled && transaction.agreedPrice != null && (
             <div className="tx-tracker__commission">

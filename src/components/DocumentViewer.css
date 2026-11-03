@@ -1,0 +1,96 @@
+.doc-view__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--kez-space-3);
+}
+
+@media (min-width: 600px) {
+  .doc-view__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.doc-view__frame {
+  position: relative;
+  line-height: 0;
+}
+
+.doc-view__frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.doc-view__redaction {
+  position: absolute;
+  background: #000;
+}
+
+/* A card that looks tappable: lifts and shows an expand icon. */
+.doc-view__thumb {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--kez-border);
+  border-radius: var(--kez-radius-sm);
+  background: var(--kez-surface);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: zoom-in;
+  transition: border-color 160ms, transform 160ms;
+}
+
+.doc-view__thumb:hover { border-color: var(--kez-accent); transform: translateY(-1px); }
+
+.doc-view__caption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: var(--kez-space-3);
+  border-top: 1px solid var(--kez-border);
+  font-size: var(--kez-text-sm);
+  color: var(--kez-text-soft);
+}
+
+.doc-view__caption > span { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.doc-view__caption ion-icon { flex: 0 0 auto; color: var(--kez-text-muted); }
+.doc-view__thumb:hover .doc-view__expand { color: var(--kez-accent); }
+
+/* Large view: as wide as the screen allows. */
+ion-modal.doc-view__modal {
+  --width: min(960px, calc(100vw - 2 * var(--kez-modal-gutter)));
+}
+
+.doc-view__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--kez-space-3);
+}
+
+/* The frame shrinks to the image so the redaction boxes (in %) stay aligned. */
+.doc-view__body .doc-view__frame {
+  align-self: center;
+  display: inline-block;
+  max-width: 100%;
+  border-radius: var(--kez-radius-sm);
+  overflow: hidden;
+}
+
+.doc-view__body .doc-view__frame img {
+  width: auto;
+  max-width: 100%;
+  max-height: 68vh;
+}
+
+.doc-view__count { color: var(--kez-text-muted); font-weight: 500; }
+
+.doc-view__note { margin: 0; font-size: var(--kez-text-xs); color: var(--kez-text-muted); }
+
+.doc-view__nav {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--kez-space-3);
+}
+
+.doc-view__nav ion-button { margin: 0; }

@@ -21,7 +21,7 @@ interface ScoreBadgesProps {
 }
 
 /**
- * The real Listing Quality and Condition scores from Phase 5. Fraud
+ * The real Listing Requirements (quality) and Condition scores from Phase 5. Fraud
  * detection is deliberately not shown here - those flags are admin-only
  * (see fraud_flags' RLS in 0013), so neither a buyer nor the seller ever
  * sees whether, or why, a listing was flagged.
@@ -33,10 +33,10 @@ const ScoreBadges: React.FC<ScoreBadgesProps> = ({ listing, compact = false }) =
         {listing.listingQualityScore != null && (
           <span
             className={`score-pill score-pill--${tier(listing.listingQualityScore)}`}
-            title="Listing Quality score (0–100): an AI estimate of how complete this listing's details are."
+            title="Listing Requirements score (0–100): an AI estimate of how complete this listing's details are."
           >
             <IonIcon icon={sparklesOutline} />
-            Quality {listing.listingQualityScore}%
+            Requirements {listing.listingQualityScore}%
           </span>
         )}
         {listing.conditionScore != null && (
@@ -59,7 +59,7 @@ const ScoreBadges: React.FC<ScoreBadgesProps> = ({ listing, compact = false }) =
           <span className="scores__icon">
             <IonIcon icon={sparklesOutline} />
           </span>
-          <strong>Listing Quality</strong>
+          <strong>Listing Requirements</strong>
           {listing.listingQualityScore != null ? (
             <span className={`scores__score scores__score--${tier(listing.listingQualityScore)}`}>
               {listing.listingQualityScore}/100

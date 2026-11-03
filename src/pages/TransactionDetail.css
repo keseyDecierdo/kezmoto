@@ -179,3 +179,163 @@
   border-radius: var(--kez-radius-sm);
   font-size: var(--kez-text-sm);
 }
+
+/* ---------- Verification: visible checkboxes ---------- */
+.tx-detail__check ion-checkbox {
+  --size: 22px;
+  --border-width: 2px;
+  --border-style: solid;
+  --border-radius: 6px;
+  --border-color: #0a0a0a;
+  --checkbox-background: #ffffff;
+  --border-color-checked: #0a0a0a;
+  --checkbox-background-checked: var(--kez-accent);
+  --checkmark-color: #0a0a0a;
+  --checkmark-width: 3px;
+  flex: 0 0 auto;
+}
+
+.tx-detail__check { cursor: pointer; transition: background 160ms, border-color 160ms; }
+
+.tx-detail__check.is-checked {
+  border-color: var(--kez-accent-line);
+  background: var(--kez-accent-soft);
+}
+
+/* ---------- Verification: the unit being checked ---------- */
+
+.tx-detail__unit-media { display: flex; flex-direction: column; gap: 6px; }
+
+.tx-detail__unit-cover,
+.tx-detail__unit-strip button {
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--kez-border);
+  border-radius: var(--kez-radius-sm);
+  background: var(--kez-surface-2);
+  cursor: zoom-in;
+}
+
+.tx-detail__unit-cover img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.tx-detail__unit-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.tx-detail__unit-strip img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.tx-detail__unit-cover:hover,
+.tx-detail__unit-strip button:hover { border-color: var(--kez-accent); }
+
+.tx-detail__unit-title { margin: var(--kez-space-2) 0 0; font-size: var(--kez-text-xl); }
+
+.tx-detail__unit-specs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--kez-space-2) var(--kez-space-3);
+  margin: 0;
+}
+
+.tx-detail__unit-specs div { min-width: 0; }
+.tx-detail__unit-specs dt { font-size: var(--kez-text-xs); color: var(--kez-text-muted); }
+.tx-detail__unit-specs dd { margin: 0; font-size: var(--kez-text-sm); font-weight: 600; color: var(--kez-text); overflow-wrap: anywhere; }
+
+.tx-detail__unit-condition {
+  padding-top: var(--kez-space-2);
+  border-top: 1px solid var(--kez-border);
+}
+
+.tx-detail__unit-condition dd { font-weight: 500; color: var(--kez-text-soft); }
+
+.tx-detail__unit-info ion-button { align-self: flex-start; margin: 0; }
+
+/* ---------- Verification layout: unit · documents · checklist ----------
+   Phones stack; laptops put the checklist in a right column; wide screens
+   show all three side by side so nothing needs scrolling to reach. */
+.tx-verify {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: 'info' 'docs' 'check';
+  gap: var(--kez-gap);
+  align-items: start;
+}
+
+.tx-verify__info { grid-area: info; }
+.tx-verify__docs { grid-area: docs; }
+.tx-verify__check { grid-area: check; }
+
+/* Documents shrink to the column they're in. */
+.tx-verify .doc-view__grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+
+@media (min-width: 900px) {
+  .tx-verify {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas: 'info check' 'docs check';
+  }
+
+  .tx-verify__check {
+    position: sticky;
+    top: var(--kez-space-4);
+  }
+}
+
+@media (min-width: 1180px) {
+  .tx-verify {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.1fr);
+    grid-template-areas: 'info docs check';
+  }
+}
+
+/* Laptop / desktop: everything fits in one screen, no page scrolling.
+   Sizes follow the screen height so shorter laptops tighten up. Phones keep
+   the roomier stacked layout above. */
+@media (min-width: 900px) {
+  .tx-verify .kez-tile { gap: clamp(6px, 1.1vh, 10px); padding: clamp(12px, 1.8vh, 18px); }
+
+  .tx-verify .kez-eyebrow { margin: 0; }
+
+  /* Unit: shorter cover, thin photo strip, specs in one row. */
+  .tx-verify .tx-detail__unit-cover img { aspect-ratio: auto; height: clamp(84px, 15vh, 140px); }
+  .tx-verify .tx-detail__unit-strip img { aspect-ratio: auto; height: clamp(32px, 5.5vh, 46px); }
+  .tx-verify .tx-detail__unit-title { margin: 0; font-size: var(--kez-text-lg); }
+  .tx-verify .tx-detail__unit-specs { gap: 4px var(--kez-space-3); }
+  .tx-verify .tx-detail__unit-specs:not(.tx-detail__unit-condition) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .tx-verify .tx-detail__unit-specs dd { font-size: var(--kez-text-xs); }
+  .tx-verify .tx-detail__unit-condition { padding-top: clamp(4px, 0.8vh, 8px); }
+
+  /* Checklist: slimmer rows and a one-line disclaimer. */
+  .tx-verify .tx-detail__disclaimer { padding: 8px 10px; font-size: var(--kez-text-xs); }
+  .tx-verify .tx-detail__checklist { gap: clamp(4px, 0.7vh, 8px); }
+  .tx-verify .tx-detail__check { padding: clamp(4px, 0.8vh, 8px) var(--kez-space-3); }
+  .tx-verify .kez-field { margin-bottom: 0; }
+  .tx-verify .tx-detail__timestamps { margin: 0; font-size: var(--kez-text-xs); }
+  .tx-verify__actions ion-button { margin: 0; }
+
+  /* Documents column never grows taller than the others. The whole image
+     scales down (never cropped) so the seller's redaction boxes stay exactly
+     over what they hide. */
+  .tx-verify .doc-view__thumb .doc-view__frame { align-self: center; display: inline-block; max-width: 100%; }
+  .tx-verify .doc-view__thumb .doc-view__frame img { width: auto; max-width: 100%; max-height: clamp(90px, 18vh, 170px); }
+}
+
+/* Save checklist and "Last reviewed" share one row. */
+.tx-verify__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--kez-space-2) var(--kez-space-3);
+}
+
+.tx-verify__actions ion-button { margin: 0; }

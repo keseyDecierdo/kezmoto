@@ -5,7 +5,6 @@ import { useParams } from 'react-router-dom';
 import {
   calendarOutline,
   chatbubbleEllipsesOutline,
-  documentTextOutline,
   heart,
   heartOutline,
   locationOutline,
@@ -23,9 +22,10 @@ import { useAsync } from '../hooks/useAsync';
 import { useAuth } from '../context/AuthContext';
 import { DEFAULT_ENQUIRY, useMarketplace } from '../context/MarketplaceContext';
 import { listingsApi } from '../services/api';
-import type { Listing, UnitDocument } from '../types';
+import type { Listing } from '../types';
 import { formatDate, formatMileage, formatPrice } from '../utils/format';
 import './ListingDetail.css';
+import DocumentGallery from '../components/DocumentViewer';
 
 const STATUS_COPY: Record<Listing['status'], { label: string; className: string }> = {
   active: { label: 'Available', className: 'kez-chip--success' },
@@ -33,31 +33,6 @@ const STATUS_COPY: Record<Listing['status'], { label: string; className: string 
   sold: { label: 'Sold', className: '' },
   draft: { label: 'Draft', className: '' },
 };
-
-/** Read-only document preview with the seller's redactions burned on top. */
-const RedactedDocument: React.FC<{ document: UnitDocument }> = ({ document }) => (
-  <figure className="detail__doc">
-    <div className="detail__doc-frame">
-      <img src={document.imageUrl} alt={document.label} />
-      {document.redactions.map((box) => (
-        <span
-          key={box.id}
-          className="detail__doc-redaction"
-          style={{
-            left: `${box.x * 100}%`,
-            top: `${box.y * 100}%`,
-            width: `${box.width * 100}%`,
-            height: `${box.height * 100}%`,
-          }}
-        />
-      ))}
-    </div>
-    <figcaption>
-      <IonIcon icon={documentTextOutline} />
-      {document.label}
-    </figcaption>
-  </figure>
-);
 
 const ListingDetail: React.FC = () => {
   const { id = '' } = useParams<{ id: string }>();
@@ -304,13 +279,9 @@ const ListingDetail: React.FC = () => {
             <h2 className="kez-display">Documents</h2>
             <p className="kez-muted detail__doc-note">
               Shown as uploaded by the seller. Private details are blacked out with the redaction
-              tool before posting.
+              tool before posting. Tap a document to view it large.
             </p>
-            <div className="detail__docs">
-              {listing.documents.map((document) => (
-                <RedactedDocument key={document.id} document={document} />
-              ))}
-            </div>
+            <DocumentGallery documents={listing.documents} />
           </section>
 
           <section className="kez-tile kez-tile--w2 detail__section">

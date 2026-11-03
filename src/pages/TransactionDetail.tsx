@@ -12,26 +12,30 @@ import {
   useIonToast,
 } from '@ionic/react';
 import { useParams } from 'react-router-dom';
-import { checkmarkCircleOutline, closeCircleOutline, informationCircleOutline } from 'ionicons/icons';
+import { checkmarkCircleOutline, closeCircleOutline, informationCircleOutline, openOutline } from 'ionicons/icons';
 import AppPage from '../components/AppPage';
 import Avatar from '../components/Avatar';
+import DocumentGallery, { DocumentLightbox } from '../components/DocumentViewer';
 import { ErrorState, LoadingRows, LoadingState } from '../components/StateViews';
 import { useAsync } from '../hooks/useAsync';
 import { confirmAction } from '../lib/sweetAlert';
 import {
   commissionAmountFor,
+  listingsApi,
   paymentsApi,
   transactionsApi,
   verificationApi,
 } from '../services/api';
 import type {
+  Listing,
   Payment,
+  UnitDocument,
   Transaction,
   TransactionStatus,
   VerificationChecklist,
 } from '../types';
 import { TRANSACTION_STATUS_LABEL, TRANSACTION_STATUS_SEQUENCE } from '../types';
-import { formatDate, formatPrice, formatRelative } from '../utils/format';
+import { formatDate, formatMileage, formatPrice, formatRelative } from '../utils/format';
 import './TransactionDetail.css';
 
 type Tab = 'overview' | 'verification';
@@ -439,6 +443,113 @@ const CommissionPanel: React.FC<{ transaction: Transaction; onChanged: () => voi
 };
 
 /* --------------------------------------------------------- Verification */
+/** The unit being verified, so the admin can compare while ticking boxes. */
+const UnitUnderReview: React.FC<{ listingId: string | null }> = ({ listingId }) => {
+  const router = useIonRouter();
+  const { data: listing, loading, error } = useAsync<Listing | null>(
+    () => (listingId ? listingsApi.getById(listingId).catch(() => null) : Promise.resolve(null)),
+    [listingId]
+  );
+  const [photo, setPhoto] = useState<number | null>(null);
+
+  if (loading) {
+    return (
+      <div className="tx-verify__info">
+        <LoadingRows rows={2} layout="list" />
+      </div>
+    );
+  }
+  if (error || !listing) {
+    return (
+      <section className="kez-tile tx-detail__section tx-verify__info">
+        <p className="kez-muted">This unit is no longer listed. The deal details above are still available.</p>
+      </section>
+    );
+  }
+
+  const photos: UnitDocument[] = listing.photos.map((url, i) => ({
+    id: `photo-${i}`,
+    label: `Photo ${i + 1} of ${listing.photos.length}`,
+    imageUrl: url,
+    redactions: [],
+  }));
+
+  return (
+    <>
+      <section className="kez-tile tx-detail__section tx-detail__unit-info tx-verify__info">
+        <p className="kez-eyebrow">Unit being verified</p>
+        <div className="tx-detail__unit-media">
+          {listing.photos[0] && (
+            <button type="button" className="tx-detail__unit-cover" onClick={() => setPhoto(0)} aria-label="View photos">
+              <img src={listing.photos[0]} alt={`${listing.brand} ${listing.model}`} />
+            </button>
+          )}
+          {listing.photos.length > 1 && (
+            <div className="tx-detail__unit-strip">
+              {listing.photos.slice(1, 5).map((url, i) => (
+                <button key={url} type="button" onClick={() => setPhoto(i + 1)} aria-label={`View photo ${i + 2}`}>
+                  <img src={url} alt="" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <h2 className="kez-display tx-detail__unit-title">
+          {listing.brand} {listing.model} {listing.year}
+        </h2>
+        <dl className="tx-detail__unit-specs">
+          <div>
+            <dt>Price</dt>
+            <dd>{formatPrice(listing.price)}</dd>
+          </div>
+          <div>
+            <dt>Mileage</dt>
+            <dd>{formatMileage(listing.mileageKm)}</dd>
+          </div>
+          <div>
+            <dt>Location</dt>
+            <dd>{listing.location}</dd>
+          </div>
+          <div>
+            <dt>Seller</dt>
+            <dd>{listing.sellerName}</dd>
+          </div>
+        </dl>
+
+        <dl className="tx-detail__unit-specs tx-detail__unit-condition">
+          {(
+            [
+              ['Engine', listing.condition.engineNoise],
+              ['Brakes', listing.condition.brakes],
+              ['Tires', listing.condition.tires],
+              ['Lights', listing.condition.lights],
+              ['Reason for sale', listing.reasonForSale],
+            ] as const
+          ).map(([label, value]) => (
+            <div key={label}>
+              <dt>{label}</dt>
+              <dd>{value || '-'}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <IonButton fill="outline" size="small" onClick={() => router.push(`/listing/${listing.id}`, 'forward')}>
+          <IonIcon slot="start" icon={openOutline} />
+          View full listing
+        </IonButton>
+      </section>
+
+      <section className="kez-tile tx-detail__section tx-verify__docs">
+        <p className="kez-eyebrow">Documents · tap to view large</p>
+        <DocumentGallery documents={listing.documents} />
+      </section>
+
+      <DocumentLightbox documents={photos} index={photo} onClose={() => setPhoto(null)} onIndexChange={setPhoto} />
+    </>
+  );
+};
+
 const VerificationTab: React.FC<{ transaction: Transaction; onChanged: () => void }> = ({
   transaction,
   onChanged,
@@ -503,7 +614,10 @@ const VerificationTab: React.FC<{ transaction: Transaction; onChanged: () => voi
   ];
 
   return (
-    <section className="kez-tile tx-detail__section">
+    <div className="tx-verify">
+    <UnitUnderReview listingId={transaction.listingId} />
+    <section className="kez-tile tx-detail__section tx-verify__check">
+      <p className="kez-eyebrow">Verification checklist</p>
       <div className="tx-detail__disclaimer">
         <IonIcon icon={informationCircleOutline} />
         Verified by KEZMOTO admin; official verification should still be done through LTO.
@@ -511,7 +625,7 @@ const VerificationTab: React.FC<{ transaction: Transaction; onChanged: () => voi
 
       <div className="tx-detail__checklist">
         {checks.map(([key, label]) => (
-          <label key={key} className="tx-detail__check">
+          <label key={key} className={`tx-detail__check${form[key] ? ' is-checked' : ''}`}>
             <IonCheckbox
               checked={form[key] as boolean}
               onIonChange={(e) => set(key)(e.detail.checked)}
@@ -526,22 +640,24 @@ const VerificationTab: React.FC<{ transaction: Transaction; onChanged: () => voi
         label="Admin notes"
         labelPlacement="stacked"
         autoGrow
-        rows={3}
+        rows={2}
         placeholder="Anything worth flagging for this deal"
         value={form.adminNotes}
         onIonInput={(e) => set('adminNotes')(String(e.detail.value ?? ''))}
       />
 
-      {data?.verifiedAt && (
-        <p className="kez-muted tx-detail__timestamps">
-          Last reviewed {formatRelative(data.verifiedAt)}
-        </p>
-      )}
-
-      <IonButton className="kez-cta" disabled={saving} onClick={() => void save()}>
-        {saving ? <IonSpinner name="crescent" /> : 'Save checklist'}
-      </IonButton>
+      <div className="tx-verify__actions">
+        <IonButton className="kez-cta" disabled={saving} onClick={() => void save()}>
+          {saving ? <IonSpinner name="crescent" /> : 'Save checklist'}
+        </IonButton>
+        {data?.verifiedAt && (
+          <p className="kez-muted tx-detail__timestamps">
+            Last reviewed {formatRelative(data.verifiedAt)}
+          </p>
+        )}
+      </div>
     </section>
+    </div>
   );
 };
 
