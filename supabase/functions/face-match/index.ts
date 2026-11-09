@@ -165,16 +165,8 @@ Deno.serve(async (req) => {
     }
 
     // A face that can't be found is a retake, not a mismatch - don't mark the
-    // account as failed for it.
-    if (result.id_faces === 0) {
-      return json(
-        {
-          error:
-            'No face was found on your uploaded ID. Re-upload a sharp, well-lit photo of your ID in step 1, with the portrait clearly visible.',
-        },
-        422
-      );
-    }
+    // account as failed for it. The selfie is checked first: the face-service
+    // skips scanning the ID when the selfie doesn't have exactly one face.
     if (result.selfie_faces === 0) {
       return json(
         { error: 'Your face was not visible in the selfie. Face the camera in good light and try again.' },
@@ -184,6 +176,15 @@ Deno.serve(async (req) => {
     if (result.selfie_faces > 1) {
       return json(
         { error: 'More than one face was detected. Make sure only your face is in the camera and try again.' },
+        422
+      );
+    }
+    if (result.id_faces === 0) {
+      return json(
+        {
+          error:
+            'No face was found on your uploaded ID. Re-upload a sharp, well-lit photo of your ID in step 1, with the portrait clearly visible.',
+        },
         422
       );
     }
