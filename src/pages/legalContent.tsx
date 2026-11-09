@@ -102,8 +102,12 @@ export const PRIVACY: LegalDoc = {
               <strong>Supabase</strong>: account login, database, file storage and live chat.
             </li>
             <li>
-              <strong>Google (Gemini API)</strong>: reads your ID and compares your face scan for verification,
-              scores listings, checks for fraud and powers the buying assistant.
+              <strong>Google (Gemini API)</strong>: reads the name on your ID for verification, scores listings,
+              checks for fraud and powers the buying assistant.
+            </li>
+            <li>
+              <strong>Render</strong>: also runs KEZMOTO&apos;s own face-matching service, which compares your face
+              scan with the photo on your ID for verification. Photos are processed in memory and not stored there.
             </li>
             <li>
               <strong>Brevo</strong>: sends account emails (verification codes and password resets).

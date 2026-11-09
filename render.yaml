@@ -22,3 +22,22 @@ services:
       - path: /assets/*
         name: Cache-Control
         value: public, max-age=31536000, immutable
+
+  # Private Python face-matching API (face-service/), called only by the
+  # Supabase face-match Edge Function. Compares the face on a user's valid ID
+  # with their live selfie using the open-source face_recognition library.
+  - type: web
+    name: kezmoto-face-service
+    runtime: docker
+    rootDir: face-service
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      # Shared secret - Render generates it; copy the same value into the
+      # Supabase Edge Function secret FACE_SERVICE_SECRET.
+      - key: FACE_SERVICE_SECRET
+        generateValue: true
+      # Max face distance that counts as the same person (lower = stricter).
+      - key: FACE_MATCH_THRESHOLD
+        value: "0.4"

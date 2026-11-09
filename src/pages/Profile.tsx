@@ -481,7 +481,7 @@ const Profile: React.FC = () => {
                   onChange={() => void giveBiometricConsent()}
                 />
                 <span>
-                  I agree that KEZMOTO and its AI provider (Google Gemini) process my ID and face photos
+                  I agree that KEZMOTO (with its AI provider Google Gemini and its own face-matching service) processes my ID and face photos
                   only to verify my identity, as described in the{' '}
                   <a href="/privacy" target="_blank" rel="noopener">
                     Privacy Policy

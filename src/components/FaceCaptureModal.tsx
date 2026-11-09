@@ -92,7 +92,7 @@ const FaceCaptureModal: React.FC<FaceCaptureModalProps> = ({ isOpen, onCancel, o
     if (!video || !canvas || video.videoWidth === 0) return;
 
     // Clamped rather than full sensor resolution: this frame gets base64'd
-    // and sent to Gemini alongside the ID photo, and an oversized pair is
+    // and sent to the face-service alongside the ID photo, and an oversized pair is
     // what tips those requests into quota/overload failures.
     const scale = Math.min(1, Math.min(AI_IMAGE_MAX_EDGE, 1024) / Math.max(video.videoWidth, video.videoHeight));
     canvas.width = Math.round(video.videoWidth * scale);

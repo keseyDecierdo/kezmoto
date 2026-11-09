@@ -1,0 +1,15 @@
+fastapi==0.115.6
+uvicorn==0.32.1
+pydantic==2.10.4
+numpy==1.26.4
+Pillow==10.4.0
+# face_recognition_models loads its model files through pkg_resources,
+# which newer setuptools releases removed - keep a version that has it.
+setuptools==70.3.0
+# dlib ships here as a prebuilt wheel (dlib-bin) so the server doesn't have to
+# compile dlib from source, which takes a long time and a lot of memory.
+dlib-bin==19.24.6
+face_recognition_models==0.3.0
+# face_recognition itself is installed with --no-deps in the Dockerfile,
+# because it declares a dependency on "dlib" (the source package) - dlib-bin
+# above already provides the same `dlib` module.

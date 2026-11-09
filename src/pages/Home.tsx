@@ -98,25 +98,34 @@ const Home: React.FC = () => {
   const [brand, setBrand] = useState<string>('all');
   const [status, setStatus] = useState<StatusFilter>('all');
 
+  // Home is the marketplace of *other* people's units: a signed-in user's
+  // own units live on My Units instead, so they're left out here. Only this
+  // page is filtered - listingsApi.list() itself is unchanged, so Landing,
+  // Favorites and everything else still get the full list.
+  const marketListings = useMemo(
+    () => (data ?? []).filter((listing) => !user || listing.sellerId !== user.id),
+    [data, user]
+  );
+
   // Brands are matched case-insensitively ("Yamaha" and "yamaha" are one
   // chip); the first spelling seen is the one shown.
   const brands = useMemo(() => {
     const byKey = new Map<string, string>();
-    for (const l of data ?? []) {
+    for (const l of marketListings) {
       const name = l.brand.trim();
       if (!byKey.has(name.toLowerCase())) byKey.set(name.toLowerCase(), name);
     }
     return ['all', ...[...byKey.values()].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }))];
-  }, [data]);
+  }, [marketListings]);
 
   const { listings, budget } = useMemo(() => {
-    const filtered = (data ?? []).filter(
+    const filtered = marketListings.filter(
       (listing) =>
         (brand === 'all' || listing.brand.trim().toLowerCase() === brand.toLowerCase()) &&
         (status === 'all' || listing.status === status)
     );
     return searchListings(filtered, query);
-  }, [data, query, brand, status]);
+  }, [marketListings, query, brand, status]);
 
   const openUnit = (listing: Listing) => router.push(`/listing/${listing.id}`, 'forward');
 
@@ -137,7 +146,7 @@ const Home: React.FC = () => {
   const filtersActive = query.trim() !== '' || brand !== 'all' || status !== 'all';
 
   const stats = useMemo(() => {
-    const all = data ?? [];
+    const all = marketListings;
     const count = (s: Listing['status']) => all.filter((l) => l.status === s).length;
     return [
       { label: 'Units listed', value: all.length, icon: cubeOutline },
@@ -145,7 +154,7 @@ const Home: React.FC = () => {
       { label: 'Reserved', value: count('pending'), icon: timeOutline },
       { label: 'Sold', value: count('sold'), icon: pricetagOutline },
     ];
-  }, [data]);
+  }, [marketListings]);
 
   return (
     <AppPage
